@@ -1,0 +1,34 @@
+DejaVuSans
+{
+    type truetype
+    source fonts/DejaVuSans.ttf
+    size 16
+    resolution 96
+}
+
+
+DejaVuSansMono
+{
+    type truetype
+    source fonts/DejaVuSansMono.ttf
+    size 16
+    resolution 96
+}
+
+
+DejaVuSerif
+{
+    type truetype
+    source fonts/DejaVuSerif.ttf
+    size 16
+    resolution 96
+}
+
+
+Inconsolata
+{
+    type truetype
+    source fonts/Inconsolata.otf
+    size 16
+    resolution 96
+}

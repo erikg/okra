@@ -1,0 +1,24 @@
+Okra/TestOverlay
+{
+    zorder 500
+
+    container Panel(Okra/TestPanel)
+    {
+        left 0.02
+        top 0.02
+        width 0.34
+        height 0.41
+        material UI/Window/Text
+
+        element TextArea(Okra/TestTextArea)
+        {
+            left 0.01
+            top 0.01
+            width 0.99
+            height 0.99
+            font_name DejaVuSansMono
+            caption default text set in okra.overlay
+            colour 1.0 1.0 1.0
+        }
+    }
+}
