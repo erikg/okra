@@ -19,10 +19,17 @@
 (in-package :okra-system)
 
 (asdf:defsystem :okra-bindings
-  :version "1.6.2.1"
+  :version "1.6.2.2"
   :components
-    ((:module src-bindings
-      :serial t
-      :components
-        ((:file "package") (:file "ogre-lib")[TMPL_LOOP "files"] (:file "[TMPL_VAR "file"]")[/TMPL_LOOP] (:file "handwritten"))))
+  ((:module src-bindings
+    :components
+    ((:file "package")
+     (:module ogre-lib :depends-on ("package")
+      :components ((:file "ogre-lib")))
+     (:file "enums" :depends-on ("package" ogre-lib))
+     (:file "generics" :depends-on ("package" ogre-lib))
+     (:file "typedefs" :depends-on ("package" ogre-lib))
+[TMPL_LOOP "files"]     (:file "[TMPL_VAR "file"]" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+[/TMPL_LOOP]     (:module handwritten :depends-on ("package" ogre-lib)
+      :components ((:file "misc") (:file "moc"))))))
   :depends-on (:cffi :okra-common))

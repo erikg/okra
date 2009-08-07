@@ -9,20 +9,18 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
 
 extern "C"
 {
+    void ogre_viewport_update_void (Viewport*);
     RenderTarget* ogre_viewport_get_target (Viewport*);
-    Camera* ogre_viewport_get_camera (Viewport*);
+    Camera* ogre_viewport_get_camera_void (Viewport*);
     void ogre_viewport_set_camera (Viewport*, Camera*);
     int ogre_viewport_get_zorder (Viewport*);
     Real ogre_viewport_get_left (Viewport*);
@@ -33,6 +31,7 @@ extern "C"
     int ogre_viewport_get_actual_top (Viewport*);
     int ogre_viewport_get_actual_width (Viewport*);
     int ogre_viewport_get_actual_height (Viewport*);
+    void ogre_viewport_set_dimensions_real_real_real_real (Viewport*, Real, Real, Real, Real);
     void ogre_viewport_set_background_colour (Viewport*, const okraArray4);
     void ogre_viewport_get_background_colour (Viewport*, okraArray4);
     void ogre_viewport_set_clear_every_frame (Viewport*, bool, unsigned int);
@@ -56,6 +55,15 @@ extern "C"
 
 // Functions
 
+// name: "update"
+// type: "void"
+// args: "void"
+//
+void ogre_viewport_update_void (Viewport* ogre_viewport)
+{
+    ogre_viewport->update();
+}
+
 // name: "getTarget"
 // type: "RenderTarget*"
 // args: "void"
@@ -69,7 +77,7 @@ RenderTarget* ogre_viewport_get_target (Viewport* ogre_viewport)
 // type: "Camera*"
 // args: "void"
 //
-Camera* ogre_viewport_get_camera (Viewport* ogre_viewport)
+Camera* ogre_viewport_get_camera_void (Viewport* ogre_viewport)
 {
     return ogre_viewport->getCamera();
 }
@@ -162,6 +170,15 @@ int ogre_viewport_get_actual_width (Viewport* ogre_viewport)
 int ogre_viewport_get_actual_height (Viewport* ogre_viewport)
 {
     return ogre_viewport->getActualHeight();
+}
+
+// name: "setDimensions"
+// type: "void"
+// args: (("Real" . "left") ("Real" . "top") ("Real" . "width") ("Real" . "height"))
+//
+void ogre_viewport_set_dimensions_real_real_real_real (Viewport* ogre_viewport, Real left, Real top, Real width, Real height)
+{
+    ogre_viewport->setDimensions(left, top, width, height);
 }
 
 // name: "setBackgroundColour"

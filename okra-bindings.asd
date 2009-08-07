@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:32.
+;;;; This file was generated on: 2009-08-07 15:52:10.
 
 (in-package :cl-user)
 
@@ -19,10 +19,34 @@
 (in-package :okra-system)
 
 (asdf:defsystem :okra-bindings
-  :version "1.6.2.1"
+  :version "1.6.2.2"
   :components
-    ((:module src-bindings
-      :serial t
-      :components
-        ((:file "package") (:file "ogre-lib") (:file "typedefs") (:file "enums") (:file "viewport") (:file "timer") (:file "scene-node") (:file "scene-manager") (:file "root") (:file "resource-group-manager") (:file "render-window") (:file "render-target") (:file "overlay-manager") (:file "overlay-element") (:file "overlay") (:file "node") (:file "movable-object") (:file "manual-object") (:file "light") (:file "frustum") (:file "entity") (:file "camera") (:file "handwritten"))))
+  ((:module src-bindings
+    :components
+    ((:file "package")
+     (:module ogre-lib :depends-on ("package")
+      :components ((:file "ogre-lib")))
+     (:file "enums" :depends-on ("package" ogre-lib))
+     (:file "generics" :depends-on ("package" ogre-lib))
+     (:file "typedefs" :depends-on ("package" ogre-lib))
+     (:file "camera" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "entity" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "frustum" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "light" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "manual-object" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "movable-object" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "node" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "overlay" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "overlay-element" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "overlay-manager" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "render-target" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "render-window" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "resource-group-manager" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "root" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "scene-manager" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "scene-node" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "timer" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "viewport" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:module handwritten :depends-on ("package" ogre-lib)
+      :components ((:file "misc") (:file "moc"))))))
   :depends-on (:cffi :okra-common))

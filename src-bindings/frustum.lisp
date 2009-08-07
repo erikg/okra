@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:31.
+;;;; This file was generated on: 2009-08-07 15:52:09.
 
 (in-package :okra-bindings)
 
@@ -122,29 +122,19 @@
   (ogre-frustum-get-aspect-ratio (pointer-to this)))
 
 
-;; name: "setFrustumOffset"
-;; type: "void"
-;; args: (("const Vector2&" . "offset"))
-;;
-(defcfun "ogre_frustum_set_frustum_offset"
-    :void
-  (ogre-frustum :pointer)
-  (offset :pointer))
-
-(defmethod set-frustum-offset ((this frustum) offset)
-  (ogre-frustum-set-frustum-offset (pointer-to this) offset))
-
-
 ;; name: "getFrustumOffset"
 ;; type: "const Vector2&"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_frustum_get_frustum_offset"
-    :pointer
-  (ogre-frustum :pointer))
+    :void
+  (ogre-frustum :pointer)
+  (array2 :pointer))
 
 (defmethod get-frustum-offset ((this frustum))
-  (ogre-frustum-get-frustum-offset (pointer-to this)))
+  (with-foreign-object (array 'okra-real 2)
+    (ogre-frustum-get-frustum-offset (pointer-to this) array)
+    (vector (mem-aref array 'okra-real 0) (mem-aref array 'okra-real 1))))
 
 
 ;; name: "setFocalLength"
@@ -162,7 +152,7 @@
 
 ;; name: "getFocalLength"
 ;; type: "Real"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_frustum_get_focal_length"
     okra-real
@@ -190,7 +180,7 @@
 
 ;; name: "resetFrustumExtents"
 ;; type: "void"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_frustum_reset_frustum_extents"
     :void
@@ -371,20 +361,6 @@
 
 (defmethod get-frustum-plane ((this frustum) plane)
   (ogre-frustum-get-frustum-plane (pointer-to this) plane))
-
-
-;; name: "isVisible"
-;; type: "bool"
-;; args: (("const Vector3&" . "vert") ("FrustumPlane*" . "culledBy"))
-;;
-(defcfun "ogre_frustum_is_visible"
-    :boolean
-  (ogre-frustum :pointer)
-  (vert okra-array3)
-  (culled-by :pointer))
-
-(defmethod is-visible ((this frustum) vert culled-by)
-  (ogre-frustum-is-visible (pointer-to this) vert culled-by))
 
 
 ;; name: "getTypeFlags"
@@ -586,7 +562,7 @@
 
 ;; name: "getOrthoWindowHeight"
 ;; type: "Real"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_frustum_get_ortho_window_height"
     okra-real
@@ -598,7 +574,7 @@
 
 ;; name: "getOrthoWindowWidth"
 ;; type: "Real"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_frustum_get_ortho_window_width"
     okra-real
@@ -760,6 +736,110 @@
     (ogre-frustum-get-orientation-for-view-update (pointer-to this) array)
     (vector (mem-aref array 'okra-real 0) (mem-aref array 'okra-real 1)
             (mem-aref array 'okra-real 2) (mem-aref array 'okra-real 3))))
+
+
+;;; Overloaded Foreign Functions
+
+;; name: "setFrustumOffset"
+;; type: "void"
+;; args: (("const Vector2&" . "offset"))
+;;
+(defcfun "ogre_frustum_set_frustum_offset_vector2"
+    :void
+  (ogre-frustum :pointer)
+  (offset okra-array2))
+
+
+;; name: "setFrustumOffset"
+;; type: "void"
+;; args: (("Real" . "horizontal") ("Real" . "vertical"))
+;;
+(defcfun "ogre_frustum_set_frustum_offset_real_real"
+    :void
+  (ogre-frustum :pointer)
+  (horizontal okra-real)
+  (vertical okra-real))
+
+
+;; name: "getViewMatrix"
+;; type: "const Matrix4&"
+;; args: "void"
+;;
+(defcfun "ogre_frustum_get_view_matrix_void"
+    :void
+  (ogre-frustum :pointer)
+  (array16 :pointer))
+
+
+;; name: "isVisible"
+;; type: "bool"
+;; args: (("const AxisAlignedBox&" . "bound") ("FrustumPlane*" . "culledBy"))
+;;
+(defcfun "ogre_frustum_is_visible_axisalignedbox_frustumplane"
+    :boolean
+  (ogre-frustum :pointer)
+  (bound okra-array6)
+  (culled-by :pointer))
+
+
+;; name: "isVisible"
+;; type: "bool"
+;; args: (("const Sphere&" . "bound") ("FrustumPlane*" . "culledBy"))
+;;
+(defcfun "ogre_frustum_is_visible_sphere_frustumplane"
+    :boolean
+  (ogre-frustum :pointer)
+  (bound okra-array4)
+  (culled-by :pointer))
+
+
+;; name: "isVisible"
+;; type: "bool"
+;; args: (("const Vector3&" . "vert") ("FrustumPlane*" . "culledBy"))
+;;
+(defcfun "ogre_frustum_is_visible_vector3_frustumplane"
+    :boolean
+  (ogre-frustum :pointer)
+  (vert okra-array3)
+  (culled-by :pointer))
+
+
+;;; Methods for Overloaded Foreign Functions
+
+(defmethod is-visible ((this frustum) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 '(simple-vector 3)) (typep arg1 'cffi:foreign-pointer))
+     (ogre-frustum-is-visible-vector3-frustumplane (pointer-to this) arg0 arg1))
+    ((and (typep arg0 '(simple-vector 4)) (typep arg1 'cffi:foreign-pointer))
+     (ogre-frustum-is-visible-sphere-frustumplane (pointer-to this) arg0 arg1))
+    ((and (typep arg0 '(simple-vector 6)) (typep arg1 'cffi:foreign-pointer))
+     (ogre-frustum-is-visible-axisalignedbox-frustumplane (pointer-to this) arg0 arg1))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod get-view-matrix ((this frustum) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'null))
+  (with-foreign-object (array 'okra-real 16)
+       (ogre-frustum-get-view-matrix-void (pointer-to this) array)
+    (vector (mem-aref array 'okra-real  0) (mem-aref array 'okra-real  1)
+            (mem-aref array 'okra-real  2) (mem-aref array 'okra-real  3)
+            (mem-aref array 'okra-real  4) (mem-aref array 'okra-real  5)
+            (mem-aref array 'okra-real  6) (mem-aref array 'okra-real  7)
+            (mem-aref array 'okra-real  8) (mem-aref array 'okra-real  9)
+            (mem-aref array 'okra-real 10) (mem-aref array 'okra-real 11)
+            (mem-aref array 'okra-real 12) (mem-aref array 'okra-real 13)
+            (mem-aref array 'okra-real 14) (mem-aref array 'okra-real 15))))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-frustum-offset ((this frustum) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real))
+     (ogre-frustum-set-frustum-offset-real-real (pointer-to this) arg0 arg1))
+    ((and (typep arg0 '(simple-vector 2)))
+     (ogre-frustum-set-frustum-offset-vector2 (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
 
 
 

@@ -9,12 +9,9 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
@@ -34,7 +31,8 @@ extern "C"
     bool ogre_resource_group_manager_is_resource_group_loaded (ResourceGroupManager*, const char*);
     void ogre_resource_group_manager_add_resource_location (ResourceGroupManager*, const char*, const char*, const char*, bool);
     void ogre_resource_group_manager_remove_resource_location (ResourceGroupManager*, const char*, const char*);
-    void ogre_resource_group_manager_declare_resource (ResourceGroupManager*, const char*, const char*, const char*, const NameValuePairList&);
+    void ogre_resource_group_manager_declare_resource_string_string_string_namevaluepairlist (ResourceGroupManager*, const char*, const char*, const char*, const NameValuePairList&);
+    void ogre_resource_group_manager_declare_resource_string_string_string_manualresourceloader_namevaluepairlist (ResourceGroupManager*, const char*, const char*, const char*, ManualResourceLoader*, const NameValuePairList&);
     void ogre_resource_group_manager_undeclare_resource (ResourceGroupManager*, const char*, const char*);
     DataStreamPtr ogre_resource_group_manager_open_resource (ResourceGroupManager*, const char*, const char*, bool, Resource*);
     DataStreamListPtr ogre_resource_group_manager_open_resources (ResourceGroupManager*, const char*, const char*);
@@ -52,7 +50,9 @@ extern "C"
     void ogre_resource_group_manager_link_world_geometry_to_resource_group (ResourceGroupManager*, const char*, const char*, SceneManager*);
     void ogre_resource_group_manager_unlink_world_geometry_from_resource_group (ResourceGroupManager*, const char*);
     void ogre_resource_group_manager_shutdown_all (ResourceGroupManager*);
+    ResourceGroupManager::ResourceManagerIterator ogre_resource_group_manager_get_resource_manager_iterator (ResourceGroupManager*);
     StringVector ogre_resource_group_manager_get_resource_groups (ResourceGroupManager*);
+    ResourceGroupManager::ResourceDeclarationList ogre_resource_group_manager_get_resource_declaration_list (ResourceGroupManager*, const char*);
     void ogre_resource_group_manager_set_loading_listener (ResourceGroupManager*, ResourceLoadingListener*);
     ResourceLoadingListener* ogre_resource_group_manager_get_loading_listener (ResourceGroupManager*);
 }
@@ -181,9 +181,18 @@ void ogre_resource_group_manager_remove_resource_location (ResourceGroupManager*
 // type: "void"
 // args: (("const String&" . "name") ("const String&" . "resourceType") ("const String&" . "groupName") ("const NameValuePairList&" . "loadParameters"))
 //
-void ogre_resource_group_manager_declare_resource (ResourceGroupManager* ogre_resource_group_manager, const char* name, const char* resourceType, const char* groupName, const NameValuePairList& loadParameters)
+void ogre_resource_group_manager_declare_resource_string_string_string_namevaluepairlist (ResourceGroupManager* ogre_resource_group_manager, const char* name, const char* resourceType, const char* groupName, const NameValuePairList& loadParameters)
 {
     ogre_resource_group_manager->declareResource(name, resourceType, groupName, loadParameters);
+}
+
+// name: "declareResource"
+// type: "void"
+// args: (("const String&" . "name") ("const String&" . "resourceType") ("const String&" . "groupName") ("ManualResourceLoader*" . "loader") ("const NameValuePairList&" . "loadParameters"))
+//
+void ogre_resource_group_manager_declare_resource_string_string_string_manualresourceloader_namevaluepairlist (ResourceGroupManager* ogre_resource_group_manager, const char* name, const char* resourceType, const char* groupName, ManualResourceLoader* loader, const NameValuePairList& loadParameters)
+{
+    ogre_resource_group_manager->declareResource(name, resourceType, groupName, loader, loadParameters);
 }
 
 // name: "undeclareResource"
@@ -339,6 +348,15 @@ void ogre_resource_group_manager_shutdown_all (ResourceGroupManager* ogre_resour
     ogre_resource_group_manager->shutdownAll();
 }
 
+// name: "getResourceManagerIterator"
+// type: "ResourceManagerIterator"
+// args: "void"
+//
+ResourceGroupManager::ResourceManagerIterator ogre_resource_group_manager_get_resource_manager_iterator (ResourceGroupManager* ogre_resource_group_manager)
+{
+    return ogre_resource_group_manager->getResourceManagerIterator();
+}
+
 // name: "getResourceGroups"
 // type: "StringVector"
 // args: "void"
@@ -346,6 +364,15 @@ void ogre_resource_group_manager_shutdown_all (ResourceGroupManager* ogre_resour
 StringVector ogre_resource_group_manager_get_resource_groups (ResourceGroupManager* ogre_resource_group_manager)
 {
     return ogre_resource_group_manager->getResourceGroups();
+}
+
+// name: "getResourceDeclarationList"
+// type: "ResourceDeclarationList"
+// args: (("const String&" . "groupName"))
+//
+ResourceGroupManager::ResourceDeclarationList ogre_resource_group_manager_get_resource_declaration_list (ResourceGroupManager* ogre_resource_group_manager, const char* groupName)
+{
+    return ogre_resource_group_manager->getResourceDeclarationList(groupName);
 }
 
 // name: "setLoadingListener"
@@ -359,7 +386,7 @@ void ogre_resource_group_manager_set_loading_listener (ResourceGroupManager* ogr
 
 // name: "getLoadingListener"
 // type: "ResourceLoadingListener*"
-// args: NIL
+// args: "void"
 //
 ResourceLoadingListener* ogre_resource_group_manager_get_loading_listener (ResourceGroupManager* ogre_resource_group_manager)
 {

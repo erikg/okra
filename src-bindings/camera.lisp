@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:31.
+;;;; This file was generated on: 2009-08-07 15:52:09.
 
 (in-package :okra-bindings)
 
@@ -59,19 +59,6 @@
   (ogre-camera-get-polygon-mode (pointer-to this)))
 
 
-;; name: "setPosition"
-;; type: "void"
-;; args: (("const Vector3&" . "vec"))
-;;
-(defcfun "ogre_camera_set_position"
-    :void
-  (ogre-camera :pointer)
-  (vec okra-array3))
-
-(defmethod set-position ((this camera) vec)
-  (ogre-camera-set-position (pointer-to this) vec))
-
-
 ;; name: "getPosition"
 ;; type: "const Vector3&"
 ;; args: "void"
@@ -112,19 +99,6 @@
 
 (defmethod move-relative ((this camera) vec)
   (ogre-camera-move-relative (pointer-to this) vec))
-
-
-;; name: "setDirection"
-;; type: "void"
-;; args: (("const Vector3&" . "vec"))
-;;
-(defcfun "ogre_camera_set_direction"
-    :void
-  (ogre-camera :pointer)
-  (vec okra-array3))
-
-(defmethod set-direction ((this camera) vec)
-  (ogre-camera-set-direction (pointer-to this) vec))
 
 
 ;; name: "getDirection"
@@ -175,71 +149,6 @@
             (mem-aref array 'okra-real 2))))
 
 
-;; name: "lookAt"
-;; type: "void"
-;; args: (("const Vector3&" . "targetPoint"))
-;;
-(defcfun "ogre_camera_look_at"
-    :void
-  (ogre-camera :pointer)
-  (target-point okra-array3))
-
-(defmethod look-at ((this camera) target-point)
-  (ogre-camera-look-at (pointer-to this) target-point))
-
-
-;; name: "roll"
-;; type: "void"
-;; args: (("const Radian&" . "angle"))
-;;
-(defcfun "ogre_camera_roll"
-    :void
-  (ogre-camera :pointer)
-  (angle okra-real))
-
-(defmethod roll ((this camera) angle)
-  (ogre-camera-roll (pointer-to this) angle))
-
-
-;; name: "yaw"
-;; type: "void"
-;; args: (("const Radian&" . "angle"))
-;;
-(defcfun "ogre_camera_yaw"
-    :void
-  (ogre-camera :pointer)
-  (angle okra-real))
-
-(defmethod yaw ((this camera) angle)
-  (ogre-camera-yaw (pointer-to this) angle))
-
-
-;; name: "pitch"
-;; type: "void"
-;; args: (("const Radian&" . "angle"))
-;;
-(defcfun "ogre_camera_pitch"
-    :void
-  (ogre-camera :pointer)
-  (angle okra-real))
-
-(defmethod pitch ((this camera) angle)
-  (ogre-camera-pitch (pointer-to this) angle))
-
-
-;; name: "rotate"
-;; type: "void"
-;; args: (("const Quaternion&" . "q"))
-;;
-(defcfun "ogre_camera_rotate"
-    :void
-  (ogre-camera :pointer)
-  (q okra-array4))
-
-(defmethod rotate ((this camera) q)
-  (ogre-camera-rotate (pointer-to this) q))
-
-
 ;; name: "setFixedYawAxis"
 ;; type: "void"
 ;; args: (("bool" . "useFixed") ("const Vector3&" . "fixedAxis"))
@@ -270,19 +179,6 @@
             (mem-aref array 'okra-real 2) (mem-aref array 'okra-real 3))))
 
 
-;; name: "setOrientation"
-;; type: "void"
-;; args: (("const Quaternion&" . "q"))
-;;
-(defcfun "ogre_camera_set_orientation"
-    :void
-  (ogre-camera :pointer)
-  (q okra-array4))
-
-(defmethod set-orientation ((this camera) q)
-  (ogre-camera-set-orientation (pointer-to this) q))
-
-
 ;; name: "getDerivedOrientation"
 ;; type: "const Quaternion&"
 ;; args: "void"
@@ -297,22 +193,6 @@
     (ogre-camera-get-derived-orientation (pointer-to this) array)
     (vector (mem-aref array 'okra-real 0) (mem-aref array 'okra-real 1)
             (mem-aref array 'okra-real 2) (mem-aref array 'okra-real 3))))
-
-
-;; name: "getDerivedPosition"
-;; type: "const Vector3&"
-;; args: "void"
-;;
-(defcfun "ogre_camera_get_derived_position"
-    :void
-  (ogre-camera :pointer)
-  (array3 :pointer))
-
-(defmethod get-derived-position ((this camera))
-  (with-foreign-object (array 'okra-real 3)
-    (ogre-camera-get-derived-position (pointer-to this) array)
-    (vector (mem-aref array 'okra-real 0) (mem-aref array 'okra-real 1)
-            (mem-aref array 'okra-real 2))))
 
 
 ;; name: "getDerivedDirection"
@@ -455,21 +335,6 @@
   (ogre-camera-get-movable-type (pointer-to this)))
 
 
-;; name: "setAutoTracking"
-;; type: "void"
-;; args: (("bool" . "enabled") ("SceneNode*" . "target") ("const Vector3&" . "offset"))
-;;
-(defcfun "ogre_camera_set_auto_tracking"
-    :void
-  (ogre-camera :pointer)
-  (enabled :boolean)
-  (target :pointer)
-  (offset okra-array3))
-
-(defmethod set-auto-tracking ((this camera) enabled target offset)
-  (ogre-camera-set-auto-tracking (pointer-to this) enabled target offset))
-
-
 ;; name: "setLodBias"
 ;; type: "void"
 ;; args: (("Real" . "factor"))
@@ -510,7 +375,7 @@
 
 ;; name: "getLodCamera"
 ;; type: "const Camera*"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_camera_get_lod_camera"
     :pointer
@@ -518,42 +383,6 @@
 
 (defmethod get-lod-camera ((this camera))
   (ogre-camera-get-lod-camera (pointer-to this)))
-
-
-;; name: "getCameraToViewportRay"
-;; type: "Ray"
-;; args: (("Real" . "screenx") ("Real" . "screeny"))
-;;
-(defcfun "ogre_camera_get_camera_to_viewport_ray"
-    :void
-  (ogre-camera :pointer)
-  (array6 :pointer)
-  (screenx okra-real)
-  (screeny okra-real))
-
-(defmethod get-camera-to-viewport-ray ((this camera) screenx screeny)
-  (with-foreign-object (array 'okra-real 6)
-    (ogre-camera-get-camera-to-viewport-ray (pointer-to this) array screenx screeny)
-    (vector (mem-aref array 'okra-real 0) (mem-aref array 'okra-real 1)
-            (mem-aref array 'okra-real 2) (mem-aref array 'okra-real 3)
-            (mem-aref array 'okra-real 4) (mem-aref array 'okra-real 5))))
-
-
-;; name: "getCameraToViewportBoxVolume"
-;; type: "PlaneBoundedVolume"
-;; args: (("Real" . "screenLeft") ("Real" . "screenTop") ("Real" . "screenRight") ("Real" . "screenBottom") ("bool" . "includeFarPlane"))
-;;
-(defcfun "ogre_camera_get_camera_to_viewport_box_volume"
-    :pointer
-  (ogre-camera :pointer)
-  (screen-left okra-real)
-  (screen-top okra-real)
-  (screen-right okra-real)
-  (screen-bottom okra-real)
-  (include-far-plane :boolean))
-
-(defmethod get-camera-to-viewport-box-volume ((this camera) screen-left screen-top screen-right screen-bottom include-far-plane)
-  (ogre-camera-get-camera-to-viewport-box-volume (pointer-to this) screen-left screen-top screen-right screen-bottom include-far-plane))
 
 
 ;; name: "setWindow"
@@ -686,20 +515,6 @@
   (ogre-camera-get-culling-frustum (pointer-to this)))
 
 
-;; name: "isVisible"
-;; type: "bool"
-;; args: (("const Vector3&" . "vert") ("FrustumPlane*" . "culledBy"))
-;;
-(defcfun "ogre_camera_is_visible"
-    :boolean
-  (ogre-camera :pointer)
-  (vert okra-array3)
-  (culled-by :pointer))
-
-(defmethod is-visible ((this camera) vert culled-by)
-  (ogre-camera-is-visible (pointer-to this) vert culled-by))
-
-
 ;; name: "getWorldSpaceCorners"
 ;; type: "const Vector3*"
 ;; args: "void"
@@ -751,29 +566,6 @@
 
 (defmethod get-far-clip-distance ((this camera))
   (ogre-camera-get-far-clip-distance (pointer-to this)))
-
-
-;; name: "getViewMatrix"
-;; type: "const Matrix4&"
-;; args: (("bool" . "ownFrustumOnly"))
-;;
-(defcfun "ogre_camera_get_view_matrix"
-    :void
-  (ogre-camera :pointer)
-  (array16 :pointer)
-  (own-frustum-only :boolean))
-
-(defmethod get-view-matrix ((this camera) own-frustum-only)
-  (with-foreign-object (array 'okra-real 16)
-    (ogre-camera-get-view-matrix (pointer-to this) array own-frustum-only)
-    (vector (mem-aref array 'okra-real  0) (mem-aref array 'okra-real  1)
-            (mem-aref array 'okra-real  2) (mem-aref array 'okra-real  3)
-            (mem-aref array 'okra-real  4) (mem-aref array 'okra-real  5)
-            (mem-aref array 'okra-real  6) (mem-aref array 'okra-real  7)
-            (mem-aref array 'okra-real  8) (mem-aref array 'okra-real  9)
-            (mem-aref array 'okra-real 10) (mem-aref array 'okra-real 11)
-            (mem-aref array 'okra-real 12) (mem-aref array 'okra-real 13)
-            (mem-aref array 'okra-real 14) (mem-aref array 'okra-real 15))))
 
 
 ;; name: "setUseRenderingDistance"
@@ -844,6 +636,446 @@
     (ogre-camera-get-orientation-for-view-update (pointer-to this) array)
     (vector (mem-aref array 'okra-real 0) (mem-aref array 'okra-real 1)
             (mem-aref array 'okra-real 2) (mem-aref array 'okra-real 3))))
+
+
+;;; Overloaded Foreign Functions
+
+;; name: "getSceneManager"
+;; type: "SceneManager*"
+;; args: "void"
+;;
+(defcfun "ogre_camera_get_scene_manager_void"
+    :pointer
+  (ogre-camera :pointer))
+
+
+;; name: "setPosition"
+;; type: "void"
+;; args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+;;
+(defcfun "ogre_camera_set_position_real_real_real"
+    :void
+  (ogre-camera :pointer)
+  (x okra-real)
+  (y okra-real)
+  (z okra-real))
+
+
+;; name: "setPosition"
+;; type: "void"
+;; args: (("const Vector3&" . "vec"))
+;;
+(defcfun "ogre_camera_set_position_vector3"
+    :void
+  (ogre-camera :pointer)
+  (vec okra-array3))
+
+
+;; name: "setDirection"
+;; type: "void"
+;; args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+;;
+(defcfun "ogre_camera_set_direction_real_real_real"
+    :void
+  (ogre-camera :pointer)
+  (x okra-real)
+  (y okra-real)
+  (z okra-real))
+
+
+;; name: "setDirection"
+;; type: "void"
+;; args: (("const Vector3&" . "vec"))
+;;
+(defcfun "ogre_camera_set_direction_vector3"
+    :void
+  (ogre-camera :pointer)
+  (vec okra-array3))
+
+
+;; name: "lookAt"
+;; type: "void"
+;; args: (("const Vector3&" . "targetPoint"))
+;;
+(defcfun "ogre_camera_look_at_vector3"
+    :void
+  (ogre-camera :pointer)
+  (target-point okra-array3))
+
+
+;; name: "lookAt"
+;; type: "void"
+;; args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+;;
+(defcfun "ogre_camera_look_at_real_real_real"
+    :void
+  (ogre-camera :pointer)
+  (x okra-real)
+  (y okra-real)
+  (z okra-real))
+
+
+;; name: "roll"
+;; type: "void"
+;; args: (("const Radian&" . "angle"))
+;;
+(defcfun "ogre_camera_roll_radian"
+    :void
+  (ogre-camera :pointer)
+  (angle okra-real))
+
+
+;; name: "yaw"
+;; type: "void"
+;; args: (("const Radian&" . "angle"))
+;;
+(defcfun "ogre_camera_yaw_radian"
+    :void
+  (ogre-camera :pointer)
+  (angle okra-real))
+
+
+;; name: "pitch"
+;; type: "void"
+;; args: (("const Radian&" . "angle"))
+;;
+(defcfun "ogre_camera_pitch_radian"
+    :void
+  (ogre-camera :pointer)
+  (angle okra-real))
+
+
+;; name: "rotate"
+;; type: "void"
+;; args: (("const Vector3&" . "axis") ("const Radian&" . "angle"))
+;;
+(defcfun "ogre_camera_rotate_vector3_radian"
+    :void
+  (ogre-camera :pointer)
+  (axis okra-array3)
+  (angle okra-real))
+
+
+;; name: "rotate"
+;; type: "void"
+;; args: (("const Quaternion&" . "q"))
+;;
+(defcfun "ogre_camera_rotate_quaternion"
+    :void
+  (ogre-camera :pointer)
+  (q okra-array4))
+
+
+;; name: "setOrientation"
+;; type: "void"
+;; args: (("const Quaternion&" . "q"))
+;;
+(defcfun "ogre_camera_set_orientation_quaternion"
+    :void
+  (ogre-camera :pointer)
+  (q okra-array4))
+
+
+;; name: "getDerivedPosition"
+;; type: "const Vector3&"
+;; args: "void"
+;;
+(defcfun "ogre_camera_get_derived_position_void"
+    :void
+  (ogre-camera :pointer)
+  (array3 :pointer))
+
+
+;; name: "setAutoTracking"
+;; type: "void"
+;; args: (("bool" . "enabled") ("SceneNode*" . "target") ("const Vector3&" . "offset"))
+;;
+(defcfun "ogre_camera_set_auto_tracking_bool_scenenode_vector3"
+    :void
+  (ogre-camera :pointer)
+  (enabled :boolean)
+  (target :pointer)
+  (offset okra-array3))
+
+
+;; name: "getCameraToViewportRay"
+;; type: "Ray"
+;; args: (("Real" . "screenx") ("Real" . "screeny"))
+;;
+(defcfun "ogre_camera_get_camera_to_viewport_ray_real_real"
+    :void
+  (ogre-camera :pointer)
+  (array6 :pointer)
+  (screenx okra-real)
+  (screeny okra-real))
+
+
+;; name: "getCameraToViewportRay"
+;; type: "void"
+;; args: (("Real" . "screenx") ("Real" . "screeny") ("Ray*" . "outRay"))
+;;
+(defcfun "ogre_camera_get_camera_to_viewport_ray_real_real_ray"
+    :void
+  (ogre-camera :pointer)
+  (screenx okra-real)
+  (screeny okra-real)
+  (out-ray :pointer))
+
+
+;; name: "getCameraToViewportBoxVolume"
+;; type: "PlaneBoundedVolume"
+;; args: (("Real" . "screenLeft") ("Real" . "screenTop") ("Real" . "screenRight") ("Real" . "screenBottom") ("bool" . "includeFarPlane"))
+;;
+(defcfun "ogre_camera_get_camera_to_viewport_box_volume_real_real_real_real_bool"
+    :pointer
+  (ogre-camera :pointer)
+  (screen-left okra-real)
+  (screen-top okra-real)
+  (screen-right okra-real)
+  (screen-bottom okra-real)
+  (include-far-plane :boolean))
+
+
+;; name: "getCameraToViewportBoxVolume"
+;; type: "void"
+;; args: (("Real" . "screenLeft") ("Real" . "screenTop") ("Real" . "screenRight") ("Real" . "screenBottom") ("PlaneBoundedVolume*" . "outVolume") ("bool" . "includeFarPlane"))
+;;
+(defcfun "ogre_camera_get_camera_to_viewport_box_volume_real_real_real_real_planeboundedvolume_bool"
+    :void
+  (ogre-camera :pointer)
+  (screen-left okra-real)
+  (screen-top okra-real)
+  (screen-right okra-real)
+  (screen-bottom okra-real)
+  (out-volume :pointer)
+  (include-far-plane :boolean))
+
+
+;; name: "getViewport"
+;; type: "Viewport*"
+;; args: "void"
+;;
+(defcfun "ogre_camera_get_viewport_void"
+    :pointer
+  (ogre-camera :pointer))
+
+
+;; name: "isVisible"
+;; type: "bool"
+;; args: (("const AxisAlignedBox&" . "bound") ("FrustumPlane*" . "culledBy"))
+;;
+(defcfun "ogre_camera_is_visible_axisalignedbox_frustumplane"
+    :boolean
+  (ogre-camera :pointer)
+  (bound okra-array6)
+  (culled-by :pointer))
+
+
+;; name: "isVisible"
+;; type: "bool"
+;; args: (("const Sphere&" . "bound") ("FrustumPlane*" . "culledBy"))
+;;
+(defcfun "ogre_camera_is_visible_sphere_frustumplane"
+    :boolean
+  (ogre-camera :pointer)
+  (bound okra-array4)
+  (culled-by :pointer))
+
+
+;; name: "isVisible"
+;; type: "bool"
+;; args: (("const Vector3&" . "vert") ("FrustumPlane*" . "culledBy"))
+;;
+(defcfun "ogre_camera_is_visible_vector3_frustumplane"
+    :boolean
+  (ogre-camera :pointer)
+  (vert okra-array3)
+  (culled-by :pointer))
+
+
+;; name: "getViewMatrix"
+;; type: "const Matrix4&"
+;; args: "void"
+;;
+(defcfun "ogre_camera_get_view_matrix_void"
+    :void
+  (ogre-camera :pointer)
+  (array16 :pointer))
+
+
+;; name: "getViewMatrix"
+;; type: "const Matrix4&"
+;; args: (("bool" . "ownFrustumOnly"))
+;;
+(defcfun "ogre_camera_get_view_matrix_bool"
+    :void
+  (ogre-camera :pointer)
+  (array16 :pointer)
+  (own-frustum-only :boolean))
+
+
+;;; Methods for Overloaded Foreign Functions
+
+(defmethod get-scene-manager ((this camera) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'null))
+     (ogre-camera-get-scene-manager-void (pointer-to this)))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-position ((this camera) &optional (arg0 nil) (arg1 nil) (arg2 nil))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real))
+     (ogre-camera-set-position-real-real-real (pointer-to this) arg0 arg1 arg2))
+    ((and (typep arg0 '(simple-vector 3)))
+     (ogre-camera-set-position-vector3 (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-direction ((this camera) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil) (arg4 nil))
+  (declare (ignore arg3 arg4))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real))
+     (ogre-camera-set-direction-real-real-real (pointer-to this) arg0 arg1 arg2))
+    ((and (typep arg0 '(simple-vector 3)))
+     (ogre-camera-set-direction-vector3 (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod look-at ((this camera) &optional (arg0 nil) (arg1 nil) (arg2 nil))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real))
+     (ogre-camera-look-at-real-real-real (pointer-to this) arg0 arg1 arg2))
+    ((and (typep arg0 '(simple-vector 3)))
+     (ogre-camera-look-at-vector3 (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod roll ((this camera) &optional (arg0 nil) (arg1 nil))
+  (declare (ignore arg1))
+  (cond
+    ((and (typep arg0 'real))
+     (ogre-camera-roll-radian (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod yaw ((this camera) &optional (arg0 nil) (arg1 nil))
+  (declare (ignore arg1))
+  (cond
+    ((and (typep arg0 'real))
+     (ogre-camera-yaw-radian (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod pitch ((this camera) &optional (arg0 nil) (arg1 nil))
+  (declare (ignore arg1))
+  (cond
+    ((and (typep arg0 'real))
+     (ogre-camera-pitch-radian (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod rotate ((this camera) &optional (arg0 nil) (arg1 nil) (arg2 nil))
+  (declare (ignore arg2))
+  (cond
+    ((and (typep arg0 '(simple-vector 3)) (typep arg1 'real))
+     (ogre-camera-rotate-vector3-radian (pointer-to this) arg0 arg1))
+    ((and (typep arg0 '(simple-vector 4)))
+     (ogre-camera-rotate-quaternion (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-orientation ((this camera) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil))
+  (declare (ignore arg1 arg2 arg3))
+  (cond
+    ((and (typep arg0 '(simple-vector 4)))
+     (ogre-camera-set-orientation-quaternion (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod get-derived-position ((this camera) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'null))
+  (with-foreign-object (array 'okra-real 3)
+       (ogre-camera-get-derived-position-void (pointer-to this) array)
+    (vector (mem-aref array 'okra-real 0) (mem-aref array 'okra-real 1)
+            (mem-aref array 'okra-real 2))))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-auto-tracking ((this camera) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil))
+  (declare (ignore arg3))
+  (cond
+    ((and (typep arg0 'boolean) (typep arg1 'cffi:foreign-pointer) (typep arg2 '(simple-vector 3)))
+     (ogre-camera-set-auto-tracking-bool-scenenode-vector3 (pointer-to this) arg0 arg1 arg2))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod get-camera-to-viewport-ray ((this camera) &optional (arg0 nil) (arg1 nil) (arg2 nil))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'cffi:foreign-pointer))
+     (ogre-camera-get-camera-to-viewport-ray-real-real-ray (pointer-to this) arg0 arg1 arg2))
+    ((and (typep arg0 'real) (typep arg1 'real))
+  (with-foreign-object (array 'okra-real 6)
+       (ogre-camera-get-camera-to-viewport-ray-real-real (pointer-to this) array arg0 arg1)
+    (vector (mem-aref array 'okra-real 0) (mem-aref array 'okra-real 1)
+            (mem-aref array 'okra-real 2) (mem-aref array 'okra-real 3)
+            (mem-aref array 'okra-real 4) (mem-aref array 'okra-real 5))))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod get-camera-to-viewport-box-volume ((this camera) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil) (arg4 nil) (arg5 nil))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real) (typep arg3 'real) (typep arg4 'cffi:foreign-pointer) (typep arg5 'boolean))
+     (ogre-camera-get-camera-to-viewport-box-volume-real-real-real-real-planeboundedvolume-bool (pointer-to this) arg0 arg1 arg2 arg3 arg4 arg5))
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real) (typep arg3 'real) (typep arg4 'boolean))
+     (ogre-camera-get-camera-to-viewport-box-volume-real-real-real-real-bool (pointer-to this) arg0 arg1 arg2 arg3 arg4))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod get-viewport ((this camera) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'null))
+     (ogre-camera-get-viewport-void (pointer-to this)))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod is-visible ((this camera) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 '(simple-vector 3)) (typep arg1 'cffi:foreign-pointer))
+     (ogre-camera-is-visible-vector3-frustumplane (pointer-to this) arg0 arg1))
+    ((and (typep arg0 '(simple-vector 4)) (typep arg1 'cffi:foreign-pointer))
+     (ogre-camera-is-visible-sphere-frustumplane (pointer-to this) arg0 arg1))
+    ((and (typep arg0 '(simple-vector 6)) (typep arg1 'cffi:foreign-pointer))
+     (ogre-camera-is-visible-axisalignedbox-frustumplane (pointer-to this) arg0 arg1))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod get-view-matrix ((this camera) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'null))
+  (with-foreign-object (array 'okra-real 16)
+       (ogre-camera-get-view-matrix-void (pointer-to this) array)
+    (vector (mem-aref array 'okra-real  0) (mem-aref array 'okra-real  1)
+            (mem-aref array 'okra-real  2) (mem-aref array 'okra-real  3)
+            (mem-aref array 'okra-real  4) (mem-aref array 'okra-real  5)
+            (mem-aref array 'okra-real  6) (mem-aref array 'okra-real  7)
+            (mem-aref array 'okra-real  8) (mem-aref array 'okra-real  9)
+            (mem-aref array 'okra-real 10) (mem-aref array 'okra-real 11)
+            (mem-aref array 'okra-real 12) (mem-aref array 'okra-real 13)
+            (mem-aref array 'okra-real 14) (mem-aref array 'okra-real 15))))
+    ((and (typep arg0 'boolean))
+  (with-foreign-object (array 'okra-real 16)
+       (ogre-camera-get-view-matrix-bool (pointer-to this) array arg0)
+    (vector (mem-aref array 'okra-real  0) (mem-aref array 'okra-real  1)
+            (mem-aref array 'okra-real  2) (mem-aref array 'okra-real  3)
+            (mem-aref array 'okra-real  4) (mem-aref array 'okra-real  5)
+            (mem-aref array 'okra-real  6) (mem-aref array 'okra-real  7)
+            (mem-aref array 'okra-real  8) (mem-aref array 'okra-real  9)
+            (mem-aref array 'okra-real 10) (mem-aref array 'okra-real 11)
+            (mem-aref array 'okra-real 12) (mem-aref array 'okra-real 13)
+            (mem-aref array 'okra-real 14) (mem-aref array 'okra-real 15))))
+    (t (error "Overloaded method not defined for this class."))))
 
 
 

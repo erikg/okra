@@ -38,4 +38,29 @@
     [TMPL_VAR "after"])[/TMPL_IF])
 
 
+[/TMPL_LOOP];;; Overloaded Foreign Functions
+
+[TMPL_LOOP "overloaded-functions"];; name: [TMPL_VAR "ogre-name"]
+;; type: [TMPL_VAR "ogre-type"]
+;; args: [TMPL_VAR "ogre-args"]
+;;
+(defcfun "[TMPL_VAR "c-name"]"
+    [TMPL_VAR "return-type"]
+  (ogre-[TMPL_VAR "class-name"] :pointer)[TMPL_IF "return-type-arg"]
+  [TMPL_VAR "return-type-arg"][/TMPL_IF][TMPL_LOOP "args"]
+  ([TMPL_VAR "arg-name"] [TMPL_VAR "arg-type"])[/TMPL_LOOP])
+
+
+[/TMPL_LOOP];;; Methods for Overloaded Foreign Functions
+
+[TMPL_LOOP "overloaded-methods"](defmethod [TMPL_VAR "name"] ((this [TMPL_VAR "class-name"]) &optional[TMPL_LOOP "args"] ([TMPL_VAR "arg-name"] nil)[/TMPL_LOOP])
+[TMPL_IF "ignore-list"]  (declare (ignore[TMPL_LOOP "ignore-list"] [TMPL_VAR "ignore-arg"][/TMPL_LOOP]))
+[/TMPL_IF]  (cond
+[TMPL_LOOP "members"]    ((and[TMPL_LOOP "args"] (typep [TMPL_VAR "arg-name"] [TMPL_VAR "arg-type"])[/TMPL_LOOP])[TMPL_IF "before"]
+  [TMPL_VAR "before"][/TMPL_IF]
+     [TMPL_IF "before"]  [/TMPL_IF]([TMPL_VAR "lispefied-c-name"] (pointer-to this)[TMPL_IF "return-arg"] [TMPL_VAR "return-arg"][/TMPL_IF][TMPL_UNLESS "void"][TMPL_LOOP "args"] [TMPL_VAR "arg-name"][/TMPL_LOOP][/TMPL_UNLESS])[TMPL_IF "after"]
+    [TMPL_VAR "after"])[/TMPL_IF])
+[/TMPL_LOOP]    (t (error "Overloaded method not defined for this class."))))
+
+
 [/TMPL_LOOP]

@@ -5,8 +5,6 @@
 ;;;; author: Erik Winkels (aerique@xs4all.nl)
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
-;;;;
-;;;; XXX: Why didn't I use #'map in some of the functions here?!
 
 (in-package :okra)
 
@@ -25,16 +23,17 @@
 
 (defun vector-add (&rest vectors)
   "Adds VECTORS and returns the result."
-  (let ((x 0) (y 0) (z 0))
-    (dolist (v vectors)
-      (incf x (svref v 0))
-      (incf y (svref v 1))
-      (incf z (svref v 2)))
-    (vector x y z)))
+  (loop with v1 = (copy-seq (first vectors))
+        for v in (rest vectors)
+        do (loop for i from 0 below (length v1)
+                 do (incf (elt v1 i) (elt v i)))
+        finally (return v1)))
 
 
 (defun vector-cross-product (v1 v2)
-  "Returns the cross product of vectors V1 and V2."
+  "Returns the cross product of vectors V1 and V2.  Since the vector cross
+  product is only defined in three (or seven) dimensions this function
+  assumes that both V1 and V2 are of length 3."
   (let ((x1 (svref v1 0)) (x2 (svref v2 0))
         (y1 (svref v1 1)) (y2 (svref v2 1))
         (z1 (svref v1 2)) (z2 (svref v2 2)))
@@ -43,11 +42,22 @@
             (- (* x1 y2) (* y1 x2)))))
 
 
-(defun vector-dot-product (v1 v2)
-  "Returns the dot product of vectors V1 and V2."
-  (+ (* (svref v1 0) (svref v2 0))
-     (* (svref v1 1) (svref v2 1))
-     (* (svref v1 2) (svref v2 2))))
+(defun vector-division (&rest vectors)
+  "Returns the scalar division of VECTORS."
+  (loop with v1 = (copy-seq (first vectors))
+        for v in (rest vectors)
+        do (loop for i from 0 below (length v1)
+                 do (setf (elt v1 i) (/ (elt v1 i) (elt v i))))
+        finally (return v1)))
+
+
+(defun vector-dot-product (&rest vectors)
+  "Returns the dot product of VECTORS."
+  (loop with v1 = (copy-seq (first vectors))
+        for v in (rest vectors)
+        do (loop for i from 0 below (length v1)
+                 do (setf (elt v1 i) (* (elt v1 i) (elt v i))))
+        finally (return (reduce #'+ v1))))
 
 
 (defun vector-from-coords (x1 y1 z1 x2 y2 z2)
@@ -57,20 +67,26 @@
 
 (defun vector-length (v)
   "Returns the length of vector V."
-  (let ((x (svref v 0))
-        (y (svref v 1))
-        (z (svref v 2)))
-    (sqrt (+ (* x x) (* y y) (* z z)))))
+  (loop for n across v
+        sum (* n n) into m
+        finally (return (sqrt m))))
+
+
+(defun vector-multiply (&rest vectors)
+  "Returns the scalar product of VECTORS."
+  (loop with v1 = (copy-seq (first vectors))
+        for v in (rest vectors)
+        do (loop for i from 0 below (length v1)
+                 do (setf (elt v1 i) (* (elt v1 i) (elt v i))))
+        finally (return v1)))
 
 
 (defun vector-normalise (v)
   "Returns the normalised vector V."
   (let ((length (vector-length v)))
-    (if (equalp length 0.0)
-        v
-        (vector (/ (svref v 0) length)
-                (/ (svref v 1) length)
-                (/ (svref v 2) length)))))
+    (loop for n across v
+          collect (/ n length) into m
+          finally (return (coerce m 'vector)))))
 
 
 (defun vector-normalize (v)
@@ -78,18 +94,25 @@
   (vector-normalise v))
 
 
+(defun vector-scale (v scaling-factor)
+  "Scales every element of V by SCALING-FACTOR."
+  (loop for n across v
+        collect (* n scaling-factor) into m
+        finally (return (coerce m 'vector))))
+
+
+(defun vector-scalar-triple-product (v1 v2 v3)
+  "Returns the scalar triple product of V1, V2 and V3."
+  (vector-dot-product (vector-cross-product v1 v2) v3))
+
+
 (defun vector-substract (&rest vectors)
   "Substracts VECTORS and returns the result."
-  (when vectors
-    (let* ((v (car vectors))
-           (x (svref v 0))
-           (y (svref v 1))
-           (z (svref v 2)))
-      (dolist (v (cdr vectors))
-        (decf x (svref v 0))
-        (decf y (svref v 1))
-        (decf z (svref v 2)))
-      (vector x y z))))
+  (loop with v1 = (copy-seq (first vectors))
+        for v in (rest vectors)
+        do (loop for i from 0 below (length v1)
+                 do (decf (elt v1 i) (elt v i)))
+        finally (return v1)))
 
 
 (defun vector-angle (v1 v2)

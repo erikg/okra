@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<GUIScheme Name="AquaLook">
+	<Imageset Name="AquaLook" Filename="AquaLook.imageset" />
+    <Font Name="BlueHighway-12" Filename="bluehighway-12.font" />
+    <Font Name="BlueHighway-10" Filename="bluehighway-10.font" />
+    <Font Name="BlueHighway-8" Filename="bluehighway-8.font" />
+	<LookNFeel Filename="AquaLook.looknfeel" />
+	<WindowRendererSet Filename="CEGUIFalagardWRBase" />
+	<FalagardMapping WindowType="AquaLook/Button"      TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="AquaLook/Button" />
+	<FalagardMapping WindowType="AquaLook/Checkbox"    TargetType="CEGUI/Checkbox"    Renderer="Falagard/ToggleButton" LookNFeel="AquaLook/Checkbox" />
+	<FalagardMapping WindowType="AquaLook/ImageButton" TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="AquaLook/ImageButton" />
+	<FalagardMapping WindowType="AquaLook/RadioButton" TargetType="CEGUI/RadioButton" Renderer="Falagard/ToggleButton" LookNFeel="AquaLook/RadioButton" />
+	<FalagardMapping WindowType="AquaLook/FrameWindow"  TargetType="CEGUI/FrameWindow" Renderer="Falagard/FrameWindow"  LookNFeel="AquaLook/FrameWindow" />
+	<FalagardMapping WindowType="AquaLook/Titlebar"     TargetType="CEGUI/Titlebar"    Renderer="Falagard/Titlebar"     LookNFeel="AquaLook/Titlebar" />
+	<FalagardMapping WindowType="AquaLook/SystemButton" TargetType="CEGUI/PushButton"  Renderer="Falagard/SystemButton" LookNFeel="AquaLook/Button" />
+	<FalagardMapping WindowType="AquaLook/Editbox"          TargetType="CEGUI/Editbox"          Renderer="Falagard/Editbox"          LookNFeel="AquaLook/Editbox" />
+	<FalagardMapping WindowType="AquaLook/MultiLineEditbox" TargetType="CEGUI/MultiLineEditbox" Renderer="Falagard/MultiLineEditbox" LookNFeel="AquaLook/MultiLineEditbox" />
+	<FalagardMapping WindowType="AquaLook/Menubar"   TargetType="CEGUI/Menubar"   Renderer="Falagard/Menubar"   LookNFeel="AquaLook/Menubar" />
+	<FalagardMapping WindowType="AquaLook/PopupMenu" TargetType="CEGUI/PopupMenu" Renderer="Falagard/PopupMenu" LookNFeel="AquaLook/PopupMenu" />
+	<FalagardMapping WindowType="AquaLook/MenuItem"  TargetType="CEGUI/MenuItem"  Renderer="Falagard/MenuItem"  LookNFeel="AquaLook/MenuItem" />
+	<FalagardMapping WindowType="AquaLook/ProgressBar"          TargetType="CEGUI/ProgressBar" Renderer="Falagard/ProgressBar" LookNFeel="AquaLook/ProgressBar" />
+	<FalagardMapping WindowType="AquaLook/VerticalScrollbar"   TargetType="CEGUI/Scrollbar" Renderer="Falagard/Scrollbar" LookNFeel="AquaLook/VerticalScrollbar" />
+	<FalagardMapping WindowType="AquaLook/HorizontalScrollbar" TargetType="CEGUI/Scrollbar" Renderer="Falagard/Scrollbar" LookNFeel="AquaLook/HorizontalScrollbar" />
+	<FalagardMapping WindowType="AquaLook/VerticalScrollbarThumb"   TargetType="CEGUI/Thumb" Renderer="Falagard/Button" LookNFeel="AquaLook/VerticalScrollbarThumb" />
+	<FalagardMapping WindowType="AquaLook/HorizontalScrollbarThumb" TargetType="CEGUI/Thumb" Renderer="Falagard/Button" LookNFeel="AquaLook/HorizontalScrollbarThumb" />
+	<FalagardMapping WindowType="AquaLook/TabButton"  TargetType="CEGUI/TabButton"  Renderer="Falagard/TabButton"  LookNFeel="AquaLook/TabButton" />
+	<FalagardMapping WindowType="AquaLook/TabControl" TargetType="CEGUI/TabControl" Renderer="Falagard/TabControl" LookNFeel="AquaLook/TabControl" />
+	<FalagardMapping WindowType="AquaLook/TabContentPane"    TargetType="DefaultWindow"    Renderer="Falagard/Default"    LookNFeel="AquaLook/TabContentPane" />
+	<FalagardMapping WindowType="AquaLook/TabButtonPane"    TargetType="DefaultWindow"    Renderer="Falagard/Default"    LookNFeel="AquaLook/TabButtonPane" />
+	<FalagardMapping WindowType="AquaLook/ComboDropList" TargetType="CEGUI/ComboDropList" Renderer="Falagard/Listbox" LookNFeel="AquaLook/ComboDropList" />
+	<FalagardMapping WindowType="AquaLook/ComboEditbox"  TargetType="CEGUI/Editbox"	 Renderer="Falagard/Editbox" LookNFeel="AquaLook/ComboEditbox" />
+	<FalagardMapping WindowType="AquaLook/Combobox"	TargetType="CEGUI/Combobox"	 Renderer="Falagard/Default" LookNFeel="AquaLook/Combobox" />
+	<FalagardMapping WindowType="AquaLook/Listbox"           TargetType="CEGUI/Listbox"           Renderer="Falagard/Listbox"           LookNFeel="AquaLook/Listbox" />
+	<FalagardMapping WindowType="AquaLook/ListHeader"        TargetType="CEGUI/ListHeader"        Renderer="Falagard/ListHeader"        LookNFeel="AquaLook/ListHeader" />
+	<FalagardMapping WindowType="AquaLook/ListHeaderSegment" TargetType="CEGUI/ListHeaderSegment" Renderer="Falagard/ListHeaderSegment" LookNFeel="AquaLook/ListHeaderSegment" />
+	<FalagardMapping WindowType="AquaLook/MultiColumnList"   TargetType="CEGUI/MultiColumnList"   Renderer="Falagard/MultiColumnList"   LookNFeel="AquaLook/MultiColumnList" />
+	<FalagardMapping WindowType="AquaLook/Slider"      TargetType="CEGUI/Slider"      Renderer="Falagard/Slider"  LookNFeel="AquaLook/Slider" />
+	<FalagardMapping WindowType="AquaLook/SliderThumb" TargetType="CEGUI/Thumb" Renderer="Falagard/Button"  LookNFeel="AquaLook/SliderThumb" />
+	<FalagardMapping WindowType="AquaLook/SliderHoriz"      TargetType="CEGUI/Slider"      Renderer="Falagard/Slider"  LookNFeel="AquaLook/SliderHoriz" />
+	<FalagardMapping WindowType="AquaLook/SliderHorizThumb" TargetType="CEGUI/Thumb" Renderer="Falagard/Button"  LookNFeel="AquaLook/SliderHorizThumb" />
+	<FalagardMapping WindowType="AquaLook/ScrollablePane" TargetType="CEGUI/ScrollablePane" Renderer="Falagard/ScrollablePane" LookNFeel="AquaLook/ScrollablePane" />
+	<FalagardMapping WindowType="AquaLook/Spinner" TargetType="CEGUI/Spinner" Renderer="Falagard/Default" LookNFeel="AquaLook/Spinner" />
+	<FalagardMapping WindowType="AquaLook/Tooltip" TargetType="CEGUI/Tooltip" Renderer="Falagard/Tooltip" LookNFeel="AquaLook/Tooltip" />
+	<FalagardMapping WindowType="AquaLook/StaticImage" TargetType="DefaultWindow" Renderer="Falagard/StaticImage" LookNFeel="AquaLook/StaticImage" />
+	<FalagardMapping WindowType="AquaLook/StaticText"  TargetType="DefaultWindow" Renderer="Falagard/StaticText"  LookNFeel="AquaLook/StaticText" />
+</GUIScheme>

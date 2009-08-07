@@ -9,12 +9,9 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
@@ -29,7 +26,8 @@ extern "C"
     Real ogre_frustum_get_far_clip_distance (Frustum*);
     void ogre_frustum_set_aspect_ratio (Frustum*, Real);
     Real ogre_frustum_get_aspect_ratio (Frustum*);
-    void ogre_frustum_set_frustum_offset (Frustum*, const Vector2&);
+    void ogre_frustum_set_frustum_offset_vector2 (Frustum*, const Vector2&);
+    void ogre_frustum_set_frustum_offset_real_real (Frustum*, Real, Real);
     const Vector2& ogre_frustum_get_frustum_offset (Frustum*);
     void ogre_frustum_set_focal_length (Frustum*, Real);
     Real ogre_frustum_get_focal_length (Frustum*);
@@ -39,6 +37,7 @@ extern "C"
     void ogre_frustum_get_projection_matrix_rs (Frustum*, okraArray16);
     void ogre_frustum_get_projection_matrix_with_rsdepth (Frustum*, okraArray16);
     void ogre_frustum_get_projection_matrix (Frustum*, okraArray16);
+    void ogre_frustum_get_view_matrix_void (Frustum*, okraArray16);
     void ogre_frustum_calc_view_matrix_relative (Frustum*, const okraArray3, Matrix4&);
     void ogre_frustum_set_custom_view_matrix (Frustum*, bool, const okraArray16);
     bool ogre_frustum_is_custom_view_matrix_enabled (Frustum*);
@@ -46,7 +45,9 @@ extern "C"
     bool ogre_frustum_is_custom_projection_matrix_enabled (Frustum*);
     const Plane* ogre_frustum_get_frustum_planes (Frustum*);
     const Plane& ogre_frustum_get_frustum_plane (Frustum*, unsigned short);
-    bool ogre_frustum_is_visible (Frustum*, const okraArray3, FrustumPlane*);
+    bool ogre_frustum_is_visible_axisalignedbox_frustumplane (Frustum*, const okraArray6, FrustumPlane*);
+    bool ogre_frustum_is_visible_sphere_frustumplane (Frustum*, const okraArray4, FrustumPlane*);
+    bool ogre_frustum_is_visible_vector3_frustumplane (Frustum*, const okraArray3, FrustumPlane*);
     unsigned int ogre_frustum_get_type_flags (Frustum*);
     const AxisAlignedBox& ogre_frustum_get_bounding_box (Frustum*);
     Real ogre_frustum_get_bounding_radius (Frustum*);
@@ -158,14 +159,23 @@ Real ogre_frustum_get_aspect_ratio (Frustum* ogre_frustum)
 // type: "void"
 // args: (("const Vector2&" . "offset"))
 //
-void ogre_frustum_set_frustum_offset (Frustum* ogre_frustum, const Vector2& offset)
+void ogre_frustum_set_frustum_offset_vector2 (Frustum* ogre_frustum, const Vector2& offset)
 {
     ogre_frustum->setFrustumOffset(offset);
 }
 
+// name: "setFrustumOffset"
+// type: "void"
+// args: (("Real" . "horizontal") ("Real" . "vertical"))
+//
+void ogre_frustum_set_frustum_offset_real_real (Frustum* ogre_frustum, Real horizontal, Real vertical)
+{
+    ogre_frustum->setFrustumOffset(horizontal, vertical);
+}
+
 // name: "getFrustumOffset"
 // type: "const Vector2&"
-// args: NIL
+// args: "void"
 //
 const Vector2& ogre_frustum_get_frustum_offset (Frustum* ogre_frustum)
 {
@@ -183,7 +193,7 @@ void ogre_frustum_set_focal_length (Frustum* ogre_frustum, Real focalLength)
 
 // name: "getFocalLength"
 // type: "Real"
-// args: NIL
+// args: "void"
 //
 Real ogre_frustum_get_focal_length (Frustum* ogre_frustum)
 {
@@ -201,7 +211,7 @@ void ogre_frustum_set_frustum_extents (Frustum* ogre_frustum, Real left, Real ri
 
 // name: "resetFrustumExtents"
 // type: "void"
-// args: NIL
+// args: "void"
 //
 void ogre_frustum_reset_frustum_extents (Frustum* ogre_frustum)
 {
@@ -258,6 +268,23 @@ void ogre_frustum_get_projection_matrix_with_rsdepth (Frustum* ogre_frustum, okr
 void ogre_frustum_get_projection_matrix (Frustum* ogre_frustum, okraArray16 m4)
 {
     Matrix4 ogre_m4 = ogre_frustum->getProjectionMatrix();
+    m4[ 0] = *(ogre_m4[ 0]);  m4[ 1] = *(ogre_m4[ 1]);
+    m4[ 2] = *(ogre_m4[ 2]);  m4[ 3] = *(ogre_m4[ 3]);
+    m4[ 4] = *(ogre_m4[ 4]);  m4[ 5] = *(ogre_m4[ 5]);
+    m4[ 6] = *(ogre_m4[ 6]);  m4[ 7] = *(ogre_m4[ 7]);
+    m4[ 8] = *(ogre_m4[ 8]);  m4[ 9] = *(ogre_m4[ 9]);
+    m4[10] = *(ogre_m4[10]);  m4[11] = *(ogre_m4[11]);
+    m4[12] = *(ogre_m4[12]);  m4[13] = *(ogre_m4[13]);
+    m4[14] = *(ogre_m4[14]);  m4[15] = *(ogre_m4[15]);
+}
+
+// name: "getViewMatrix"
+// type: "const Matrix4&"
+// args: "void"
+//
+void ogre_frustum_get_view_matrix_void (Frustum* ogre_frustum, okraArray16 m4)
+{
+    Matrix4 ogre_m4 = ogre_frustum->getViewMatrix();
     m4[ 0] = *(ogre_m4[ 0]);  m4[ 1] = *(ogre_m4[ 1]);
     m4[ 2] = *(ogre_m4[ 2]);  m4[ 3] = *(ogre_m4[ 3]);
     m4[ 4] = *(ogre_m4[ 4]);  m4[ 5] = *(ogre_m4[ 5]);
@@ -336,9 +363,29 @@ const Plane& ogre_frustum_get_frustum_plane (Frustum* ogre_frustum, unsigned sho
 
 // name: "isVisible"
 // type: "bool"
+// args: (("const AxisAlignedBox&" . "bound") ("FrustumPlane*" . "culledBy"))
+//
+bool ogre_frustum_is_visible_axisalignedbox_frustumplane (Frustum* ogre_frustum, const okraArray6 bound, FrustumPlane* culledBy)
+{
+    AxisAlignedBox ogre_bound = AxisAlignedBox(bound[0], bound[1], bound[2], bound[3], bound[4], bound[5]);
+    return ogre_frustum->isVisible(ogre_bound, culledBy);
+}
+
+// name: "isVisible"
+// type: "bool"
+// args: (("const Sphere&" . "bound") ("FrustumPlane*" . "culledBy"))
+//
+bool ogre_frustum_is_visible_sphere_frustumplane (Frustum* ogre_frustum, const okraArray4 bound, FrustumPlane* culledBy)
+{
+    Sphere ogre_bound = Sphere(Vector3(bound[0], bound[1], bound[2]), bound[3]);
+    return ogre_frustum->isVisible(ogre_bound, culledBy);
+}
+
+// name: "isVisible"
+// type: "bool"
 // args: (("const Vector3&" . "vert") ("FrustumPlane*" . "culledBy"))
 //
-bool ogre_frustum_is_visible (Frustum* ogre_frustum, const okraArray3 vert, FrustumPlane* culledBy)
+bool ogre_frustum_is_visible_vector3_frustumplane (Frustum* ogre_frustum, const okraArray3 vert, FrustumPlane* culledBy)
 {
     Vector3 ogre_vert = Vector3(vert[0], vert[1], vert[2]);
     return ogre_frustum->isVisible(ogre_vert, culledBy);
@@ -481,7 +528,7 @@ void ogre_frustum_set_ortho_window_width (Frustum* ogre_frustum, Real w)
 
 // name: "getOrthoWindowHeight"
 // type: "Real"
-// args: NIL
+// args: "void"
 //
 Real ogre_frustum_get_ortho_window_height (Frustum* ogre_frustum)
 {
@@ -490,7 +537,7 @@ Real ogre_frustum_get_ortho_window_height (Frustum* ogre_frustum)
 
 // name: "getOrthoWindowWidth"
 // type: "Real"
-// args: NIL
+// args: "void"
 //
 Real ogre_frustum_get_ortho_window_width (Frustum* ogre_frustum)
 {

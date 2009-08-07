@@ -9,25 +9,23 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
 
 extern "C"
 {
-    void ogre_render_window_create (RenderWindow*, const char*, unsigned int, unsigned int, bool, const NameValuePairList*);
+    void ogre_render_window_create_string_unsignedint_unsignedint_bool_namevaluepairlist (RenderWindow*, const char*, unsigned int, unsigned int, bool, const NameValuePairList*);
     void ogre_render_window_set_fullscreen (RenderWindow*, bool, unsigned int, unsigned int);
-    void ogre_render_window_destroy (RenderWindow*);
+    void ogre_render_window_destroy_void (RenderWindow*);
     void ogre_render_window_resize (RenderWindow*, unsigned int, unsigned int);
     void ogre_render_window_window_moved_or_resized (RenderWindow*);
     void ogre_render_window_reposition (RenderWindow*, int, int);
-    void ogre_render_window_set_visible (RenderWindow*, bool);
+    bool ogre_render_window_is_visible_void (RenderWindow*);
+    void ogre_render_window_set_visible_bool (RenderWindow*, bool);
     bool ogre_render_window_is_active (RenderWindow*);
     bool ogre_render_window_is_closed (RenderWindow*);
     bool ogre_render_window_is_primary (RenderWindow*);
@@ -44,7 +42,7 @@ extern "C"
 // type: "void"
 // args: (("const String&" . "name") ("unsigned int" . "width") ("unsigned int" . "height") ("bool" . "fullScreen") ("const NameValuePairList*" . "miscParams"))
 //
-void ogre_render_window_create (RenderWindow* ogre_render_window, const char* name, unsigned int width, unsigned int height, bool fullScreen, const NameValuePairList* miscParams)
+void ogre_render_window_create_string_unsignedint_unsignedint_bool_namevaluepairlist (RenderWindow* ogre_render_window, const char* name, unsigned int width, unsigned int height, bool fullScreen, const NameValuePairList* miscParams)
 {
     ogre_render_window->create(name, width, height, fullScreen, miscParams);
 }
@@ -62,7 +60,7 @@ void ogre_render_window_set_fullscreen (RenderWindow* ogre_render_window, bool f
 // type: "void"
 // args: "void"
 //
-void ogre_render_window_destroy (RenderWindow* ogre_render_window)
+void ogre_render_window_destroy_void (RenderWindow* ogre_render_window)
 {
     ogre_render_window->destroy();
 }
@@ -78,7 +76,7 @@ void ogre_render_window_resize (RenderWindow* ogre_render_window, unsigned int w
 
 // name: "windowMovedOrResized"
 // type: "void"
-// args: NIL
+// args: "void"
 //
 void ogre_render_window_window_moved_or_resized (RenderWindow* ogre_render_window)
 {
@@ -94,11 +92,20 @@ void ogre_render_window_reposition (RenderWindow* ogre_render_window, int left, 
     ogre_render_window->reposition(left, top);
 }
 
+// name: "isVisible"
+// type: "bool"
+// args: "void"
+//
+bool ogre_render_window_is_visible_void (RenderWindow* ogre_render_window)
+{
+    return ogre_render_window->isVisible();
+}
+
 // name: "setVisible"
 // type: "void"
 // args: (("bool" . "visible"))
 //
-void ogre_render_window_set_visible (RenderWindow* ogre_render_window, bool visible)
+void ogre_render_window_set_visible_bool (RenderWindow* ogre_render_window, bool visible)
 {
     ogre_render_window->setVisible(visible);
 }
@@ -141,7 +148,7 @@ bool ogre_render_window_is_full_screen (RenderWindow* ogre_render_window)
 
 // name: "suggestPixelFormat"
 // type: "PixelFormat"
-// args: NIL
+// args: "void"
 //
 PixelFormat ogre_render_window_suggest_pixel_format (RenderWindow* ogre_render_window)
 {
@@ -150,7 +157,7 @@ PixelFormat ogre_render_window_suggest_pixel_format (RenderWindow* ogre_render_w
 
 // name: "isDeactivatedOnFocusChange"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_render_window_is_deactivated_on_focus_change (RenderWindow* ogre_render_window)
 {

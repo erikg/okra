@@ -9,22 +9,20 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
 
 extern "C"
 {
-    OverlayContainer* ogre_overlay_get_child (Overlay*, const char*);
+    OverlayContainer* ogre_overlay_get_child_string (Overlay*, const char*);
     const char* ogre_overlay_get_name (Overlay*);
     void ogre_overlay_set_zorder (Overlay*, unsigned short);
     unsigned short ogre_overlay_get_zorder (Overlay*);
+    bool ogre_overlay_is_visible_void (Overlay*);
     bool ogre_overlay_is_initialised (Overlay*);
     void ogre_overlay_show (Overlay*);
     void ogre_overlay_hide (Overlay*);
@@ -39,7 +37,8 @@ extern "C"
     void ogre_overlay_scroll (Overlay*, Real, Real);
     void ogre_overlay_set_rotate (Overlay*, Real);
     okraReal ogre_overlay_get_rotate (Overlay*);
-    void ogre_overlay_rotate (Overlay*, Real);
+    void ogre_overlay_rotate_radian (Overlay*, Real);
+    void ogre_overlay_set_scale_real_real (Overlay*, Real, Real);
     Real ogre_overlay_get_scale_x (Overlay*);
     Real ogre_overlay_get_scale_y (Overlay*);
     OverlayElement* ogre_overlay_find_element_at (Overlay*, Real, Real);
@@ -54,7 +53,7 @@ extern "C"
 // type: "OverlayContainer*"
 // args: (("const String&" . "name"))
 //
-OverlayContainer* ogre_overlay_get_child (Overlay* ogre_overlay, const char* name)
+OverlayContainer* ogre_overlay_get_child_string (Overlay* ogre_overlay, const char* name)
 {
     return ogre_overlay->getChild(name);
 }
@@ -84,6 +83,15 @@ void ogre_overlay_set_zorder (Overlay* ogre_overlay, unsigned short zorder)
 unsigned short ogre_overlay_get_zorder (Overlay* ogre_overlay)
 {
     return ogre_overlay->getZOrder();
+}
+
+// name: "isVisible"
+// type: "bool"
+// args: "void"
+//
+bool ogre_overlay_is_visible_void (Overlay* ogre_overlay)
+{
+    return ogre_overlay->isVisible();
 }
 
 // name: "isInitialised"
@@ -151,7 +159,7 @@ void ogre_overlay_remove3_d (Overlay* ogre_overlay, SceneNode* node)
 
 // name: "clear"
 // type: "void"
-// args: NIL
+// args: "void"
 //
 void ogre_overlay_clear (Overlay* ogre_overlay)
 {
@@ -218,10 +226,19 @@ okraReal ogre_overlay_get_rotate (Overlay* ogre_overlay)
 // type: "void"
 // args: (("const Radian&" . "angle"))
 //
-void ogre_overlay_rotate (Overlay* ogre_overlay, Real angle)
+void ogre_overlay_rotate_radian (Overlay* ogre_overlay, Real angle)
 {
     Radian ogre_angle = Radian(angle);
     ogre_overlay->rotate(ogre_angle);
+}
+
+// name: "setScale"
+// type: "void"
+// args: (("Real" . "x") ("Real" . "y"))
+//
+void ogre_overlay_set_scale_real_real (Overlay* ogre_overlay, Real x, Real y)
+{
+    ogre_overlay->setScale(x, y);
 }
 
 // name: "getScaleX"
@@ -253,7 +270,7 @@ OverlayElement* ogre_overlay_find_element_at (Overlay* ogre_overlay, Real x, Rea
 
 // name: "get2DElementsIterator"
 // type: "Overlay2DElementsIterator"
-// args: NIL
+// args: "void"
 //
 Overlay::Overlay2DElementsIterator ogre_overlay_get2_delements_iterator (Overlay* ogre_overlay)
 {

@@ -19,6 +19,31 @@
 (defparameter *scene-manager* nil)
 
 
+;;;# Macros
+
+(defmacro with-xy ((x-var x-max y-var y-max &key (x-min 0) (y-min 0))
+                   &body body)
+  `(loop for ,y-var from ,y-min below ,y-max
+         do (loop for ,x-var from ,x-min below ,x-max
+                  do ,@body)))
+
+
+(defmacro with-xyz ((x-var x-max y-var y-max z-var z-max &key (x-min 0)
+                     (y-min 0) (z-min 0)) &body body)
+  `(loop for ,z-var from ,z-min below ,z-max
+         do (loop for ,y-var from ,y-min below ,y-max
+                  do (loop for ,x-var from ,x-min below ,x-max
+                           do ,@body))))
+
+
+(defmacro with-xzy ((x-var x-max y-var y-max z-var z-max &key (x-min 0)
+                     (y-min 0) (z-min 0)) &body body)
+  `(loop for ,y-var from ,y-min below ,y-max
+         do (loop for ,z-var from ,z-min below ,z-max
+                  do (loop for ,x-var from ,x-min below ,x-max
+                           do ,@body))))
+
+
 ;;;# Functions
 ;;;
 ;;; I should do something with (scene-manager-create-entity ... ... "Prefab_*")
@@ -33,8 +58,8 @@
                     (near-clip-distance 1.0) (position #(0.0 0.0 -10.0))
                     (scene-manager *scene-manager*))
   (let* ((name (if name name (mkstr "camera-" (unique-id))))
-         (camera (make-instance 'camera :pointer (create-camera scene-manager
-                                                                name))))
+         (camera (make-instance 'camera
+                                :pointer (create-camera scene-manager name))))
     (set-near-clip-distance camera near-clip-distance)
     (set-position camera position)
     (look-at camera look-at)
@@ -57,14 +82,14 @@
                    :pointer (create-entity scene-manager name prefab-type))))
 
 
-(defun make-light (&key (diffuse-colour '(1.0 1.0 1.0 1.0))
-                   (direction #(0.40824828 -0.81649655 0.40824828))
+(defun make-light (&key (diffuse-colour #(1.0 1.0 1.0 1.0))
+                   (direction #(0.408 -0.816 0.408))
                    (name nil) (position #(0.0 10.0 0.0))
                    (scene-manager *scene-manager*)
-                   (specular-colour '(1.0 1.0 1.0 1.0)) (type :lt-directional))
+                   (specular-colour #(1.0 1.0 1.0 1.0)) (type :lt-directional))
   (let* ((name (if name name (mkstr "light-" (unique-id))))
-         (light (make-instance 'light :pointer (create-light scene-manager
-                                                             name))))
+         (light (make-instance 'light
+                               :pointer (create-light scene-manager name))))
     (set-type light type)
     (set-position light position)
     (set-direction light direction)
@@ -87,9 +112,9 @@
 (defun make-render-window (&key (name nil) (width 800) (height 600)
                            (fullscreen nil) (misc-params (cffi:null-pointer)))
   (let ((name (if name name (mkstr "render-window-" (unique-id)))))
-    (make-instance 'render-window
-                   :pointer (create-render-window *ogre-root* name width height
-                                                  fullscreen misc-params))))
+    (make-instance 'render-window :pointer
+                   (create-render-window *ogre-root* name width height
+                                         fullscreen misc-params))))
 
 
 (defun make-resource-group-manager ()

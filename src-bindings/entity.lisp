@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:31.
+;;;; This file was generated on: 2009-08-07 15:52:09.
 
 (in-package :okra-bindings)
 
@@ -32,19 +32,6 @@
 
 (defmethod get-mesh ((this entity))
   (ogre-entity-get-mesh (pointer-to this)))
-
-
-;; name: "getSubEntity"
-;; type: "SubEntity*"
-;; args: (("const String&" . "name"))
-;;
-(defcfun "ogre_entity_get_sub_entity"
-    :pointer
-  (ogre-entity :pointer)
-  (name :string))
-
-(defmethod get-sub-entity ((this entity) name)
-  (ogre-entity-get-sub-entity (pointer-to this) name))
 
 
 ;; name: "getNumSubEntities"
@@ -70,19 +57,6 @@
 
 (defmethod clone ((this entity) new-name)
   (ogre-entity-clone (pointer-to this) new-name))
-
-
-;; name: "setMaterialName"
-;; type: "void"
-;; args: (("const String&" . "name"))
-;;
-(defcfun "ogre_entity_set_material_name"
-    :void
-  (ogre-entity :pointer)
-  (name :string))
-
-(defmethod set-material-name ((this entity) name)
-  (ogre-entity-set-material-name (pointer-to this) name))
 
 
 ;; name: "setMaterial"
@@ -234,10 +208,10 @@
 
 ;; name: "getCurrentLodIndex"
 ;; type: "ushort"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_entity_get_current_lod_index"
-    :unsigned-short
+    :ushort
   (ogre-entity :pointer))
 
 (defmethod get-current-lod-index ((this entity))
@@ -252,8 +226,8 @@
     :void
   (ogre-entity :pointer)
   (factor okra-real)
-  (max-detail-index :unsigned-short)
-  (min-detail-index :unsigned-short))
+  (max-detail-index :ushort)
+  (min-detail-index :ushort))
 
 (defmethod set-mesh-lod-bias ((this entity) factor max-detail-index min-detail-index)
   (ogre-entity-set-mesh-lod-bias (pointer-to this) factor max-detail-index min-detail-index))
@@ -267,8 +241,8 @@
     :void
   (ogre-entity :pointer)
   (factor okra-real)
-  (max-detail-index :unsigned-short)
-  (min-detail-index :unsigned-short))
+  (max-detail-index :ushort)
+  (min-detail-index :ushort))
 
 (defmethod set-material-lod-bias ((this entity) factor max-detail-index min-detail-index)
   (ogre-entity-set-material-lod-bias (pointer-to this) factor max-detail-index min-detail-index))
@@ -301,19 +275,6 @@
 
 (defmethod attach-object-to-bone ((this entity) bone-name pmovable offset-orientation offset-position)
   (ogre-entity-attach-object-to-bone (pointer-to this) bone-name pmovable offset-orientation offset-position))
-
-
-;; name: "detachObjectFromBone"
-;; type: "void"
-;; args: (("MovableObject*" . "obj"))
-;;
-(defcfun "ogre_entity_detach_object_from_bone"
-    :void
-  (ogre-entity :pointer)
-  (obj :pointer))
-
-(defmethod detach-object-from-bone ((this entity) obj)
-  (ogre-entity-detach-object-from-bone (pointer-to this) obj))
 
 
 ;; name: "detachAllObjectsFromBone"
@@ -542,7 +503,7 @@
 
 ;; name: "stopSharingSkeletonInstance"
 ;; type: "void"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_entity_stop_sharing_skeleton_instance"
     :void
@@ -554,7 +515,7 @@
 
 ;; name: "sharesSkeletonInstance"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_entity_shares_skeleton_instance"
     :boolean
@@ -566,7 +527,7 @@
 
 ;; name: "getSkeletonInstanceSharingSet"
 ;; type: "const EntitySet*"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_entity_get_skeleton_instance_sharing_set"
     :pointer
@@ -662,6 +623,86 @@
 
 (defmethod visit-renderables ((this entity) visitor debug-renderables)
   (ogre-entity-visit-renderables (pointer-to this) visitor debug-renderables))
+
+
+;;; Overloaded Foreign Functions
+
+;; name: "getSubEntity"
+;; type: "SubEntity*"
+;; args: (("unsigned int" . "index"))
+;;
+(defcfun "ogre_entity_get_sub_entity_unsignedint"
+    :pointer
+  (ogre-entity :pointer)
+  (index :unsigned-int))
+
+
+;; name: "getSubEntity"
+;; type: "SubEntity*"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_entity_get_sub_entity_string"
+    :pointer
+  (ogre-entity :pointer)
+  (name :string))
+
+
+;; name: "setMaterialName"
+;; type: "void"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_entity_set_material_name_string"
+    :void
+  (ogre-entity :pointer)
+  (name :string))
+
+
+;; name: "detachObjectFromBone"
+;; type: "MovableObject*"
+;; args: (("const String&" . "movableName"))
+;;
+(defcfun "ogre_entity_detach_object_from_bone_string"
+    :pointer
+  (ogre-entity :pointer)
+  (movable-name :string))
+
+
+;; name: "detachObjectFromBone"
+;; type: "void"
+;; args: (("MovableObject*" . "obj"))
+;;
+(defcfun "ogre_entity_detach_object_from_bone_movableobject"
+    :void
+  (ogre-entity :pointer)
+  (obj :pointer))
+
+
+;;; Methods for Overloaded Foreign Functions
+
+(defmethod get-sub-entity ((this entity) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-entity-get-sub-entity-string (pointer-to this) arg0))
+    ((and (typep arg0 'integer))
+     (ogre-entity-get-sub-entity-unsignedint (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-material-name ((this entity) &optional (arg0 nil) (arg1 nil))
+  (declare (ignore arg1))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-entity-set-material-name-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod detach-object-from-bone ((this entity) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-entity-detach-object-from-bone-movableobject (pointer-to this) arg0))
+    ((and (typep arg0 'string))
+     (ogre-entity-detach-object-from-bone-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
 
 
 

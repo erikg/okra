@@ -9,12 +9,9 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
@@ -24,52 +21,67 @@ extern "C"
     const char* ogre_scene_manager_get_name (SceneManager*);
     const char* ogre_scene_manager_get_type_name (SceneManager*);
     Camera* ogre_scene_manager_create_camera (SceneManager*, const char*);
+    Camera* ogre_scene_manager_get_camera_string (SceneManager*, const char*);
     bool ogre_scene_manager_has_camera (SceneManager*, const char*);
-    void ogre_scene_manager_destroy_camera (SceneManager*, Camera*);
+    void ogre_scene_manager_destroy_camera_camera (SceneManager*, Camera*);
+    void ogre_scene_manager_destroy_camera_string (SceneManager*, const char*);
     void ogre_scene_manager_destroy_all_cameras (SceneManager*);
     Light* ogre_scene_manager_create_light (SceneManager*, const char*);
     Light* ogre_scene_manager_get_light (SceneManager*, const char*);
     bool ogre_scene_manager_has_light (SceneManager*, const char*);
     const PlaneList& ogre_scene_manager_get_light_clipping_planes (SceneManager*, Light*);
     const RealRect& ogre_scene_manager_get_light_scissor_rect (SceneManager*, Light*, const Camera*);
-    void ogre_scene_manager_destroy_light (SceneManager*, Light*);
+    void ogre_scene_manager_destroy_light_string (SceneManager*, const char*);
+    void ogre_scene_manager_destroy_light_light (SceneManager*, Light*);
     void ogre_scene_manager_destroy_all_lights (SceneManager*);
-    SceneNode* ogre_scene_manager_create_scene_node (SceneManager*, const char*);
-    void ogre_scene_manager_destroy_scene_node (SceneManager*, SceneNode*);
+    SceneNode* ogre_scene_manager_create_scene_node_void (SceneManager*);
+    SceneNode* ogre_scene_manager_create_scene_node_string (SceneManager*, const char*);
+    void ogre_scene_manager_destroy_scene_node_string (SceneManager*, const char*);
+    void ogre_scene_manager_destroy_scene_node_scenenode (SceneManager*, SceneNode*);
     SceneNode* ogre_scene_manager_get_root_scene_node (SceneManager*);
     SceneNode* ogre_scene_manager_get_scene_node (SceneManager*, const char*);
     bool ogre_scene_manager_has_scene_node (SceneManager*, const char*);
-    Entity* ogre_scene_manager_create_entity (SceneManager*, const char*, SceneManager::PrefabType);
+    Entity* ogre_scene_manager_create_entity_string_string (SceneManager*, const char*, const char*);
+    Entity* ogre_scene_manager_create_entity_string_prefabtype (SceneManager*, const char*, SceneManager::PrefabType);
     Entity* ogre_scene_manager_get_entity (SceneManager*, const char*);
     bool ogre_scene_manager_has_entity (SceneManager*, const char*);
-    void ogre_scene_manager_destroy_entity (SceneManager*, Entity*);
+    void ogre_scene_manager_destroy_entity_entity (SceneManager*, Entity*);
+    void ogre_scene_manager_destroy_entity_string (SceneManager*, const char*);
     void ogre_scene_manager_destroy_all_entities (SceneManager*);
     ManualObject* ogre_scene_manager_create_manual_object (SceneManager*, const char*);
     ManualObject* ogre_scene_manager_get_manual_object (SceneManager*, const char*);
     bool ogre_scene_manager_has_manual_object (SceneManager*, const char*);
-    void ogre_scene_manager_destroy_manual_object (SceneManager*, ManualObject*);
+    void ogre_scene_manager_destroy_manual_object_manualobject (SceneManager*, ManualObject*);
+    void ogre_scene_manager_destroy_manual_object_string (SceneManager*, const char*);
     void ogre_scene_manager_destroy_all_manual_objects (SceneManager*);
     BillboardChain* ogre_scene_manager_create_billboard_chain (SceneManager*, const char*);
     BillboardChain* ogre_scene_manager_get_billboard_chain (SceneManager*, const char*);
     bool ogre_scene_manager_has_billboard_chain (SceneManager*, const char*);
-    void ogre_scene_manager_destroy_billboard_chain (SceneManager*, BillboardChain*);
+    void ogre_scene_manager_destroy_billboard_chain_billboardchain (SceneManager*, BillboardChain*);
+    void ogre_scene_manager_destroy_billboard_chain_string (SceneManager*, const char*);
     void ogre_scene_manager_destroy_all_billboard_chains (SceneManager*);
     RibbonTrail* ogre_scene_manager_create_ribbon_trail (SceneManager*, const char*);
     RibbonTrail* ogre_scene_manager_get_ribbon_trail (SceneManager*, const char*);
     bool ogre_scene_manager_has_ribbon_trail (SceneManager*, const char*);
-    void ogre_scene_manager_destroy_ribbon_trail (SceneManager*, RibbonTrail*);
+    void ogre_scene_manager_destroy_ribbon_trail_ribbontrail (SceneManager*, RibbonTrail*);
+    void ogre_scene_manager_destroy_ribbon_trail_string (SceneManager*, const char*);
     void ogre_scene_manager_destroy_all_ribbon_trails (SceneManager*);
-    ParticleSystem* ogre_scene_manager_create_particle_system (SceneManager*, const char*, size_t, const char*);
+    ParticleSystem* ogre_scene_manager_create_particle_system_string_string (SceneManager*, const char*, const char*);
+    ParticleSystem* ogre_scene_manager_create_particle_system_string_size_t_string (SceneManager*, const char*, size_t, const char*);
     ParticleSystem* ogre_scene_manager_get_particle_system (SceneManager*, const char*);
     bool ogre_scene_manager_has_particle_system (SceneManager*, const char*);
-    void ogre_scene_manager_destroy_particle_system (SceneManager*, ParticleSystem*);
+    void ogre_scene_manager_destroy_particle_system_particlesystem (SceneManager*, ParticleSystem*);
+    void ogre_scene_manager_destroy_particle_system_string (SceneManager*, const char*);
     void ogre_scene_manager_destroy_all_particle_systems (SceneManager*);
     void ogre_scene_manager_clear_scene (SceneManager*);
     void ogre_scene_manager_set_ambient_light (SceneManager*, const okraArray4);
     void ogre_scene_manager_get_ambient_light (SceneManager*, okraArray4);
-    void ogre_scene_manager_prepare_world_geometry (SceneManager*, const char*);
-    void ogre_scene_manager_set_world_geometry (SceneManager*, const char*);
-    size_t ogre_scene_manager_estimate_world_geometry (SceneManager*, const char*);
+    void ogre_scene_manager_prepare_world_geometry_string (SceneManager*, const char*);
+    void ogre_scene_manager_prepare_world_geometry_datastreamptr_string (SceneManager*, DataStreamPtr&, const char*);
+    void ogre_scene_manager_set_world_geometry_string (SceneManager*, const char*);
+    void ogre_scene_manager_set_world_geometry_datastreamptr_string (SceneManager*, DataStreamPtr&, const char*);
+    size_t ogre_scene_manager_estimate_world_geometry_string (SceneManager*, const char*);
+    size_t ogre_scene_manager_estimate_world_geometry_datastreamptr_string (SceneManager*, DataStreamPtr&, const char*);
     ViewPoint ogre_scene_manager_get_suggested_viewpoint (SceneManager*, bool);
     bool ogre_scene_manager_set_option (SceneManager*, const char*, const void*);
     bool ogre_scene_manager_get_option (SceneManager*, const char*, void*);
@@ -79,12 +91,15 @@ extern "C"
     void ogre_scene_manager_set_sky_plane (SceneManager*, bool, const okraArray4, const char*, Real, Real, bool, Real, int, int, const char*);
     bool ogre_scene_manager_is_sky_plane_enabled (SceneManager*);
     SceneNode* ogre_scene_manager_get_sky_plane_node (SceneManager*);
+    SceneManager::SkyPlaneGenParameters ogre_scene_manager_get_sky_plane_gen_parameters (SceneManager*);
     void ogre_scene_manager_set_sky_box (SceneManager*, bool, const char*, Real, bool, const okraArray4, const char*);
     bool ogre_scene_manager_is_sky_box_enabled (SceneManager*);
     SceneNode* ogre_scene_manager_get_sky_box_node (SceneManager*);
+    SceneManager::SkyBoxGenParameters ogre_scene_manager_get_sky_box_gen_parameters (SceneManager*);
     void ogre_scene_manager_set_sky_dome (SceneManager*, bool, const char*, Real, Real, Real, bool, const okraArray4, int, int, int, const char*);
     bool ogre_scene_manager_is_sky_dome_enabled (SceneManager*);
     SceneNode* ogre_scene_manager_get_sky_dome_node (SceneManager*);
+    SceneManager::SkyDomeGenParameters ogre_scene_manager_get_sky_dome_gen_parameters (SceneManager*);
     void ogre_scene_manager_set_fog (SceneManager*, FogMode, const okraArray4, Real, Real, Real);
     FogMode ogre_scene_manager_get_fog_mode (SceneManager*);
     void ogre_scene_manager_get_fog_colour (SceneManager*, okraArray4);
@@ -94,7 +109,8 @@ extern "C"
     BillboardSet* ogre_scene_manager_create_billboard_set (SceneManager*, const char*, unsigned int);
     BillboardSet* ogre_scene_manager_get_billboard_set (SceneManager*, const char*);
     bool ogre_scene_manager_has_billboard_set (SceneManager*, const char*);
-    void ogre_scene_manager_destroy_billboard_set (SceneManager*, BillboardSet*);
+    void ogre_scene_manager_destroy_billboard_set_billboardset (SceneManager*, BillboardSet*);
+    void ogre_scene_manager_destroy_billboard_set_string (SceneManager*, const char*);
     void ogre_scene_manager_destroy_all_billboard_sets (SceneManager*);
     void ogre_scene_manager_set_display_scene_nodes (SceneManager*, bool);
     bool ogre_scene_manager_get_display_scene_nodes (SceneManager*);
@@ -127,6 +143,8 @@ extern "C"
     RaySceneQuery* ogre_scene_manager_create_ray_query (SceneManager*, const Ray&, unsigned long);
     IntersectionSceneQuery* ogre_scene_manager_create_intersection_query (SceneManager*, unsigned long);
     void ogre_scene_manager_destroy_query (SceneManager*, SceneQuery*);
+    SceneManager::CameraIterator ogre_scene_manager_get_camera_iterator (SceneManager*);
+    SceneManager::AnimationIterator ogre_scene_manager_get_animation_iterator (SceneManager*);
     AnimationStateIterator ogre_scene_manager_get_animation_state_iterator (SceneManager*);
     void ogre_scene_manager_set_shadow_technique (SceneManager*, ShadowTechnique);
     ShadowTechnique ogre_scene_manager_get_shadow_technique (SceneManager*);
@@ -142,7 +160,8 @@ extern "C"
     void ogre_scene_manager_set_shadow_index_buffer_size (SceneManager*, size_t);
     size_t ogre_scene_manager_get_shadow_index_buffer_size (SceneManager*);
     void ogre_scene_manager_set_shadow_texture_size (SceneManager*, unsigned short);
-    void ogre_scene_manager_set_shadow_texture_config (SceneManager*, size_t, unsigned short, unsigned short, PixelFormat);
+    void ogre_scene_manager_set_shadow_texture_config_size_t_unsignedshort_unsignedshort_pixelformat (SceneManager*, size_t, unsigned short, unsigned short, PixelFormat);
+    void ogre_scene_manager_set_shadow_texture_config_size_t_shadowtextureconfig (SceneManager*, size_t, const ShadowTextureConfig&);
     ConstShadowTextureConfigIterator ogre_scene_manager_get_shadow_texture_config_iterator (SceneManager*);
     void ogre_scene_manager_set_shadow_texture_pixel_format (SceneManager*, PixelFormat);
     void ogre_scene_manager_set_shadow_texture_count (SceneManager*, size_t);
@@ -175,20 +194,25 @@ extern "C"
     StaticGeometry* ogre_scene_manager_create_static_geometry (SceneManager*, const char*);
     StaticGeometry* ogre_scene_manager_get_static_geometry (SceneManager*, const char*);
     bool ogre_scene_manager_has_static_geometry (SceneManager*, const char*);
-    void ogre_scene_manager_destroy_static_geometry (SceneManager*, StaticGeometry*);
+    void ogre_scene_manager_destroy_static_geometry_staticgeometry (SceneManager*, StaticGeometry*);
+    void ogre_scene_manager_destroy_static_geometry_string (SceneManager*, const char*);
     void ogre_scene_manager_destroy_all_static_geometry (SceneManager*);
     InstancedGeometry* ogre_scene_manager_create_instanced_geometry (SceneManager*, const char*);
     InstancedGeometry* ogre_scene_manager_get_instanced_geometry (SceneManager*, const char*);
-    void ogre_scene_manager_destroy_instanced_geometry (SceneManager*, InstancedGeometry*);
+    void ogre_scene_manager_destroy_instanced_geometry_instancedgeometry (SceneManager*, InstancedGeometry*);
+    void ogre_scene_manager_destroy_instanced_geometry_string (SceneManager*, const char*);
     void ogre_scene_manager_destroy_all_instanced_geometry (SceneManager*);
     MovableObject* ogre_scene_manager_create_movable_object (SceneManager*, const char*, const char*, const NameValuePairList*);
-    void ogre_scene_manager_destroy_movable_object (SceneManager*, MovableObject*);
+    void ogre_scene_manager_destroy_movable_object_string_string (SceneManager*, const char*, const char*);
+    void ogre_scene_manager_destroy_movable_object_movableobject (SceneManager*, MovableObject*);
     void ogre_scene_manager_destroy_all_movable_objects_by_type (SceneManager*, const char*);
     void ogre_scene_manager_destroy_all_movable_objects (SceneManager*);
     MovableObject* ogre_scene_manager_get_movable_object (SceneManager*, const char*, const char*);
     bool ogre_scene_manager_has_movable_object (SceneManager*, const char*, const char*);
+    SceneManager::MovableObjectIterator ogre_scene_manager_get_movable_object_iterator (SceneManager*, const char*);
     void ogre_scene_manager_inject_movable_object (SceneManager*, MovableObject*);
-    void ogre_scene_manager_extract_movable_object (SceneManager*, const char*, const char*);
+    void ogre_scene_manager_extract_movable_object_string_string (SceneManager*, const char*, const char*);
+    void ogre_scene_manager_extract_movable_object_movableobject (SceneManager*, MovableObject*);
     void ogre_scene_manager_extract_all_movable_objects_by_type (SceneManager*, const char*);
     void ogre_scene_manager_set_visibility_mask (SceneManager*, unsigned int);
     unsigned int ogre_scene_manager_get_visibility_mask (SceneManager*);
@@ -236,6 +260,15 @@ Camera* ogre_scene_manager_create_camera (SceneManager* ogre_scene_manager, cons
     return ogre_scene_manager->createCamera(name);
 }
 
+// name: "getCamera"
+// type: "Camera*"
+// args: (("const String&" . "name"))
+//
+Camera* ogre_scene_manager_get_camera_string (SceneManager* ogre_scene_manager, const char* name)
+{
+    return ogre_scene_manager->getCamera(name);
+}
+
 // name: "hasCamera"
 // type: "bool"
 // args: (("const String&" . "name"))
@@ -249,9 +282,18 @@ bool ogre_scene_manager_has_camera (SceneManager* ogre_scene_manager, const char
 // type: "void"
 // args: (("Camera*" . "cam"))
 //
-void ogre_scene_manager_destroy_camera (SceneManager* ogre_scene_manager, Camera* cam)
+void ogre_scene_manager_destroy_camera_camera (SceneManager* ogre_scene_manager, Camera* cam)
 {
     ogre_scene_manager->destroyCamera(cam);
+}
+
+// name: "destroyCamera"
+// type: "void"
+// args: (("const String&" . "name"))
+//
+void ogre_scene_manager_destroy_camera_string (SceneManager* ogre_scene_manager, const char* name)
+{
+    ogre_scene_manager->destroyCamera(name);
 }
 
 // name: "destroyAllCameras"
@@ -310,9 +352,18 @@ const RealRect& ogre_scene_manager_get_light_scissor_rect (SceneManager* ogre_sc
 
 // name: "destroyLight"
 // type: "void"
+// args: (("const String&" . "name"))
+//
+void ogre_scene_manager_destroy_light_string (SceneManager* ogre_scene_manager, const char* name)
+{
+    ogre_scene_manager->destroyLight(name);
+}
+
+// name: "destroyLight"
+// type: "void"
 // args: (("Light*" . "light"))
 //
-void ogre_scene_manager_destroy_light (SceneManager* ogre_scene_manager, Light* light)
+void ogre_scene_manager_destroy_light_light (SceneManager* ogre_scene_manager, Light* light)
 {
     ogre_scene_manager->destroyLight(light);
 }
@@ -328,18 +379,36 @@ void ogre_scene_manager_destroy_all_lights (SceneManager* ogre_scene_manager)
 
 // name: "createSceneNode"
 // type: "SceneNode*"
+// args: "void"
+//
+SceneNode* ogre_scene_manager_create_scene_node_void (SceneManager* ogre_scene_manager)
+{
+    return ogre_scene_manager->createSceneNode();
+}
+
+// name: "createSceneNode"
+// type: "SceneNode*"
 // args: (("const String&" . "name"))
 //
-SceneNode* ogre_scene_manager_create_scene_node (SceneManager* ogre_scene_manager, const char* name)
+SceneNode* ogre_scene_manager_create_scene_node_string (SceneManager* ogre_scene_manager, const char* name)
 {
     return ogre_scene_manager->createSceneNode(name);
 }
 
 // name: "destroySceneNode"
 // type: "void"
+// args: (("const String&" . "name"))
+//
+void ogre_scene_manager_destroy_scene_node_string (SceneManager* ogre_scene_manager, const char* name)
+{
+    ogre_scene_manager->destroySceneNode(name);
+}
+
+// name: "destroySceneNode"
+// type: "void"
 // args: (("SceneNode*" . "sn"))
 //
-void ogre_scene_manager_destroy_scene_node (SceneManager* ogre_scene_manager, SceneNode* sn)
+void ogre_scene_manager_destroy_scene_node_scenenode (SceneManager* ogre_scene_manager, SceneNode* sn)
 {
     ogre_scene_manager->destroySceneNode(sn);
 }
@@ -373,9 +442,18 @@ bool ogre_scene_manager_has_scene_node (SceneManager* ogre_scene_manager, const 
 
 // name: "createEntity"
 // type: "Entity*"
+// args: (("const String&" . "entityName") ("const String&" . "meshName"))
+//
+Entity* ogre_scene_manager_create_entity_string_string (SceneManager* ogre_scene_manager, const char* entityName, const char* meshName)
+{
+    return ogre_scene_manager->createEntity(entityName, meshName);
+}
+
+// name: "createEntity"
+// type: "Entity*"
 // args: (("const String&" . "entityName") ("PrefabType" . "ptype"))
 //
-Entity* ogre_scene_manager_create_entity (SceneManager* ogre_scene_manager, const char* entityName, SceneManager::PrefabType ptype)
+Entity* ogre_scene_manager_create_entity_string_prefabtype (SceneManager* ogre_scene_manager, const char* entityName, SceneManager::PrefabType ptype)
 {
     return ogre_scene_manager->createEntity(entityName, ptype);
 }
@@ -402,9 +480,18 @@ bool ogre_scene_manager_has_entity (SceneManager* ogre_scene_manager, const char
 // type: "void"
 // args: (("Entity*" . "ent"))
 //
-void ogre_scene_manager_destroy_entity (SceneManager* ogre_scene_manager, Entity* ent)
+void ogre_scene_manager_destroy_entity_entity (SceneManager* ogre_scene_manager, Entity* ent)
 {
     ogre_scene_manager->destroyEntity(ent);
+}
+
+// name: "destroyEntity"
+// type: "void"
+// args: (("const String&" . "name"))
+//
+void ogre_scene_manager_destroy_entity_string (SceneManager* ogre_scene_manager, const char* name)
+{
+    ogre_scene_manager->destroyEntity(name);
 }
 
 // name: "destroyAllEntities"
@@ -447,9 +534,18 @@ bool ogre_scene_manager_has_manual_object (SceneManager* ogre_scene_manager, con
 // type: "void"
 // args: (("ManualObject*" . "obj"))
 //
-void ogre_scene_manager_destroy_manual_object (SceneManager* ogre_scene_manager, ManualObject* obj)
+void ogre_scene_manager_destroy_manual_object_manualobject (SceneManager* ogre_scene_manager, ManualObject* obj)
 {
     ogre_scene_manager->destroyManualObject(obj);
+}
+
+// name: "destroyManualObject"
+// type: "void"
+// args: (("const String&" . "name"))
+//
+void ogre_scene_manager_destroy_manual_object_string (SceneManager* ogre_scene_manager, const char* name)
+{
+    ogre_scene_manager->destroyManualObject(name);
 }
 
 // name: "destroyAllManualObjects"
@@ -492,9 +588,18 @@ bool ogre_scene_manager_has_billboard_chain (SceneManager* ogre_scene_manager, c
 // type: "void"
 // args: (("BillboardChain*" . "obj"))
 //
-void ogre_scene_manager_destroy_billboard_chain (SceneManager* ogre_scene_manager, BillboardChain* obj)
+void ogre_scene_manager_destroy_billboard_chain_billboardchain (SceneManager* ogre_scene_manager, BillboardChain* obj)
 {
     ogre_scene_manager->destroyBillboardChain(obj);
+}
+
+// name: "destroyBillboardChain"
+// type: "void"
+// args: (("const String&" . "name"))
+//
+void ogre_scene_manager_destroy_billboard_chain_string (SceneManager* ogre_scene_manager, const char* name)
+{
+    ogre_scene_manager->destroyBillboardChain(name);
 }
 
 // name: "destroyAllBillboardChains"
@@ -537,9 +642,18 @@ bool ogre_scene_manager_has_ribbon_trail (SceneManager* ogre_scene_manager, cons
 // type: "void"
 // args: (("RibbonTrail*" . "obj"))
 //
-void ogre_scene_manager_destroy_ribbon_trail (SceneManager* ogre_scene_manager, RibbonTrail* obj)
+void ogre_scene_manager_destroy_ribbon_trail_ribbontrail (SceneManager* ogre_scene_manager, RibbonTrail* obj)
 {
     ogre_scene_manager->destroyRibbonTrail(obj);
+}
+
+// name: "destroyRibbonTrail"
+// type: "void"
+// args: (("const String&" . "name"))
+//
+void ogre_scene_manager_destroy_ribbon_trail_string (SceneManager* ogre_scene_manager, const char* name)
+{
+    ogre_scene_manager->destroyRibbonTrail(name);
 }
 
 // name: "destroyAllRibbonTrails"
@@ -553,9 +667,18 @@ void ogre_scene_manager_destroy_all_ribbon_trails (SceneManager* ogre_scene_mana
 
 // name: "createParticleSystem"
 // type: "ParticleSystem*"
+// args: (("const String&" . "name") ("const String&" . "templateName"))
+//
+ParticleSystem* ogre_scene_manager_create_particle_system_string_string (SceneManager* ogre_scene_manager, const char* name, const char* templateName)
+{
+    return ogre_scene_manager->createParticleSystem(name, templateName);
+}
+
+// name: "createParticleSystem"
+// type: "ParticleSystem*"
 // args: (("const String&" . "name") ("size_t" . "quota") ("const String&" . "resourceGroup"))
 //
-ParticleSystem* ogre_scene_manager_create_particle_system (SceneManager* ogre_scene_manager, const char* name, size_t quota, const char* resourceGroup)
+ParticleSystem* ogre_scene_manager_create_particle_system_string_size_t_string (SceneManager* ogre_scene_manager, const char* name, size_t quota, const char* resourceGroup)
 {
     return ogre_scene_manager->createParticleSystem(name, quota, resourceGroup);
 }
@@ -582,9 +705,18 @@ bool ogre_scene_manager_has_particle_system (SceneManager* ogre_scene_manager, c
 // type: "void"
 // args: (("ParticleSystem*" . "obj"))
 //
-void ogre_scene_manager_destroy_particle_system (SceneManager* ogre_scene_manager, ParticleSystem* obj)
+void ogre_scene_manager_destroy_particle_system_particlesystem (SceneManager* ogre_scene_manager, ParticleSystem* obj)
 {
     ogre_scene_manager->destroyParticleSystem(obj);
+}
+
+// name: "destroyParticleSystem"
+// type: "void"
+// args: (("const String&" . "name"))
+//
+void ogre_scene_manager_destroy_particle_system_string (SceneManager* ogre_scene_manager, const char* name)
+{
+    ogre_scene_manager->destroyParticleSystem(name);
 }
 
 // name: "destroyAllParticleSystems"
@@ -632,27 +764,54 @@ void ogre_scene_manager_get_ambient_light (SceneManager* ogre_scene_manager, okr
 // type: "void"
 // args: (("const String&" . "filename"))
 //
-void ogre_scene_manager_prepare_world_geometry (SceneManager* ogre_scene_manager, const char* filename)
+void ogre_scene_manager_prepare_world_geometry_string (SceneManager* ogre_scene_manager, const char* filename)
 {
     ogre_scene_manager->prepareWorldGeometry(filename);
+}
+
+// name: "prepareWorldGeometry"
+// type: "void"
+// args: (("DataStreamPtr&" . "stream") ("const String&" . "typeName"))
+//
+void ogre_scene_manager_prepare_world_geometry_datastreamptr_string (SceneManager* ogre_scene_manager, DataStreamPtr& stream, const char* typeName)
+{
+    ogre_scene_manager->prepareWorldGeometry(stream, typeName);
 }
 
 // name: "setWorldGeometry"
 // type: "void"
 // args: (("const String&" . "filename"))
 //
-void ogre_scene_manager_set_world_geometry (SceneManager* ogre_scene_manager, const char* filename)
+void ogre_scene_manager_set_world_geometry_string (SceneManager* ogre_scene_manager, const char* filename)
 {
     ogre_scene_manager->setWorldGeometry(filename);
+}
+
+// name: "setWorldGeometry"
+// type: "void"
+// args: (("DataStreamPtr&" . "stream") ("const String&" . "typeName"))
+//
+void ogre_scene_manager_set_world_geometry_datastreamptr_string (SceneManager* ogre_scene_manager, DataStreamPtr& stream, const char* typeName)
+{
+    ogre_scene_manager->setWorldGeometry(stream, typeName);
 }
 
 // name: "estimateWorldGeometry"
 // type: "size_t"
 // args: (("const String&" . "filename"))
 //
-size_t ogre_scene_manager_estimate_world_geometry (SceneManager* ogre_scene_manager, const char* filename)
+size_t ogre_scene_manager_estimate_world_geometry_string (SceneManager* ogre_scene_manager, const char* filename)
 {
     return ogre_scene_manager->estimateWorldGeometry(filename);
+}
+
+// name: "estimateWorldGeometry"
+// type: "size_t"
+// args: (("DataStreamPtr&" . "stream") ("const String&" . "typeName"))
+//
+size_t ogre_scene_manager_estimate_world_geometry_datastreamptr_string (SceneManager* ogre_scene_manager, DataStreamPtr& stream, const char* typeName)
+{
+    return ogre_scene_manager->estimateWorldGeometry(stream, typeName);
 }
 
 // name: "getSuggestedViewpoint"
@@ -737,6 +896,15 @@ SceneNode* ogre_scene_manager_get_sky_plane_node (SceneManager* ogre_scene_manag
     return ogre_scene_manager->getSkyPlaneNode();
 }
 
+// name: "getSkyPlaneGenParameters"
+// type: "const SkyPlaneGenParameters&"
+// args: "void"
+//
+SceneManager::SkyPlaneGenParameters ogre_scene_manager_get_sky_plane_gen_parameters (SceneManager* ogre_scene_manager)
+{
+    return ogre_scene_manager->getSkyPlaneGenParameters();
+}
+
 // name: "setSkyBox"
 // type: "void"
 // args: (("bool" . "enable") ("const String&" . "materialName") ("Real" . "distance") ("bool" . "drawFirst") ("const Quaternion&" . "orientation") ("const String&" . "groupName"))
@@ -765,6 +933,15 @@ SceneNode* ogre_scene_manager_get_sky_box_node (SceneManager* ogre_scene_manager
     return ogre_scene_manager->getSkyBoxNode();
 }
 
+// name: "getSkyBoxGenParameters"
+// type: "const SkyBoxGenParameters&"
+// args: "void"
+//
+SceneManager::SkyBoxGenParameters ogre_scene_manager_get_sky_box_gen_parameters (SceneManager* ogre_scene_manager)
+{
+    return ogre_scene_manager->getSkyBoxGenParameters();
+}
+
 // name: "setSkyDome"
 // type: "void"
 // args: (("bool" . "enable") ("const String&" . "materialName") ("Real" . "curvature") ("Real" . "tiling") ("Real" . "distance") ("bool" . "drawFirst") ("const Quaternion&" . "orientation") ("int" . "xsegments") ("int" . "ysegments") ("int" . "ysegments_keep") ("const String&" . "groupName"))
@@ -791,6 +968,15 @@ bool ogre_scene_manager_is_sky_dome_enabled (SceneManager* ogre_scene_manager)
 SceneNode* ogre_scene_manager_get_sky_dome_node (SceneManager* ogre_scene_manager)
 {
     return ogre_scene_manager->getSkyDomeNode();
+}
+
+// name: "getSkyDomeGenParameters"
+// type: "const SkyDomeGenParameters&"
+// args: "void"
+//
+SceneManager::SkyDomeGenParameters ogre_scene_manager_get_sky_dome_gen_parameters (SceneManager* ogre_scene_manager)
+{
+    return ogre_scene_manager->getSkyDomeGenParameters();
 }
 
 // name: "setFog"
@@ -883,9 +1069,18 @@ bool ogre_scene_manager_has_billboard_set (SceneManager* ogre_scene_manager, con
 // type: "void"
 // args: (("BillboardSet*" . "set"))
 //
-void ogre_scene_manager_destroy_billboard_set (SceneManager* ogre_scene_manager, BillboardSet* set)
+void ogre_scene_manager_destroy_billboard_set_billboardset (SceneManager* ogre_scene_manager, BillboardSet* set)
 {
     ogre_scene_manager->destroyBillboardSet(set);
+}
+
+// name: "destroyBillboardSet"
+// type: "void"
+// args: (("const String&" . "name"))
+//
+void ogre_scene_manager_destroy_billboard_set_string (SceneManager* ogre_scene_manager, const char* name)
+{
+    ogre_scene_manager->destroyBillboardSet(name);
 }
 
 // name: "destroyAllBillboardSets"
@@ -1116,7 +1311,7 @@ void ogre_scene_manager_show_bounding_boxes (SceneManager* ogre_scene_manager, b
 
 // name: "getShowBoundingBoxes"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_scene_manager_get_show_bounding_boxes (SceneManager* ogre_scene_manager)
 {
@@ -1177,6 +1372,24 @@ IntersectionSceneQuery* ogre_scene_manager_create_intersection_query (SceneManag
 void ogre_scene_manager_destroy_query (SceneManager* ogre_scene_manager, SceneQuery* query)
 {
     ogre_scene_manager->destroyQuery(query);
+}
+
+// name: "getCameraIterator"
+// type: "CameraIterator"
+// args: "void"
+//
+SceneManager::CameraIterator ogre_scene_manager_get_camera_iterator (SceneManager* ogre_scene_manager)
+{
+    return ogre_scene_manager->getCameraIterator();
+}
+
+// name: "getAnimationIterator"
+// type: "AnimationIterator"
+// args: "void"
+//
+SceneManager::AnimationIterator ogre_scene_manager_get_animation_iterator (SceneManager* ogre_scene_manager)
+{
+    return ogre_scene_manager->getAnimationIterator();
 }
 
 // name: "getAnimationStateIterator"
@@ -1323,14 +1536,23 @@ void ogre_scene_manager_set_shadow_texture_size (SceneManager* ogre_scene_manage
 // type: "void"
 // args: (("size_t" . "shadowIndex") ("unsigned short" . "width") ("unsigned short" . "height") ("PixelFormat" . "format"))
 //
-void ogre_scene_manager_set_shadow_texture_config (SceneManager* ogre_scene_manager, size_t shadowIndex, unsigned short width, unsigned short height, PixelFormat format)
+void ogre_scene_manager_set_shadow_texture_config_size_t_unsignedshort_unsignedshort_pixelformat (SceneManager* ogre_scene_manager, size_t shadowIndex, unsigned short width, unsigned short height, PixelFormat format)
 {
     ogre_scene_manager->setShadowTextureConfig(shadowIndex, width, height, format);
 }
 
+// name: "setShadowTextureConfig"
+// type: "void"
+// args: (("size_t" . "shadowIndex") ("const ShadowTextureConfig&" . "config"))
+//
+void ogre_scene_manager_set_shadow_texture_config_size_t_shadowtextureconfig (SceneManager* ogre_scene_manager, size_t shadowIndex, const ShadowTextureConfig& config)
+{
+    ogre_scene_manager->setShadowTextureConfig(shadowIndex, config);
+}
+
 // name: "getShadowTextureConfigIterator"
 // type: "ConstShadowTextureConfigIterator"
-// args: NIL
+// args: "void"
 //
 ConstShadowTextureConfigIterator ogre_scene_manager_get_shadow_texture_config_iterator (SceneManager* ogre_scene_manager)
 {
@@ -1483,7 +1705,7 @@ void ogre_scene_manager_set_shadow_caster_render_back_faces (SceneManager* ogre_
 
 // name: "getShadowCasterRenderBackFaces"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_scene_manager_get_shadow_caster_render_back_faces (SceneManager* ogre_scene_manager)
 {
@@ -1501,7 +1723,7 @@ void ogre_scene_manager_set_shadow_camera_setup (SceneManager* ogre_scene_manage
 
 // name: "getShadowCameraSetup"
 // type: "const ShadowCameraSetupPtr&"
-// args: NIL
+// args: "void"
 //
 const ShadowCameraSetupPtr& ogre_scene_manager_get_shadow_camera_setup (SceneManager* ogre_scene_manager)
 {
@@ -1582,7 +1804,7 @@ void ogre_scene_manager_set_shadow_use_light_clip_planes (SceneManager* ogre_sce
 
 // name: "getShadowUseLightClipPlanes"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_scene_manager_get_shadow_use_light_clip_planes (SceneManager* ogre_scene_manager)
 {
@@ -1620,9 +1842,18 @@ bool ogre_scene_manager_has_static_geometry (SceneManager* ogre_scene_manager, c
 // type: "void"
 // args: (("StaticGeometry*" . "geom"))
 //
-void ogre_scene_manager_destroy_static_geometry (SceneManager* ogre_scene_manager, StaticGeometry* geom)
+void ogre_scene_manager_destroy_static_geometry_staticgeometry (SceneManager* ogre_scene_manager, StaticGeometry* geom)
 {
     ogre_scene_manager->destroyStaticGeometry(geom);
+}
+
+// name: "destroyStaticGeometry"
+// type: "void"
+// args: (("const String&" . "name"))
+//
+void ogre_scene_manager_destroy_static_geometry_string (SceneManager* ogre_scene_manager, const char* name)
+{
+    ogre_scene_manager->destroyStaticGeometry(name);
 }
 
 // name: "destroyAllStaticGeometry"
@@ -1656,9 +1887,18 @@ InstancedGeometry* ogre_scene_manager_get_instanced_geometry (SceneManager* ogre
 // type: "void"
 // args: (("InstancedGeometry*" . "geom"))
 //
-void ogre_scene_manager_destroy_instanced_geometry (SceneManager* ogre_scene_manager, InstancedGeometry* geom)
+void ogre_scene_manager_destroy_instanced_geometry_instancedgeometry (SceneManager* ogre_scene_manager, InstancedGeometry* geom)
 {
     ogre_scene_manager->destroyInstancedGeometry(geom);
+}
+
+// name: "destroyInstancedGeometry"
+// type: "void"
+// args: (("const String&" . "name"))
+//
+void ogre_scene_manager_destroy_instanced_geometry_string (SceneManager* ogre_scene_manager, const char* name)
+{
+    ogre_scene_manager->destroyInstancedGeometry(name);
 }
 
 // name: "destroyAllInstancedGeometry"
@@ -1681,9 +1921,18 @@ MovableObject* ogre_scene_manager_create_movable_object (SceneManager* ogre_scen
 
 // name: "destroyMovableObject"
 // type: "void"
+// args: (("const String&" . "name") ("const String&" . "typeName"))
+//
+void ogre_scene_manager_destroy_movable_object_string_string (SceneManager* ogre_scene_manager, const char* name, const char* typeName)
+{
+    ogre_scene_manager->destroyMovableObject(name, typeName);
+}
+
+// name: "destroyMovableObject"
+// type: "void"
 // args: (("MovableObject*" . "m"))
 //
-void ogre_scene_manager_destroy_movable_object (SceneManager* ogre_scene_manager, MovableObject* m)
+void ogre_scene_manager_destroy_movable_object_movableobject (SceneManager* ogre_scene_manager, MovableObject* m)
 {
     ogre_scene_manager->destroyMovableObject(m);
 }
@@ -1724,6 +1973,15 @@ bool ogre_scene_manager_has_movable_object (SceneManager* ogre_scene_manager, co
     return ogre_scene_manager->hasMovableObject(name, typeName);
 }
 
+// name: "getMovableObjectIterator"
+// type: "MovableObjectIterator"
+// args: (("const String&" . "typeName"))
+//
+SceneManager::MovableObjectIterator ogre_scene_manager_get_movable_object_iterator (SceneManager* ogre_scene_manager, const char* typeName)
+{
+    return ogre_scene_manager->getMovableObjectIterator(typeName);
+}
+
 // name: "injectMovableObject"
 // type: "void"
 // args: (("MovableObject*" . "m"))
@@ -1737,9 +1995,18 @@ void ogre_scene_manager_inject_movable_object (SceneManager* ogre_scene_manager,
 // type: "void"
 // args: (("const String&" . "name") ("const String&" . "typeName"))
 //
-void ogre_scene_manager_extract_movable_object (SceneManager* ogre_scene_manager, const char* name, const char* typeName)
+void ogre_scene_manager_extract_movable_object_string_string (SceneManager* ogre_scene_manager, const char* name, const char* typeName)
 {
     ogre_scene_manager->extractMovableObject(name, typeName);
+}
+
+// name: "extractMovableObject"
+// type: "void"
+// args: (("MovableObject*" . "m"))
+//
+void ogre_scene_manager_extract_movable_object_movableobject (SceneManager* ogre_scene_manager, MovableObject* m)
+{
+    ogre_scene_manager->extractMovableObject(m);
 }
 
 // name: "extractAllMovableObjectsByType"
@@ -1798,7 +2065,7 @@ void ogre_scene_manager_set_normalise_normals_on_scale (SceneManager* ogre_scene
 
 // name: "getNormaliseNormalsOnScale"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_scene_manager_get_normalise_normals_on_scale (SceneManager* ogre_scene_manager)
 {
@@ -1816,7 +2083,7 @@ void ogre_scene_manager_set_flip_culling_on_negative_scale (SceneManager* ogre_s
 
 // name: "getFlipCullingOnNegativeScale"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_scene_manager_get_flip_culling_on_negative_scale (SceneManager* ogre_scene_manager)
 {
@@ -1825,7 +2092,7 @@ bool ogre_scene_manager_get_flip_culling_on_negative_scale (SceneManager* ogre_s
 
 // name: "getDestinationRenderSystem"
 // type: "RenderSystem*"
-// args: NIL
+// args: "void"
 //
 RenderSystem* ogre_scene_manager_get_destination_render_system (SceneManager* ogre_scene_manager)
 {
@@ -1870,7 +2137,7 @@ void ogre_scene_manager_set_camera_relative_rendering (SceneManager* ogre_scene_
 
 // name: "getCameraRelativeRendering"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_scene_manager_get_camera_relative_rendering (SceneManager* ogre_scene_manager)
 {

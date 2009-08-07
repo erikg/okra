@@ -9,12 +9,9 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
@@ -22,10 +19,11 @@ using namespace Ogre;
 extern "C"
 {
     const MeshPtr& ogre_entity_get_mesh (Entity*);
-    SubEntity* ogre_entity_get_sub_entity (Entity*, const char*);
+    SubEntity* ogre_entity_get_sub_entity_unsignedint (Entity*, unsigned int);
+    SubEntity* ogre_entity_get_sub_entity_string (Entity*, const char*);
     unsigned int ogre_entity_get_num_sub_entities (Entity*);
     Entity* ogre_entity_clone (Entity*, const char*);
-    void ogre_entity_set_material_name (Entity*, const char*);
+    void ogre_entity_set_material_name_string (Entity*, const char*);
     void ogre_entity_set_material (Entity*, const MaterialPtr&);
     void ogre_entity_set_render_queue_group (Entity*, unsigned char);
     const AxisAlignedBox& ogre_entity_get_bounding_box (Entity*);
@@ -42,7 +40,8 @@ extern "C"
     void ogre_entity_set_material_lod_bias (Entity*, Real, unsigned short, unsigned short);
     void ogre_entity_set_polygon_mode_overrideable (Entity*, bool);
     TagPoint* ogre_entity_attach_object_to_bone (Entity*, const char*, MovableObject*, const okraArray4, const okraArray3);
-    void ogre_entity_detach_object_from_bone (Entity*, MovableObject*);
+    MovableObject* ogre_entity_detach_object_from_bone_string (Entity*, const char*);
+    void ogre_entity_detach_object_from_bone_movableobject (Entity*, MovableObject*);
     void ogre_entity_detach_all_objects_from_bone (Entity*);
     Entity::ChildObjectListIterator ogre_entity_get_attached_object_iterator (Entity*);
     Real ogre_entity_get_bounding_radius (Entity*);
@@ -86,9 +85,18 @@ const MeshPtr& ogre_entity_get_mesh (Entity* ogre_entity)
 
 // name: "getSubEntity"
 // type: "SubEntity*"
+// args: (("unsigned int" . "index"))
+//
+SubEntity* ogre_entity_get_sub_entity_unsignedint (Entity* ogre_entity, unsigned int index)
+{
+    return ogre_entity->getSubEntity(index);
+}
+
+// name: "getSubEntity"
+// type: "SubEntity*"
 // args: (("const String&" . "name"))
 //
-SubEntity* ogre_entity_get_sub_entity (Entity* ogre_entity, const char* name)
+SubEntity* ogre_entity_get_sub_entity_string (Entity* ogre_entity, const char* name)
 {
     return ogre_entity->getSubEntity(name);
 }
@@ -115,7 +123,7 @@ Entity* ogre_entity_clone (Entity* ogre_entity, const char* newName)
 // type: "void"
 // args: (("const String&" . "name"))
 //
-void ogre_entity_set_material_name (Entity* ogre_entity, const char* name)
+void ogre_entity_set_material_name_string (Entity* ogre_entity, const char* name)
 {
     ogre_entity->setMaterialName(name);
 }
@@ -221,7 +229,7 @@ size_t ogre_entity_get_num_manual_lod_levels (Entity* ogre_entity)
 
 // name: "getCurrentLodIndex"
 // type: "ushort"
-// args: NIL
+// args: "void"
 //
 unsigned short ogre_entity_get_current_lod_index (Entity* ogre_entity)
 {
@@ -266,10 +274,19 @@ TagPoint* ogre_entity_attach_object_to_bone (Entity* ogre_entity, const char* bo
 }
 
 // name: "detachObjectFromBone"
+// type: "MovableObject*"
+// args: (("const String&" . "movableName"))
+//
+MovableObject* ogre_entity_detach_object_from_bone_string (Entity* ogre_entity, const char* movableName)
+{
+    return ogre_entity->detachObjectFromBone(movableName);
+}
+
+// name: "detachObjectFromBone"
 // type: "void"
 // args: (("MovableObject*" . "obj"))
 //
-void ogre_entity_detach_object_from_bone (Entity* ogre_entity, MovableObject* obj)
+void ogre_entity_detach_object_from_bone_movableobject (Entity* ogre_entity, MovableObject* obj)
 {
     ogre_entity->detachObjectFromBone(obj);
 }
@@ -429,7 +446,7 @@ bool ogre_entity_has_vertex_animation (Entity* ogre_entity)
 
 // name: "stopSharingSkeletonInstance"
 // type: "void"
-// args: NIL
+// args: "void"
 //
 void ogre_entity_stop_sharing_skeleton_instance (Entity* ogre_entity)
 {
@@ -438,7 +455,7 @@ void ogre_entity_stop_sharing_skeleton_instance (Entity* ogre_entity)
 
 // name: "sharesSkeletonInstance"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_entity_shares_skeleton_instance (Entity* ogre_entity)
 {
@@ -447,7 +464,7 @@ bool ogre_entity_shares_skeleton_instance (Entity* ogre_entity)
 
 // name: "getSkeletonInstanceSharingSet"
 // type: "const EntitySet*"
-// args: NIL
+// args: "void"
 //
 const Entity::EntitySet* ogre_entity_get_skeleton_instance_sharing_set (Entity* ogre_entity)
 {

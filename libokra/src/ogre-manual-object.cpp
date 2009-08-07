@@ -9,12 +9,9 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
@@ -28,14 +25,24 @@ extern "C"
     void ogre_manual_object_set_dynamic (ManualObject*, bool);
     bool ogre_manual_object_get_dynamic (ManualObject*);
     void ogre_manual_object_begin_update (ManualObject*, size_t);
-    void ogre_manual_object_position (ManualObject*, const okraArray3);
-    void ogre_manual_object_normal (ManualObject*, const okraArray3);
-    void ogre_manual_object_texture_coord (ManualObject*, const Vector2&);
-    void ogre_manual_object_colour (ManualObject*, const okraArray4);
+    void ogre_manual_object_position_vector3 (ManualObject*, const okraArray3);
+    void ogre_manual_object_position_real_real_real (ManualObject*, Real, Real, Real);
+    void ogre_manual_object_normal_vector3 (ManualObject*, const okraArray3);
+    void ogre_manual_object_normal_real_real_real (ManualObject*, Real, Real, Real);
+    void ogre_manual_object_texture_coord_real (ManualObject*, Real);
+    void ogre_manual_object_texture_coord_real_real (ManualObject*, Real, Real);
+    void ogre_manual_object_texture_coord_real_real_real (ManualObject*, Real, Real, Real);
+    void ogre_manual_object_texture_coord_real_real_real_real (ManualObject*, Real, Real, Real, Real);
+    void ogre_manual_object_texture_coord_vector2 (ManualObject*, const Vector2&);
+    void ogre_manual_object_texture_coord_vector3 (ManualObject*, const okraArray3);
+    void ogre_manual_object_texture_coord_vector4 (ManualObject*, const Vector4&);
+    void ogre_manual_object_colour_colourvalue (ManualObject*, const okraArray4);
+    void ogre_manual_object_colour_real_real_real_real (ManualObject*, Real, Real, Real, Real);
     void ogre_manual_object_index (ManualObject*, unsigned int);
     void ogre_manual_object_triangle (ManualObject*, unsigned int, unsigned int, unsigned int);
     void ogre_manual_object_quad (ManualObject*, unsigned int, unsigned int, unsigned int, unsigned int);
     ManualObject::ManualObjectSection* ogre_manual_object_end (ManualObject*);
+    void ogre_manual_object_set_material_name_size_t_string (ManualObject*, size_t, const char*);
     MeshPtr ogre_manual_object_convert_to_mesh (ManualObject*, const char*, const char*);
     void ogre_manual_object_set_use_identity_projection (ManualObject*, bool);
     bool ogre_manual_object_get_use_identity_projection (ManualObject*);
@@ -105,7 +112,7 @@ void ogre_manual_object_set_dynamic (ManualObject* ogre_manual_object, bool dyn)
 
 // name: "getDynamic"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_manual_object_get_dynamic (ManualObject* ogre_manual_object)
 {
@@ -125,39 +132,121 @@ void ogre_manual_object_begin_update (ManualObject* ogre_manual_object, size_t s
 // type: "void"
 // args: (("const Vector3&" . "pos"))
 //
-void ogre_manual_object_position (ManualObject* ogre_manual_object, const okraArray3 pos)
+void ogre_manual_object_position_vector3 (ManualObject* ogre_manual_object, const okraArray3 pos)
 {
     Vector3 ogre_pos = Vector3(pos[0], pos[1], pos[2]);
     ogre_manual_object->position(ogre_pos);
+}
+
+// name: "position"
+// type: "void"
+// args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+//
+void ogre_manual_object_position_real_real_real (ManualObject* ogre_manual_object, Real x, Real y, Real z)
+{
+    ogre_manual_object->position(x, y, z);
 }
 
 // name: "normal"
 // type: "void"
 // args: (("const Vector3&" . "norm"))
 //
-void ogre_manual_object_normal (ManualObject* ogre_manual_object, const okraArray3 norm)
+void ogre_manual_object_normal_vector3 (ManualObject* ogre_manual_object, const okraArray3 norm)
 {
     Vector3 ogre_norm = Vector3(norm[0], norm[1], norm[2]);
     ogre_manual_object->normal(ogre_norm);
+}
+
+// name: "normal"
+// type: "void"
+// args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+//
+void ogre_manual_object_normal_real_real_real (ManualObject* ogre_manual_object, Real x, Real y, Real z)
+{
+    ogre_manual_object->normal(x, y, z);
+}
+
+// name: "textureCoord"
+// type: "void"
+// args: (("Real" . "u"))
+//
+void ogre_manual_object_texture_coord_real (ManualObject* ogre_manual_object, Real u)
+{
+    ogre_manual_object->textureCoord(u);
+}
+
+// name: "textureCoord"
+// type: "void"
+// args: (("Real" . "u") ("Real" . "v"))
+//
+void ogre_manual_object_texture_coord_real_real (ManualObject* ogre_manual_object, Real u, Real v)
+{
+    ogre_manual_object->textureCoord(u, v);
+}
+
+// name: "textureCoord"
+// type: "void"
+// args: (("Real" . "u") ("Real" . "v") ("Real" . "w"))
+//
+void ogre_manual_object_texture_coord_real_real_real (ManualObject* ogre_manual_object, Real u, Real v, Real w)
+{
+    ogre_manual_object->textureCoord(u, v, w);
+}
+
+// name: "textureCoord"
+// type: "void"
+// args: (("Real" . "x") ("Real" . "y") ("Real" . "z") ("Real" . "w"))
+//
+void ogre_manual_object_texture_coord_real_real_real_real (ManualObject* ogre_manual_object, Real x, Real y, Real z, Real w)
+{
+    ogre_manual_object->textureCoord(x, y, z, w);
 }
 
 // name: "textureCoord"
 // type: "void"
 // args: (("const Vector2&" . "uv"))
 //
-void ogre_manual_object_texture_coord (ManualObject* ogre_manual_object, const Vector2& uv)
+void ogre_manual_object_texture_coord_vector2 (ManualObject* ogre_manual_object, const Vector2& uv)
 {
     ogre_manual_object->textureCoord(uv);
+}
+
+// name: "textureCoord"
+// type: "void"
+// args: (("const Vector3&" . "uvw"))
+//
+void ogre_manual_object_texture_coord_vector3 (ManualObject* ogre_manual_object, const okraArray3 uvw)
+{
+    Vector3 ogre_uvw = Vector3(uvw[0], uvw[1], uvw[2]);
+    ogre_manual_object->textureCoord(ogre_uvw);
+}
+
+// name: "textureCoord"
+// type: "void"
+// args: (("const Vector4&" . "xyzw"))
+//
+void ogre_manual_object_texture_coord_vector4 (ManualObject* ogre_manual_object, const Vector4& xyzw)
+{
+    ogre_manual_object->textureCoord(xyzw);
 }
 
 // name: "colour"
 // type: "void"
 // args: (("const ColourValue&" . "col"))
 //
-void ogre_manual_object_colour (ManualObject* ogre_manual_object, const okraArray4 col)
+void ogre_manual_object_colour_colourvalue (ManualObject* ogre_manual_object, const okraArray4 col)
 {
     ColourValue ogre_col = ColourValue(col[0], col[1], col[2], col[3]);
     ogre_manual_object->colour(ogre_col);
+}
+
+// name: "colour"
+// type: "void"
+// args: (("Real" . "r") ("Real" . "g") ("Real" . "b") ("Real" . "a"))
+//
+void ogre_manual_object_colour_real_real_real_real (ManualObject* ogre_manual_object, Real r, Real g, Real b, Real a)
+{
+    ogre_manual_object->colour(r, g, b, a);
 }
 
 // name: "index"
@@ -194,6 +283,15 @@ void ogre_manual_object_quad (ManualObject* ogre_manual_object, unsigned int i1,
 ManualObject::ManualObjectSection* ogre_manual_object_end (ManualObject* ogre_manual_object)
 {
     return ogre_manual_object->end();
+}
+
+// name: "setMaterialName"
+// type: "void"
+// args: (("size_t" . "subindex") ("const String&" . "name"))
+//
+void ogre_manual_object_set_material_name_size_t_string (ManualObject* ogre_manual_object, size_t subindex, const char* name)
+{
+    ogre_manual_object->setMaterialName(subindex, name);
 }
 
 // name: "convertToMesh"
@@ -280,7 +378,7 @@ void ogre_manual_object_set_keep_declaration_order (ManualObject* ogre_manual_ob
 
 // name: "getKeepDeclarationOrder"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_manual_object_get_keep_declaration_order (ManualObject* ogre_manual_object)
 {

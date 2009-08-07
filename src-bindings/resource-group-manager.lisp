@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:32.
+;;;; This file was generated on: 2009-08-07 15:52:10.
 
 (in-package :okra-bindings)
 
@@ -198,22 +198,6 @@
 
 (defmethod remove-resource-location ((this resource-group-manager) name res-group)
   (ogre-resource-group-manager-remove-resource-location (pointer-to this) name res-group))
-
-
-;; name: "declareResource"
-;; type: "void"
-;; args: (("const String&" . "name") ("const String&" . "resourceType") ("const String&" . "groupName") ("const NameValuePairList&" . "loadParameters"))
-;;
-(defcfun "ogre_resource_group_manager_declare_resource"
-    :void
-  (ogre-resource-group-manager :pointer)
-  (name :string)
-  (resource-type :string)
-  (group-name :string)
-  (load-parameters :pointer))
-
-(defmethod declare-resource ((this resource-group-manager) name resource-type group-name load-parameters)
-  (ogre-resource-group-manager-declare-resource (pointer-to this) name resource-type group-name load-parameters))
 
 
 ;; name: "undeclareResource"
@@ -450,6 +434,18 @@
   (ogre-resource-group-manager-shutdown-all (pointer-to this)))
 
 
+;; name: "getResourceManagerIterator"
+;; type: "ResourceManagerIterator"
+;; args: "void"
+;;
+(defcfun "ogre_resource_group_manager_get_resource_manager_iterator"
+    :pointer
+  (ogre-resource-group-manager :pointer))
+
+(defmethod get-resource-manager-iterator ((this resource-group-manager))
+  (ogre-resource-group-manager-get-resource-manager-iterator (pointer-to this)))
+
+
 ;; name: "getResourceGroups"
 ;; type: "StringVector"
 ;; args: "void"
@@ -460,6 +456,19 @@
 
 (defmethod get-resource-groups ((this resource-group-manager))
   (ogre-resource-group-manager-get-resource-groups (pointer-to this)))
+
+
+;; name: "getResourceDeclarationList"
+;; type: "ResourceDeclarationList"
+;; args: (("const String&" . "groupName"))
+;;
+(defcfun "ogre_resource_group_manager_get_resource_declaration_list"
+    :pointer
+  (ogre-resource-group-manager :pointer)
+  (group-name :string))
+
+(defmethod get-resource-declaration-list ((this resource-group-manager) group-name)
+  (ogre-resource-group-manager-get-resource-declaration-list (pointer-to this) group-name))
 
 
 ;; name: "setLoadingListener"
@@ -477,7 +486,7 @@
 
 ;; name: "getLoadingListener"
 ;; type: "ResourceLoadingListener*"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_resource_group_manager_get_loading_listener"
     :pointer
@@ -485,6 +494,46 @@
 
 (defmethod get-loading-listener ((this resource-group-manager))
   (ogre-resource-group-manager-get-loading-listener (pointer-to this)))
+
+
+;;; Overloaded Foreign Functions
+
+;; name: "declareResource"
+;; type: "void"
+;; args: (("const String&" . "name") ("const String&" . "resourceType") ("const String&" . "groupName") ("const NameValuePairList&" . "loadParameters"))
+;;
+(defcfun "ogre_resource_group_manager_declare_resource_string_string_string_namevaluepairlist"
+    :void
+  (ogre-resource-group-manager :pointer)
+  (name :string)
+  (resource-type :string)
+  (group-name :string)
+  (load-parameters :pointer))
+
+
+;; name: "declareResource"
+;; type: "void"
+;; args: (("const String&" . "name") ("const String&" . "resourceType") ("const String&" . "groupName") ("ManualResourceLoader*" . "loader") ("const NameValuePairList&" . "loadParameters"))
+;;
+(defcfun "ogre_resource_group_manager_declare_resource_string_string_string_manualresourceloader_namevaluepairlist"
+    :void
+  (ogre-resource-group-manager :pointer)
+  (name :string)
+  (resource-type :string)
+  (group-name :string)
+  (loader :pointer)
+  (load-parameters :pointer))
+
+
+;;; Methods for Overloaded Foreign Functions
+
+(defmethod declare-resource ((this resource-group-manager) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil) (arg4 nil))
+  (cond
+    ((and (typep arg0 'string) (typep arg1 'string) (typep arg2 'string) (typep arg3 'cffi:foreign-pointer) (typep arg4 'cffi:foreign-pointer))
+     (ogre-resource-group-manager-declare-resource-string-string-string-manualresourceloader-namevaluepairlist (pointer-to this) arg0 arg1 arg2 arg3 arg4))
+    ((and (typep arg0 'string) (typep arg1 'string) (typep arg2 'string) (typep arg3 'cffi:foreign-pointer))
+     (ogre-resource-group-manager-declare-resource-string-string-string-namevaluepairlist (pointer-to this) arg0 arg1 arg2 arg3))
+    (t (error "Overloaded method not defined for this class."))))
 
 
 

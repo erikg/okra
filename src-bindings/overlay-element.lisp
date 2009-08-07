@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:31.
+;;;; This file was generated on: 2009-08-07 15:52:09.
 
 (in-package :okra-bindings)
 
@@ -60,7 +60,7 @@
 
 ;; name: "isEnabled"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_overlay_element_is_enabled"
     :boolean
@@ -81,20 +81,6 @@
 
 (defmethod set-enabled ((this overlay-element) b)
   (ogre-overlay-element-set-enabled (pointer-to this) b))
-
-
-;; name: "setDimensions"
-;; type: "void"
-;; args: (("Real" . "width") ("Real" . "height"))
-;;
-(defcfun "ogre_overlay_element_set_dimensions"
-    :void
-  (ogre-overlay-element :pointer)
-  (width okra-real)
-  (height okra-real))
-
-(defmethod set-dimensions ((this overlay-element) width height)
-  (ogre-overlay-element-set-dimensions (pointer-to this) width height))
 
 
 ;; name: "setWidth"
@@ -207,19 +193,6 @@
 
 (defmethod get-material-name ((this overlay-element))
   (ogre-overlay-element-get-material-name (pointer-to this)))
-
-
-;; name: "setMaterialName"
-;; type: "void"
-;; args: (("const String&" . "matName"))
-;;
-(defcfun "ogre_overlay_element_set_material_name"
-    :void
-  (ogre-overlay-element :pointer)
-  (mat-name :string))
-
-(defmethod set-material-name ((this overlay-element) mat-name)
-  (ogre-overlay-element-set-material-name (pointer-to this) mat-name))
 
 
 ;; name: "getMaterial"
@@ -420,7 +393,7 @@
 
 ;; name: "isContainer"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_overlay_element_is_container"
     :boolean
@@ -432,7 +405,7 @@
 
 ;; name: "isKeyEnabled"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_overlay_element_is_key_enabled"
     :boolean
@@ -444,7 +417,7 @@
 
 ;; name: "isCloneable"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_overlay_element_is_cloneable"
     :boolean
@@ -469,7 +442,7 @@
 
 ;; name: "getParent"
 ;; type: "OverlayContainer*"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_overlay_element_get_parent"
     :pointer
@@ -481,10 +454,10 @@
 
 ;; name: "getZOrder"
 ;; type: "ushort"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_overlay_element_get_zorder"
-    :unsigned-short
+    :ushort
   (ogre-overlay-element :pointer))
 
 (defmethod get-zorder ((this overlay-element))
@@ -544,7 +517,7 @@
 
 ;; name: "getSourceTemplate"
 ;; type: "const OverlayElement*"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_overlay_element_get_source_template"
     :pointer
@@ -552,6 +525,98 @@
 
 (defmethod get-source-template ((this overlay-element))
   (ogre-overlay-element-get-source-template (pointer-to this)))
+
+
+;;; Overloaded Foreign Functions
+
+;; name: "initialise"
+;; type: "void"
+;; args: "void"
+;;
+(defcfun "ogre_overlay_element_initialise_void"
+    :void
+  (ogre-overlay-element :pointer))
+
+
+;; name: "isVisible"
+;; type: "bool"
+;; args: "void"
+;;
+(defcfun "ogre_overlay_element_is_visible_void"
+    :boolean
+  (ogre-overlay-element :pointer))
+
+
+;; name: "setDimensions"
+;; type: "void"
+;; args: (("Real" . "width") ("Real" . "height"))
+;;
+(defcfun "ogre_overlay_element_set_dimensions_real_real"
+    :void
+  (ogre-overlay-element :pointer)
+  (width okra-real)
+  (height okra-real))
+
+
+;; name: "setPosition"
+;; type: "void"
+;; args: (("Real" . "left") ("Real" . "top"))
+;;
+(defcfun "ogre_overlay_element_set_position_real_real"
+    :void
+  (ogre-overlay-element :pointer)
+  (left okra-real)
+  (top okra-real))
+
+
+;; name: "setMaterialName"
+;; type: "void"
+;; args: (("const String&" . "matName"))
+;;
+(defcfun "ogre_overlay_element_set_material_name_string"
+    :void
+  (ogre-overlay-element :pointer)
+  (mat-name :string))
+
+
+;;; Methods for Overloaded Foreign Functions
+
+(defmethod set-position ((this overlay-element) &optional (arg0 nil) (arg1 nil) (arg2 nil))
+  (declare (ignore arg2))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real))
+     (ogre-overlay-element-set-position-real-real (pointer-to this) arg0 arg1))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod is-visible ((this overlay-element) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 'null) (typep arg1 'null))
+     (ogre-overlay-element-is-visible-void (pointer-to this)))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-material-name ((this overlay-element) &optional (arg0 nil) (arg1 nil))
+  (declare (ignore arg1))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-overlay-element-set-material-name-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod initialise ((this overlay-element) &optional (arg0 nil) (arg1 nil) (arg2 nil))
+  (cond
+    ((and (typep arg0 'null) (typep arg1 'null) (typep arg2 'null))
+     (ogre-overlay-element-initialise-void (pointer-to this)))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-dimensions ((this overlay-element) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil))
+  (declare (ignore arg2 arg3))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real))
+     (ogre-overlay-element-set-dimensions-real-real (pointer-to this) arg0 arg1))
+    (t (error "Overloaded method not defined for this class."))))
 
 
 

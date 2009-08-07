@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:32.
+;;;; This file was generated on: 2009-08-07 15:52:10.
 
 (in-package :okra-bindings)
 
@@ -32,18 +32,6 @@
 
 (defmethod get-target ((this viewport))
   (ogre-viewport-get-target (pointer-to this)))
-
-
-;; name: "getCamera"
-;; type: "Camera*"
-;; args: "void"
-;;
-(defcfun "ogre_viewport_get_camera"
-    :pointer
-  (ogre-viewport :pointer))
-
-(defmethod get-camera ((this viewport))
-  (ogre-viewport-get-camera (pointer-to this)))
 
 
 ;; name: "setCamera"
@@ -368,7 +356,7 @@
 ;; args: "void"
 ;;
 (defcfun "ogre_viewport_get_visibility_mask"
-    :unsigned-int
+    :uint
   (ogre-viewport :pointer))
 
 (defmethod get-visibility-mask ((this viewport))
@@ -398,6 +386,62 @@
 
 (defmethod get-render-queue-invocation-sequence-name ((this viewport))
   (ogre-viewport-get-render-queue-invocation-sequence-name (pointer-to this)))
+
+
+;;; Overloaded Foreign Functions
+
+;; name: "update"
+;; type: "void"
+;; args: "void"
+;;
+(defcfun "ogre_viewport_update_void"
+    :void
+  (ogre-viewport :pointer))
+
+
+;; name: "getCamera"
+;; type: "Camera*"
+;; args: "void"
+;;
+(defcfun "ogre_viewport_get_camera_void"
+    :pointer
+  (ogre-viewport :pointer))
+
+
+;; name: "setDimensions"
+;; type: "void"
+;; args: (("Real" . "left") ("Real" . "top") ("Real" . "width") ("Real" . "height"))
+;;
+(defcfun "ogre_viewport_set_dimensions_real_real_real_real"
+    :void
+  (ogre-viewport :pointer)
+  (left okra-real)
+  (top okra-real)
+  (width okra-real)
+  (height okra-real))
+
+
+;;; Methods for Overloaded Foreign Functions
+
+(defmethod set-dimensions ((this viewport) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real) (typep arg3 'real))
+     (ogre-viewport-set-dimensions-real-real-real-real (pointer-to this) arg0 arg1 arg2 arg3))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod update ((this viewport) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'null))
+     (ogre-viewport-update-void (pointer-to this)))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod get-camera ((this viewport) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'null))
+     (ogre-viewport-get-camera-void (pointer-to this)))
+    (t (error "Overloaded method not defined for this class."))))
 
 
 

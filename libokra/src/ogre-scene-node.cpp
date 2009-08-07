@@ -9,12 +9,9 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
@@ -23,24 +20,36 @@ extern "C"
 {
     void ogre_scene_node_attach_object (SceneNode*, MovableObject*);
     unsigned short ogre_scene_node_num_attached_objects (SceneNode*);
-    MovableObject* ogre_scene_node_get_attached_object (SceneNode*, const char*);
-    MovableObject* ogre_scene_node_detach_object (SceneNode*, const char*);
+    MovableObject* ogre_scene_node_get_attached_object_unsignedshort (SceneNode*, unsigned short);
+    MovableObject* ogre_scene_node_get_attached_object_string (SceneNode*, const char*);
+    MovableObject* ogre_scene_node_detach_object_unsignedshort (SceneNode*, unsigned short);
+    void ogre_scene_node_detach_object_movableobject (SceneNode*, MovableObject*);
+    MovableObject* ogre_scene_node_detach_object_string (SceneNode*, const char*);
     void ogre_scene_node_detach_all_objects (SceneNode*);
     bool ogre_scene_node_is_in_scene_graph (SceneNode*);
     SceneNode::ObjectIterator ogre_scene_node_get_attached_object_iterator (SceneNode*);
     SceneManager* ogre_scene_node_get_creator (SceneNode*);
-    void ogre_scene_node_remove_and_destroy_child (SceneNode*, const char*);
+    void ogre_scene_node_remove_and_destroy_child_string (SceneNode*, const char*);
+    void ogre_scene_node_remove_and_destroy_child_unsignedshort (SceneNode*, unsigned short);
     void ogre_scene_node_remove_and_destroy_all_children (SceneNode*);
     void ogre_scene_node_show_bounding_box (SceneNode*, bool);
     bool ogre_scene_node_get_show_bounding_box (SceneNode*);
-    SceneNode* ogre_scene_node_create_child_scene_node (SceneNode*, const char*, const okraArray3, const okraArray4);
+    SceneNode* ogre_scene_node_create_child_scene_node_vector3_quaternion (SceneNode*, const okraArray3, const okraArray4);
+    SceneNode* ogre_scene_node_create_child_scene_node_string_vector3_quaternion (SceneNode*, const char*, const okraArray3, const okraArray4);
     void ogre_scene_node_find_lights (SceneNode*, LightList&, Real);
     void ogre_scene_node_set_fixed_yaw_axis (SceneNode*, bool, const okraArray3);
+    void ogre_scene_node_yaw_radian_transformspace (SceneNode*, Real, SceneNode::TransformSpace);
+    void ogre_scene_node_set_direction_real_real_real_transformspace_vector3 (SceneNode*, Real, Real, Real, SceneNode::TransformSpace, const okraArray3);
+    void ogre_scene_node_set_direction_vector3_transformspace_vector3 (SceneNode*, const okraArray3, SceneNode::TransformSpace, const okraArray3);
+    void ogre_scene_node_look_at_vector3_transformspace_vector3 (SceneNode*, const okraArray3, SceneNode::TransformSpace, const okraArray3);
+    void ogre_scene_node_set_auto_tracking_bool_scenenode_vector3_vector3 (SceneNode*, bool, SceneNode*, const okraArray3, const okraArray3);
     SceneNode* ogre_scene_node_get_auto_track_target (SceneNode*);
     void ogre_scene_node_get_auto_track_offset (SceneNode*, okraArray3);
     void ogre_scene_node_get_auto_track_local_direction (SceneNode*, okraArray3);
     SceneNode* ogre_scene_node_get_parent_scene_node (SceneNode*);
+    void ogre_scene_node_set_visible_bool_bool (SceneNode*, bool, bool);
     void ogre_scene_node_flip_visibility (SceneNode*, bool);
+    void ogre_scene_node_set_debug_display_enabled_bool_bool (SceneNode*, bool, bool);
 }
 
 
@@ -66,18 +75,45 @@ unsigned short ogre_scene_node_num_attached_objects (SceneNode* ogre_scene_node)
 
 // name: "getAttachedObject"
 // type: "MovableObject*"
+// args: (("unsigned short" . "index"))
+//
+MovableObject* ogre_scene_node_get_attached_object_unsignedshort (SceneNode* ogre_scene_node, unsigned short index)
+{
+    return ogre_scene_node->getAttachedObject(index);
+}
+
+// name: "getAttachedObject"
+// type: "MovableObject*"
 // args: (("const String&" . "name"))
 //
-MovableObject* ogre_scene_node_get_attached_object (SceneNode* ogre_scene_node, const char* name)
+MovableObject* ogre_scene_node_get_attached_object_string (SceneNode* ogre_scene_node, const char* name)
 {
     return ogre_scene_node->getAttachedObject(name);
 }
 
 // name: "detachObject"
 // type: "MovableObject*"
+// args: (("unsigned short" . "index"))
+//
+MovableObject* ogre_scene_node_detach_object_unsignedshort (SceneNode* ogre_scene_node, unsigned short index)
+{
+    return ogre_scene_node->detachObject(index);
+}
+
+// name: "detachObject"
+// type: "void"
+// args: (("MovableObject*" . "obj"))
+//
+void ogre_scene_node_detach_object_movableobject (SceneNode* ogre_scene_node, MovableObject* obj)
+{
+    ogre_scene_node->detachObject(obj);
+}
+
+// name: "detachObject"
+// type: "MovableObject*"
 // args: (("const String&" . "name"))
 //
-MovableObject* ogre_scene_node_detach_object (SceneNode* ogre_scene_node, const char* name)
+MovableObject* ogre_scene_node_detach_object_string (SceneNode* ogre_scene_node, const char* name)
 {
     return ogre_scene_node->detachObject(name);
 }
@@ -122,9 +158,18 @@ SceneManager* ogre_scene_node_get_creator (SceneNode* ogre_scene_node)
 // type: "void"
 // args: (("const String&" . "name"))
 //
-void ogre_scene_node_remove_and_destroy_child (SceneNode* ogre_scene_node, const char* name)
+void ogre_scene_node_remove_and_destroy_child_string (SceneNode* ogre_scene_node, const char* name)
 {
     ogre_scene_node->removeAndDestroyChild(name);
+}
+
+// name: "removeAndDestroyChild"
+// type: "void"
+// args: (("unsigned short" . "index"))
+//
+void ogre_scene_node_remove_and_destroy_child_unsignedshort (SceneNode* ogre_scene_node, unsigned short index)
+{
+    ogre_scene_node->removeAndDestroyChild(index);
 }
 
 // name: "removeAndDestroyAllChildren"
@@ -147,7 +192,7 @@ void ogre_scene_node_show_bounding_box (SceneNode* ogre_scene_node, bool bShow)
 
 // name: "getShowBoundingBox"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_scene_node_get_show_bounding_box (SceneNode* ogre_scene_node)
 {
@@ -156,9 +201,19 @@ bool ogre_scene_node_get_show_bounding_box (SceneNode* ogre_scene_node)
 
 // name: "createChildSceneNode"
 // type: "SceneNode*"
+// args: (("const Vector3&" . "translate") ("const Quaternion&" . "rotate"))
+//
+SceneNode* ogre_scene_node_create_child_scene_node_vector3_quaternion (SceneNode* ogre_scene_node, const okraArray3 translate, const okraArray4 rotate)
+{
+    Vector3 ogre_translate = Vector3(translate[0], translate[1], translate[2]);Quaternion ogre_rotate = Quaternion(rotate[0], rotate[1], rotate[2], rotate[3]);
+    return ogre_scene_node->createChildSceneNode(ogre_translate, ogre_rotate);
+}
+
+// name: "createChildSceneNode"
+// type: "SceneNode*"
 // args: (("const String&" . "name") ("const Vector3&" . "translate") ("const Quaternion&" . "rotate"))
 //
-SceneNode* ogre_scene_node_create_child_scene_node (SceneNode* ogre_scene_node, const char* name, const okraArray3 translate, const okraArray4 rotate)
+SceneNode* ogre_scene_node_create_child_scene_node_string_vector3_quaternion (SceneNode* ogre_scene_node, const char* name, const okraArray3 translate, const okraArray4 rotate)
 {
     Vector3 ogre_translate = Vector3(translate[0], translate[1], translate[2]);Quaternion ogre_rotate = Quaternion(rotate[0], rotate[1], rotate[2], rotate[3]);
     return ogre_scene_node->createChildSceneNode(name, ogre_translate, ogre_rotate);
@@ -181,6 +236,56 @@ void ogre_scene_node_set_fixed_yaw_axis (SceneNode* ogre_scene_node, bool useFix
 {
     Vector3 ogre_fixedAxis = Vector3(fixedAxis[0], fixedAxis[1], fixedAxis[2]);
     ogre_scene_node->setFixedYawAxis(useFixed, ogre_fixedAxis);
+}
+
+// name: "yaw"
+// type: "void"
+// args: (("const Radian&" . "angle") ("TransformSpace" . "relativeTo"))
+//
+void ogre_scene_node_yaw_radian_transformspace (SceneNode* ogre_scene_node, Real angle, SceneNode::TransformSpace relativeTo)
+{
+    Radian ogre_angle = Radian(angle);
+    ogre_scene_node->yaw(ogre_angle, relativeTo);
+}
+
+// name: "setDirection"
+// type: "void"
+// args: (("Real" . "x") ("Real" . "y") ("Real" . "z") ("TransformSpace" . "relativeTo") ("const Vector3&" . "localDirectionVector"))
+//
+void ogre_scene_node_set_direction_real_real_real_transformspace_vector3 (SceneNode* ogre_scene_node, Real x, Real y, Real z, SceneNode::TransformSpace relativeTo, const okraArray3 localDirectionVector)
+{
+    Vector3 ogre_localDirectionVector = Vector3(localDirectionVector[0], localDirectionVector[1], localDirectionVector[2]);
+    ogre_scene_node->setDirection(x, y, z, relativeTo, ogre_localDirectionVector);
+}
+
+// name: "setDirection"
+// type: "void"
+// args: (("const Vector3&" . "vec") ("TransformSpace" . "relativeTo") ("const Vector3&" . "localDirectionVector"))
+//
+void ogre_scene_node_set_direction_vector3_transformspace_vector3 (SceneNode* ogre_scene_node, const okraArray3 vec, SceneNode::TransformSpace relativeTo, const okraArray3 localDirectionVector)
+{
+    Vector3 ogre_vec = Vector3(vec[0], vec[1], vec[2]);Vector3 ogre_localDirectionVector = Vector3(localDirectionVector[0], localDirectionVector[1], localDirectionVector[2]);
+    ogre_scene_node->setDirection(ogre_vec, relativeTo, ogre_localDirectionVector);
+}
+
+// name: "lookAt"
+// type: "void"
+// args: (("const Vector3&" . "targetPoint") ("TransformSpace" . "relativeTo") ("const Vector3&" . "localDirectionVector"))
+//
+void ogre_scene_node_look_at_vector3_transformspace_vector3 (SceneNode* ogre_scene_node, const okraArray3 targetPoint, SceneNode::TransformSpace relativeTo, const okraArray3 localDirectionVector)
+{
+    Vector3 ogre_targetPoint = Vector3(targetPoint[0], targetPoint[1], targetPoint[2]);Vector3 ogre_localDirectionVector = Vector3(localDirectionVector[0], localDirectionVector[1], localDirectionVector[2]);
+    ogre_scene_node->lookAt(ogre_targetPoint, relativeTo, ogre_localDirectionVector);
+}
+
+// name: "setAutoTracking"
+// type: "void"
+// args: (("bool" . "enabled") ("SceneNode*" . "target") ("const Vector3&" . "localDirectionVector") ("const Vector3&" . "offset"))
+//
+void ogre_scene_node_set_auto_tracking_bool_scenenode_vector3_vector3 (SceneNode* ogre_scene_node, bool enabled, SceneNode* target, const okraArray3 localDirectionVector, const okraArray3 offset)
+{
+    Vector3 ogre_localDirectionVector = Vector3(localDirectionVector[0], localDirectionVector[1], localDirectionVector[2]);Vector3 ogre_offset = Vector3(offset[0], offset[1], offset[2]);
+    ogre_scene_node->setAutoTracking(enabled, target, ogre_localDirectionVector, ogre_offset);
 }
 
 // name: "getAutoTrackTarget"
@@ -225,6 +330,15 @@ SceneNode* ogre_scene_node_get_parent_scene_node (SceneNode* ogre_scene_node)
     return ogre_scene_node->getParentSceneNode();
 }
 
+// name: "setVisible"
+// type: "void"
+// args: (("bool" . "visible") ("bool" . "cascade"))
+//
+void ogre_scene_node_set_visible_bool_bool (SceneNode* ogre_scene_node, bool visible, bool cascade)
+{
+    ogre_scene_node->setVisible(visible, cascade);
+}
+
 // name: "flipVisibility"
 // type: "void"
 // args: (("bool" . "cascade"))
@@ -232,6 +346,15 @@ SceneNode* ogre_scene_node_get_parent_scene_node (SceneNode* ogre_scene_node)
 void ogre_scene_node_flip_visibility (SceneNode* ogre_scene_node, bool cascade)
 {
     ogre_scene_node->flipVisibility(cascade);
+}
+
+// name: "setDebugDisplayEnabled"
+// type: "void"
+// args: (("bool" . "enabled") ("bool" . "cascade"))
+//
+void ogre_scene_node_set_debug_display_enabled_bool_bool (SceneNode* ogre_scene_node, bool enabled, bool cascade)
+{
+    ogre_scene_node->setDebugDisplayEnabled(enabled, cascade);
 }
 
 

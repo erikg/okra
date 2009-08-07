@@ -14,7 +14,7 @@
 (in-package :okra-system)
 
 (asdf:defsystem :okra-bindings-generator
-  :version "1.6.2.1"
+  :version "1.6.2.2"
   :components
     ((:module bindings-generator
       :serial t
@@ -24,8 +24,10 @@
          (:file "config")
          (:file "common")
          (:file "common-lisp-config")
+         (:file "common-lisp-types")
          (:file "common-lisp")
          (:file "cpp-config")
+         (:file "cpp-types")
          (:file "cpp")
          (:file "bindings-generator"))))
   :depends-on (:cl-ppcre :html-template :iterate :okra-common :parse-number

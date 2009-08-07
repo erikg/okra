@@ -9,39 +9,41 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:30.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
 
 extern "C"
 {
+    SceneManager* ogre_camera_get_scene_manager_void (Camera*);
     const char* ogre_camera_get_name (Camera*);
     void ogre_camera_set_polygon_mode (Camera*, PolygonMode);
     PolygonMode ogre_camera_get_polygon_mode (Camera*);
-    void ogre_camera_set_position (Camera*, const okraArray3);
+    void ogre_camera_set_position_real_real_real (Camera*, Real, Real, Real);
+    void ogre_camera_set_position_vector3 (Camera*, const okraArray3);
     void ogre_camera_get_position (Camera*, okraArray3);
     void ogre_camera_move (Camera*, const okraArray3);
     void ogre_camera_move_relative (Camera*, const okraArray3);
-    void ogre_camera_set_direction (Camera*, const okraArray3);
+    void ogre_camera_set_direction_real_real_real (Camera*, Real, Real, Real);
+    void ogre_camera_set_direction_vector3 (Camera*, const okraArray3);
     void ogre_camera_get_direction (Camera*, okraArray3);
     void ogre_camera_get_up (Camera*, okraArray3);
     void ogre_camera_get_right (Camera*, okraArray3);
-    void ogre_camera_look_at (Camera*, const okraArray3);
-    void ogre_camera_roll (Camera*, Real);
-    void ogre_camera_yaw (Camera*, Real);
-    void ogre_camera_pitch (Camera*, Real);
-    void ogre_camera_rotate (Camera*, const okraArray4);
+    void ogre_camera_look_at_vector3 (Camera*, const okraArray3);
+    void ogre_camera_look_at_real_real_real (Camera*, Real, Real, Real);
+    void ogre_camera_roll_radian (Camera*, Real);
+    void ogre_camera_yaw_radian (Camera*, Real);
+    void ogre_camera_pitch_radian (Camera*, Real);
+    void ogre_camera_rotate_vector3_radian (Camera*, const okraArray3, Real);
+    void ogre_camera_rotate_quaternion (Camera*, const okraArray4);
     void ogre_camera_set_fixed_yaw_axis (Camera*, bool, const okraArray3);
     void ogre_camera_get_orientation (Camera*, okraArray4);
-    void ogre_camera_set_orientation (Camera*, const okraArray4);
+    void ogre_camera_set_orientation_quaternion (Camera*, const okraArray4);
     void ogre_camera_get_derived_orientation (Camera*, okraArray4);
-    void ogre_camera_get_derived_position (Camera*, okraArray3);
+    void ogre_camera_get_derived_position_void (Camera*, okraArray3);
     void ogre_camera_get_derived_direction (Camera*, okraArray3);
     void ogre_camera_get_derived_up (Camera*, okraArray3);
     void ogre_camera_get_derived_right (Camera*, okraArray3);
@@ -51,29 +53,35 @@ extern "C"
     void ogre_camera_get_real_up (Camera*, okraArray3);
     void ogre_camera_get_real_right (Camera*, okraArray3);
     const char* ogre_camera_get_movable_type (Camera*);
-    void ogre_camera_set_auto_tracking (Camera*, bool, SceneNode*, const okraArray3);
+    void ogre_camera_set_auto_tracking_bool_scenenode_vector3 (Camera*, bool, SceneNode*, const okraArray3);
     void ogre_camera_set_lod_bias (Camera*, Real);
     Real ogre_camera_get_lod_bias (Camera*);
     void ogre_camera_set_lod_camera (Camera*, const Camera*);
     const Camera* ogre_camera_get_lod_camera (Camera*);
-    Ray ogre_camera_get_camera_to_viewport_ray (Camera*, Real, Real);
-    PlaneBoundedVolume ogre_camera_get_camera_to_viewport_box_volume (Camera*, Real, Real, Real, Real, bool);
+    Ray ogre_camera_get_camera_to_viewport_ray_real_real (Camera*, Real, Real);
+    void ogre_camera_get_camera_to_viewport_ray_real_real_ray (Camera*, Real, Real, Ray*);
+    PlaneBoundedVolume ogre_camera_get_camera_to_viewport_box_volume_real_real_real_real_bool (Camera*, Real, Real, Real, Real, bool);
+    void ogre_camera_get_camera_to_viewport_box_volume_real_real_real_real_planeboundedvolume_bool (Camera*, Real, Real, Real, Real, PlaneBoundedVolume*, bool);
     void ogre_camera_set_window (Camera*, Real, Real, Real, Real);
     void ogre_camera_reset_window (Camera*);
     bool ogre_camera_is_window_set (Camera*);
     Real ogre_camera_get_bounding_radius (Camera*);
     SceneNode* ogre_camera_get_auto_track_target (Camera*);
     void ogre_camera_get_auto_track_offset (Camera*, okraArray3);
+    Viewport* ogre_camera_get_viewport_void (Camera*);
     void ogre_camera_set_auto_aspect_ratio (Camera*, bool);
     bool ogre_camera_get_auto_aspect_ratio (Camera*);
     void ogre_camera_set_culling_frustum (Camera*, Frustum*);
     Frustum* ogre_camera_get_culling_frustum (Camera*);
-    bool ogre_camera_is_visible (Camera*, const okraArray3, FrustumPlane*);
+    bool ogre_camera_is_visible_axisalignedbox_frustumplane (Camera*, const okraArray6, FrustumPlane*);
+    bool ogre_camera_is_visible_sphere_frustumplane (Camera*, const okraArray4, FrustumPlane*);
+    bool ogre_camera_is_visible_vector3_frustumplane (Camera*, const okraArray3, FrustumPlane*);
     const Vector3* ogre_camera_get_world_space_corners (Camera*);
     const Plane& ogre_camera_get_frustum_plane (Camera*, unsigned short);
     Real ogre_camera_get_near_clip_distance (Camera*);
     Real ogre_camera_get_far_clip_distance (Camera*);
-    void ogre_camera_get_view_matrix (Camera*, okraArray16, bool);
+    void ogre_camera_get_view_matrix_void (Camera*, okraArray16);
+    void ogre_camera_get_view_matrix_bool (Camera*, okraArray16, bool);
     void ogre_camera_set_use_rendering_distance (Camera*, bool);
     bool ogre_camera_get_use_rendering_distance (Camera*);
     void ogre_camera_synchronise_base_settings_with (Camera*, const Camera*);
@@ -83,6 +91,15 @@ extern "C"
 
 
 // Functions
+
+// name: "getSceneManager"
+// type: "SceneManager*"
+// args: "void"
+//
+SceneManager* ogre_camera_get_scene_manager_void (Camera* ogre_camera)
+{
+    return ogre_camera->getSceneManager();
+}
 
 // name: "getName"
 // type: "const String&"
@@ -113,9 +130,18 @@ PolygonMode ogre_camera_get_polygon_mode (Camera* ogre_camera)
 
 // name: "setPosition"
 // type: "void"
+// args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+//
+void ogre_camera_set_position_real_real_real (Camera* ogre_camera, Real x, Real y, Real z)
+{
+    ogre_camera->setPosition(x, y, z);
+}
+
+// name: "setPosition"
+// type: "void"
 // args: (("const Vector3&" . "vec"))
 //
-void ogre_camera_set_position (Camera* ogre_camera, const okraArray3 vec)
+void ogre_camera_set_position_vector3 (Camera* ogre_camera, const okraArray3 vec)
 {
     Vector3 ogre_vec = Vector3(vec[0], vec[1], vec[2]);
     ogre_camera->setPosition(ogre_vec);
@@ -155,9 +181,18 @@ void ogre_camera_move_relative (Camera* ogre_camera, const okraArray3 vec)
 
 // name: "setDirection"
 // type: "void"
+// args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+//
+void ogre_camera_set_direction_real_real_real (Camera* ogre_camera, Real x, Real y, Real z)
+{
+    ogre_camera->setDirection(x, y, z);
+}
+
+// name: "setDirection"
+// type: "void"
 // args: (("const Vector3&" . "vec"))
 //
-void ogre_camera_set_direction (Camera* ogre_camera, const okraArray3 vec)
+void ogre_camera_set_direction_vector3 (Camera* ogre_camera, const okraArray3 vec)
 {
     Vector3 ogre_vec = Vector3(vec[0], vec[1], vec[2]);
     ogre_camera->setDirection(ogre_vec);
@@ -203,17 +238,26 @@ void ogre_camera_get_right (Camera* ogre_camera, okraArray3 v)
 // type: "void"
 // args: (("const Vector3&" . "targetPoint"))
 //
-void ogre_camera_look_at (Camera* ogre_camera, const okraArray3 targetPoint)
+void ogre_camera_look_at_vector3 (Camera* ogre_camera, const okraArray3 targetPoint)
 {
     Vector3 ogre_targetPoint = Vector3(targetPoint[0], targetPoint[1], targetPoint[2]);
     ogre_camera->lookAt(ogre_targetPoint);
+}
+
+// name: "lookAt"
+// type: "void"
+// args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+//
+void ogre_camera_look_at_real_real_real (Camera* ogre_camera, Real x, Real y, Real z)
+{
+    ogre_camera->lookAt(x, y, z);
 }
 
 // name: "roll"
 // type: "void"
 // args: (("const Radian&" . "angle"))
 //
-void ogre_camera_roll (Camera* ogre_camera, Real angle)
+void ogre_camera_roll_radian (Camera* ogre_camera, Real angle)
 {
     Radian ogre_angle = Radian(angle);
     ogre_camera->roll(ogre_angle);
@@ -223,7 +267,7 @@ void ogre_camera_roll (Camera* ogre_camera, Real angle)
 // type: "void"
 // args: (("const Radian&" . "angle"))
 //
-void ogre_camera_yaw (Camera* ogre_camera, Real angle)
+void ogre_camera_yaw_radian (Camera* ogre_camera, Real angle)
 {
     Radian ogre_angle = Radian(angle);
     ogre_camera->yaw(ogre_angle);
@@ -233,7 +277,7 @@ void ogre_camera_yaw (Camera* ogre_camera, Real angle)
 // type: "void"
 // args: (("const Radian&" . "angle"))
 //
-void ogre_camera_pitch (Camera* ogre_camera, Real angle)
+void ogre_camera_pitch_radian (Camera* ogre_camera, Real angle)
 {
     Radian ogre_angle = Radian(angle);
     ogre_camera->pitch(ogre_angle);
@@ -241,9 +285,19 @@ void ogre_camera_pitch (Camera* ogre_camera, Real angle)
 
 // name: "rotate"
 // type: "void"
+// args: (("const Vector3&" . "axis") ("const Radian&" . "angle"))
+//
+void ogre_camera_rotate_vector3_radian (Camera* ogre_camera, const okraArray3 axis, Real angle)
+{
+    Vector3 ogre_axis = Vector3(axis[0], axis[1], axis[2]);Radian ogre_angle = Radian(angle);
+    ogre_camera->rotate(ogre_axis, ogre_angle);
+}
+
+// name: "rotate"
+// type: "void"
 // args: (("const Quaternion&" . "q"))
 //
-void ogre_camera_rotate (Camera* ogre_camera, const okraArray4 q)
+void ogre_camera_rotate_quaternion (Camera* ogre_camera, const okraArray4 q)
 {
     Quaternion ogre_q = Quaternion(q[0], q[1], q[2], q[3]);
     ogre_camera->rotate(ogre_q);
@@ -276,7 +330,7 @@ void ogre_camera_get_orientation (Camera* ogre_camera, okraArray4 q)
 // type: "void"
 // args: (("const Quaternion&" . "q"))
 //
-void ogre_camera_set_orientation (Camera* ogre_camera, const okraArray4 q)
+void ogre_camera_set_orientation_quaternion (Camera* ogre_camera, const okraArray4 q)
 {
     Quaternion ogre_q = Quaternion(q[0], q[1], q[2], q[3]);
     ogre_camera->setOrientation(ogre_q);
@@ -299,7 +353,7 @@ void ogre_camera_get_derived_orientation (Camera* ogre_camera, okraArray4 q)
 // type: "const Vector3&"
 // args: "void"
 //
-void ogre_camera_get_derived_position (Camera* ogre_camera, okraArray3 v)
+void ogre_camera_get_derived_position_void (Camera* ogre_camera, okraArray3 v)
 {
     Vector3 ogre_v = ogre_camera->getDerivedPosition();
     v[0] = ogre_v[0];
@@ -417,7 +471,7 @@ const char* ogre_camera_get_movable_type (Camera* ogre_camera)
 // type: "void"
 // args: (("bool" . "enabled") ("SceneNode*" . "target") ("const Vector3&" . "offset"))
 //
-void ogre_camera_set_auto_tracking (Camera* ogre_camera, bool enabled, SceneNode* target, const okraArray3 offset)
+void ogre_camera_set_auto_tracking_bool_scenenode_vector3 (Camera* ogre_camera, bool enabled, SceneNode* target, const okraArray3 offset)
 {
     Vector3 ogre_offset = Vector3(offset[0], offset[1], offset[2]);
     ogre_camera->setAutoTracking(enabled, target, ogre_offset);
@@ -452,7 +506,7 @@ void ogre_camera_set_lod_camera (Camera* ogre_camera, const Camera* lodCam)
 
 // name: "getLodCamera"
 // type: "const Camera*"
-// args: NIL
+// args: "void"
 //
 const Camera* ogre_camera_get_lod_camera (Camera* ogre_camera)
 {
@@ -463,18 +517,36 @@ const Camera* ogre_camera_get_lod_camera (Camera* ogre_camera)
 // type: "Ray"
 // args: (("Real" . "screenx") ("Real" . "screeny"))
 //
-Ray ogre_camera_get_camera_to_viewport_ray (Camera* ogre_camera, Real screenx, Real screeny)
+Ray ogre_camera_get_camera_to_viewport_ray_real_real (Camera* ogre_camera, Real screenx, Real screeny)
 {
     return ogre_camera->getCameraToViewportRay(screenx, screeny);
+}
+
+// name: "getCameraToViewportRay"
+// type: "void"
+// args: (("Real" . "screenx") ("Real" . "screeny") ("Ray*" . "outRay"))
+//
+void ogre_camera_get_camera_to_viewport_ray_real_real_ray (Camera* ogre_camera, Real screenx, Real screeny, Ray* outRay)
+{
+    ogre_camera->getCameraToViewportRay(screenx, screeny, outRay);
 }
 
 // name: "getCameraToViewportBoxVolume"
 // type: "PlaneBoundedVolume"
 // args: (("Real" . "screenLeft") ("Real" . "screenTop") ("Real" . "screenRight") ("Real" . "screenBottom") ("bool" . "includeFarPlane"))
 //
-PlaneBoundedVolume ogre_camera_get_camera_to_viewport_box_volume (Camera* ogre_camera, Real screenLeft, Real screenTop, Real screenRight, Real screenBottom, bool includeFarPlane)
+PlaneBoundedVolume ogre_camera_get_camera_to_viewport_box_volume_real_real_real_real_bool (Camera* ogre_camera, Real screenLeft, Real screenTop, Real screenRight, Real screenBottom, bool includeFarPlane)
 {
     return ogre_camera->getCameraToViewportBoxVolume(screenLeft, screenTop, screenRight, screenBottom, includeFarPlane);
+}
+
+// name: "getCameraToViewportBoxVolume"
+// type: "void"
+// args: (("Real" . "screenLeft") ("Real" . "screenTop") ("Real" . "screenRight") ("Real" . "screenBottom") ("PlaneBoundedVolume*" . "outVolume") ("bool" . "includeFarPlane"))
+//
+void ogre_camera_get_camera_to_viewport_box_volume_real_real_real_real_planeboundedvolume_bool (Camera* ogre_camera, Real screenLeft, Real screenTop, Real screenRight, Real screenBottom, PlaneBoundedVolume* outVolume, bool includeFarPlane)
+{
+    ogre_camera->getCameraToViewportBoxVolume(screenLeft, screenTop, screenRight, screenBottom, outVolume, includeFarPlane);
 }
 
 // name: "setWindow"
@@ -534,6 +606,15 @@ void ogre_camera_get_auto_track_offset (Camera* ogre_camera, okraArray3 v)
     v[2] = ogre_v[2];
 }
 
+// name: "getViewport"
+// type: "Viewport*"
+// args: "void"
+//
+Viewport* ogre_camera_get_viewport_void (Camera* ogre_camera)
+{
+    return ogre_camera->getViewport();
+}
+
 // name: "setAutoAspectRatio"
 // type: "void"
 // args: (("bool" . "autoratio"))
@@ -572,9 +653,29 @@ Frustum* ogre_camera_get_culling_frustum (Camera* ogre_camera)
 
 // name: "isVisible"
 // type: "bool"
+// args: (("const AxisAlignedBox&" . "bound") ("FrustumPlane*" . "culledBy"))
+//
+bool ogre_camera_is_visible_axisalignedbox_frustumplane (Camera* ogre_camera, const okraArray6 bound, FrustumPlane* culledBy)
+{
+    AxisAlignedBox ogre_bound = AxisAlignedBox(bound[0], bound[1], bound[2], bound[3], bound[4], bound[5]);
+    return ogre_camera->isVisible(ogre_bound, culledBy);
+}
+
+// name: "isVisible"
+// type: "bool"
+// args: (("const Sphere&" . "bound") ("FrustumPlane*" . "culledBy"))
+//
+bool ogre_camera_is_visible_sphere_frustumplane (Camera* ogre_camera, const okraArray4 bound, FrustumPlane* culledBy)
+{
+    Sphere ogre_bound = Sphere(Vector3(bound[0], bound[1], bound[2]), bound[3]);
+    return ogre_camera->isVisible(ogre_bound, culledBy);
+}
+
+// name: "isVisible"
+// type: "bool"
 // args: (("const Vector3&" . "vert") ("FrustumPlane*" . "culledBy"))
 //
-bool ogre_camera_is_visible (Camera* ogre_camera, const okraArray3 vert, FrustumPlane* culledBy)
+bool ogre_camera_is_visible_vector3_frustumplane (Camera* ogre_camera, const okraArray3 vert, FrustumPlane* culledBy)
 {
     Vector3 ogre_vert = Vector3(vert[0], vert[1], vert[2]);
     return ogre_camera->isVisible(ogre_vert, culledBy);
@@ -618,9 +719,26 @@ Real ogre_camera_get_far_clip_distance (Camera* ogre_camera)
 
 // name: "getViewMatrix"
 // type: "const Matrix4&"
+// args: "void"
+//
+void ogre_camera_get_view_matrix_void (Camera* ogre_camera, okraArray16 m4)
+{
+    Matrix4 ogre_m4 = ogre_camera->getViewMatrix();
+    m4[ 0] = *(ogre_m4[ 0]);  m4[ 1] = *(ogre_m4[ 1]);
+    m4[ 2] = *(ogre_m4[ 2]);  m4[ 3] = *(ogre_m4[ 3]);
+    m4[ 4] = *(ogre_m4[ 4]);  m4[ 5] = *(ogre_m4[ 5]);
+    m4[ 6] = *(ogre_m4[ 6]);  m4[ 7] = *(ogre_m4[ 7]);
+    m4[ 8] = *(ogre_m4[ 8]);  m4[ 9] = *(ogre_m4[ 9]);
+    m4[10] = *(ogre_m4[10]);  m4[11] = *(ogre_m4[11]);
+    m4[12] = *(ogre_m4[12]);  m4[13] = *(ogre_m4[13]);
+    m4[14] = *(ogre_m4[14]);  m4[15] = *(ogre_m4[15]);
+}
+
+// name: "getViewMatrix"
+// type: "const Matrix4&"
 // args: (("bool" . "ownFrustumOnly"))
 //
-void ogre_camera_get_view_matrix (Camera* ogre_camera, okraArray16 m4, bool ownFrustumOnly)
+void ogre_camera_get_view_matrix_bool (Camera* ogre_camera, okraArray16 m4, bool ownFrustumOnly)
 {
     Matrix4 ogre_m4 = ogre_camera->getViewMatrix(ownFrustumOnly);
     m4[ 0] = *(ogre_m4[ 0]);  m4[ 1] = *(ogre_m4[ 1]);

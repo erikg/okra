@@ -9,12 +9,9 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
@@ -24,7 +21,10 @@ extern "C"
     const StringVector& ogre_overlay_manager_get_script_patterns (OverlayManager*);
     void ogre_overlay_manager_parse_script (OverlayManager*, DataStreamPtr&, const char*);
     Real ogre_overlay_manager_get_loading_order (OverlayManager*);
+    Overlay* ogre_overlay_manager_create_string (OverlayManager*, const char*);
     Overlay* ogre_overlay_manager_get_by_name (OverlayManager*, const char*);
+    void ogre_overlay_manager_destroy_string (OverlayManager*, const char*);
+    void ogre_overlay_manager_destroy_overlay (OverlayManager*, Overlay*);
     void ogre_overlay_manager_destroy_all (OverlayManager*);
     OverlayManager::OverlayMapIterator ogre_overlay_manager_get_overlay_iterator (OverlayManager*);
     bool ogre_overlay_manager_has_viewport_changed (OverlayManager*);
@@ -33,9 +33,11 @@ extern "C"
     Real ogre_overlay_manager_get_viewport_aspect_ratio (OverlayManager*);
     OverlayElement* ogre_overlay_manager_create_overlay_element (OverlayManager*, const char*, const char*, bool);
     OverlayElement* ogre_overlay_manager_get_overlay_element (OverlayManager*, const char*, bool);
-    void ogre_overlay_manager_destroy_overlay_element (OverlayManager*, OverlayElement*, bool);
+    void ogre_overlay_manager_destroy_overlay_element_string_bool (OverlayManager*, const char*, bool);
+    void ogre_overlay_manager_destroy_overlay_element_overlayelement_bool (OverlayManager*, OverlayElement*, bool);
     void ogre_overlay_manager_destroy_all_overlay_elements (OverlayManager*, bool);
     void ogre_overlay_manager_add_overlay_element_factory (OverlayManager*, OverlayElementFactory*);
+    const OverlayManager::FactoryMap& ogre_overlay_manager_get_overlay_element_factory_map (OverlayManager*);
     OverlayElement* ogre_overlay_manager_create_overlay_element_from_template (OverlayManager*, const char*, const char*, const char*, bool);
     OverlayElement* ogre_overlay_manager_clone_overlay_element_from_template (OverlayManager*, const char*, const char*);
     OverlayElement* ogre_overlay_manager_create_overlay_element_from_factory (OverlayManager*, const char*, const char*);
@@ -73,6 +75,15 @@ Real ogre_overlay_manager_get_loading_order (OverlayManager* ogre_overlay_manage
     return ogre_overlay_manager->getLoadingOrder();
 }
 
+// name: "create"
+// type: "Overlay*"
+// args: (("const String&" . "name"))
+//
+Overlay* ogre_overlay_manager_create_string (OverlayManager* ogre_overlay_manager, const char* name)
+{
+    return ogre_overlay_manager->create(name);
+}
+
 // name: "getByName"
 // type: "Overlay*"
 // args: (("const String&" . "name"))
@@ -80,6 +91,24 @@ Real ogre_overlay_manager_get_loading_order (OverlayManager* ogre_overlay_manage
 Overlay* ogre_overlay_manager_get_by_name (OverlayManager* ogre_overlay_manager, const char* name)
 {
     return ogre_overlay_manager->getByName(name);
+}
+
+// name: "destroy"
+// type: "void"
+// args: (("const String&" . "name"))
+//
+void ogre_overlay_manager_destroy_string (OverlayManager* ogre_overlay_manager, const char* name)
+{
+    ogre_overlay_manager->destroy(name);
+}
+
+// name: "destroy"
+// type: "void"
+// args: (("Overlay*" . "overlay"))
+//
+void ogre_overlay_manager_destroy_overlay (OverlayManager* ogre_overlay_manager, Overlay* overlay)
+{
+    ogre_overlay_manager->destroy(overlay);
 }
 
 // name: "destroyAll"
@@ -156,9 +185,18 @@ OverlayElement* ogre_overlay_manager_get_overlay_element (OverlayManager* ogre_o
 
 // name: "destroyOverlayElement"
 // type: "void"
+// args: (("const String&" . "instanceName") ("bool" . "isTemplate"))
+//
+void ogre_overlay_manager_destroy_overlay_element_string_bool (OverlayManager* ogre_overlay_manager, const char* instanceName, bool isTemplate)
+{
+    ogre_overlay_manager->destroyOverlayElement(instanceName, isTemplate);
+}
+
+// name: "destroyOverlayElement"
+// type: "void"
 // args: (("OverlayElement*" . "pInstance") ("bool" . "isTemplate"))
 //
-void ogre_overlay_manager_destroy_overlay_element (OverlayManager* ogre_overlay_manager, OverlayElement* pInstance, bool isTemplate)
+void ogre_overlay_manager_destroy_overlay_element_overlayelement_bool (OverlayManager* ogre_overlay_manager, OverlayElement* pInstance, bool isTemplate)
 {
     ogre_overlay_manager->destroyOverlayElement(pInstance, isTemplate);
 }
@@ -179,6 +217,15 @@ void ogre_overlay_manager_destroy_all_overlay_elements (OverlayManager* ogre_ove
 void ogre_overlay_manager_add_overlay_element_factory (OverlayManager* ogre_overlay_manager, OverlayElementFactory* elemFactory)
 {
     ogre_overlay_manager->addOverlayElementFactory(elemFactory);
+}
+
+// name: "getOverlayElementFactoryMap"
+// type: "const FactoryMap&"
+// args: "void"
+//
+const OverlayManager::FactoryMap& ogre_overlay_manager_get_overlay_element_factory_map (OverlayManager* ogre_overlay_manager)
+{
+    return ogre_overlay_manager->getOverlayElementFactoryMap();
 }
 
 // name: "createOverlayElementFromTemplate"
@@ -210,7 +257,7 @@ OverlayElement* ogre_overlay_manager_create_overlay_element_from_factory (Overla
 
 // name: "getTemplateIterator"
 // type: "TemplateIterator"
-// args: NIL
+// args: "void"
 //
 OverlayManager::TemplateIterator ogre_overlay_manager_get_template_iterator (OverlayManager* ogre_overlay_manager)
 {

@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:32.
+;;;; This file was generated on: 2009-08-07 15:52:10.
 
 (in-package :okra-bindings)
 
@@ -21,23 +21,6 @@
 
 
 ;;; Foreign Functions & Methods
-
-;; name: "create"
-;; type: "void"
-;; args: (("const String&" . "name") ("unsigned int" . "width") ("unsigned int" . "height") ("bool" . "fullScreen") ("const NameValuePairList*" . "miscParams"))
-;;
-(defcfun "ogre_render_window_create"
-    :void
-  (ogre-render-window :pointer)
-  (name :string)
-  (width :unsigned-int)
-  (height :unsigned-int)
-  (full-screen :boolean)
-  (misc-params :pointer))
-
-(defmethod create ((this render-window) name width height full-screen misc-params)
-  (ogre-render-window-create (pointer-to this) name width height full-screen misc-params))
-
 
 ;; name: "setFullscreen"
 ;; type: "void"
@@ -52,18 +35,6 @@
 
 (defmethod set-fullscreen ((this render-window) full-screen width height)
   (ogre-render-window-set-fullscreen (pointer-to this) full-screen width height))
-
-
-;; name: "destroy"
-;; type: "void"
-;; args: "void"
-;;
-(defcfun "ogre_render_window_destroy"
-    :void
-  (ogre-render-window :pointer))
-
-(defmethod destroy ((this render-window))
-  (ogre-render-window-destroy (pointer-to this)))
 
 
 ;; name: "resize"
@@ -82,7 +53,7 @@
 
 ;; name: "windowMovedOrResized"
 ;; type: "void"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_render_window_window_moved_or_resized"
     :void
@@ -104,19 +75,6 @@
 
 (defmethod reposition ((this render-window) left top)
   (ogre-render-window-reposition (pointer-to this) left top))
-
-
-;; name: "setVisible"
-;; type: "void"
-;; args: (("bool" . "visible"))
-;;
-(defcfun "ogre_render_window_set_visible"
-    :void
-  (ogre-render-window :pointer)
-  (visible :boolean))
-
-(defmethod set-visible ((this render-window) visible)
-  (ogre-render-window-set-visible (pointer-to this) visible))
 
 
 ;; name: "isActive"
@@ -169,7 +127,7 @@
 
 ;; name: "suggestPixelFormat"
 ;; type: "PixelFormat"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_render_window_suggest_pixel_format"
     pixel-format
@@ -181,7 +139,7 @@
 
 ;; name: "isDeactivatedOnFocusChange"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_render_window_is_deactivated_on_focus_change"
     :boolean
@@ -202,6 +160,81 @@
 
 (defmethod set-deactivate-on-focus-change ((this render-window) deactivate)
   (ogre-render-window-set-deactivate-on-focus-change (pointer-to this) deactivate))
+
+
+;;; Overloaded Foreign Functions
+
+;; name: "create"
+;; type: "void"
+;; args: (("const String&" . "name") ("unsigned int" . "width") ("unsigned int" . "height") ("bool" . "fullScreen") ("const NameValuePairList*" . "miscParams"))
+;;
+(defcfun "ogre_render_window_create_string_unsignedint_unsignedint_bool_namevaluepairlist"
+    :void
+  (ogre-render-window :pointer)
+  (name :string)
+  (width :unsigned-int)
+  (height :unsigned-int)
+  (full-screen :boolean)
+  (misc-params :pointer))
+
+
+;; name: "destroy"
+;; type: "void"
+;; args: "void"
+;;
+(defcfun "ogre_render_window_destroy_void"
+    :void
+  (ogre-render-window :pointer))
+
+
+;; name: "isVisible"
+;; type: "bool"
+;; args: "void"
+;;
+(defcfun "ogre_render_window_is_visible_void"
+    :boolean
+  (ogre-render-window :pointer))
+
+
+;; name: "setVisible"
+;; type: "void"
+;; args: (("bool" . "visible"))
+;;
+(defcfun "ogre_render_window_set_visible_bool"
+    :void
+  (ogre-render-window :pointer)
+  (visible :boolean))
+
+
+;;; Methods for Overloaded Foreign Functions
+
+(defmethod is-visible ((this render-window) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 'null) (typep arg1 'null))
+     (ogre-render-window-is-visible-void (pointer-to this)))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-visible ((this render-window) &optional (arg0 nil) (arg1 nil))
+  (declare (ignore arg1))
+  (cond
+    ((and (typep arg0 'boolean))
+     (ogre-render-window-set-visible-bool (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod create ((this render-window) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil) (arg4 nil))
+  (cond
+    ((and (typep arg0 'string) (typep arg1 'integer) (typep arg2 'integer) (typep arg3 'boolean) (typep arg4 'cffi:foreign-pointer))
+     (ogre-render-window-create-string-unsignedint-unsignedint-bool-namevaluepairlist (pointer-to this) arg0 arg1 arg2 arg3 arg4))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod destroy ((this render-window) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'null))
+     (ogre-render-window-destroy-void (pointer-to this)))
+    (t (error "Overloaded method not defined for this class."))))
 
 
 

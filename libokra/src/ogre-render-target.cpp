@@ -9,12 +9,9 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
@@ -26,14 +23,15 @@ extern "C"
     unsigned int ogre_render_target_get_width (RenderTarget*);
     unsigned int ogre_render_target_get_height (RenderTarget*);
     unsigned int ogre_render_target_get_colour_depth (RenderTarget*);
-    void ogre_render_target_update (RenderTarget*, bool);
+    void ogre_render_target_update_bool (RenderTarget*, bool);
     void ogre_render_target_swap_buffers (RenderTarget*, bool);
     Viewport* ogre_render_target_add_viewport (RenderTarget*, Camera*, int, float, float, float, float);
     unsigned short ogre_render_target_get_num_viewports (RenderTarget*);
-    Viewport* ogre_render_target_get_viewport (RenderTarget*, unsigned short);
+    Viewport* ogre_render_target_get_viewport_unsignedshort (RenderTarget*, unsigned short);
     void ogre_render_target_remove_viewport (RenderTarget*, int);
     void ogre_render_target_remove_all_viewports (RenderTarget*);
-    void ogre_render_target_get_statistics (RenderTarget*, float&, float&, float&, float&);
+    void ogre_render_target_get_statistics_float_float_float_float (RenderTarget*, float&, float&, float&, float&);
+    const RenderTarget::FrameStats& ogre_render_target_get_statistics_void (RenderTarget*);
     float ogre_render_target_get_last_fps (RenderTarget*);
     float ogre_render_target_get_average_fps (RenderTarget*);
     float ogre_render_target_get_best_fps (RenderTarget*);
@@ -114,7 +112,7 @@ unsigned int ogre_render_target_get_colour_depth (RenderTarget* ogre_render_targ
 // type: "void"
 // args: (("bool" . "swapBuffers"))
 //
-void ogre_render_target_update (RenderTarget* ogre_render_target, bool swapBuffers)
+void ogre_render_target_update_bool (RenderTarget* ogre_render_target, bool swapBuffers)
 {
     ogre_render_target->update(swapBuffers);
 }
@@ -150,7 +148,7 @@ unsigned short ogre_render_target_get_num_viewports (RenderTarget* ogre_render_t
 // type: "Viewport*"
 // args: (("unsigned short" . "index"))
 //
-Viewport* ogre_render_target_get_viewport (RenderTarget* ogre_render_target, unsigned short index)
+Viewport* ogre_render_target_get_viewport_unsignedshort (RenderTarget* ogre_render_target, unsigned short index)
 {
     return ogre_render_target->getViewport(index);
 }
@@ -177,14 +175,23 @@ void ogre_render_target_remove_all_viewports (RenderTarget* ogre_render_target)
 // type: "void"
 // args: (("float&" . "lastFPS") ("float&" . "avgFPS") ("float&" . "bestFPS") ("float&" . "worstFPS"))
 //
-void ogre_render_target_get_statistics (RenderTarget* ogre_render_target, float& lastFPS, float& avgFPS, float& bestFPS, float& worstFPS)
+void ogre_render_target_get_statistics_float_float_float_float (RenderTarget* ogre_render_target, float& lastFPS, float& avgFPS, float& bestFPS, float& worstFPS)
 {
     ogre_render_target->getStatistics(lastFPS, avgFPS, bestFPS, worstFPS);
 }
 
+// name: "getStatistics"
+// type: "const FrameStats&"
+// args: "void"
+//
+const RenderTarget::FrameStats& ogre_render_target_get_statistics_void (RenderTarget* ogre_render_target)
+{
+    return ogre_render_target->getStatistics();
+}
+
 // name: "getLastFPS"
 // type: "float"
-// args: NIL
+// args: "void"
 //
 float ogre_render_target_get_last_fps (RenderTarget* ogre_render_target)
 {
@@ -193,7 +200,7 @@ float ogre_render_target_get_last_fps (RenderTarget* ogre_render_target)
 
 // name: "getAverageFPS"
 // type: "float"
-// args: NIL
+// args: "void"
 //
 float ogre_render_target_get_average_fps (RenderTarget* ogre_render_target)
 {
@@ -202,7 +209,7 @@ float ogre_render_target_get_average_fps (RenderTarget* ogre_render_target)
 
 // name: "getBestFPS"
 // type: "float"
-// args: NIL
+// args: "void"
 //
 float ogre_render_target_get_best_fps (RenderTarget* ogre_render_target)
 {
@@ -211,7 +218,7 @@ float ogre_render_target_get_best_fps (RenderTarget* ogre_render_target)
 
 // name: "getWorstFPS"
 // type: "float"
-// args: NIL
+// args: "void"
 //
 float ogre_render_target_get_worst_fps (RenderTarget* ogre_render_target)
 {
@@ -220,7 +227,7 @@ float ogre_render_target_get_worst_fps (RenderTarget* ogre_render_target)
 
 // name: "getBestFrameTime"
 // type: "float"
-// args: NIL
+// args: "void"
 //
 float ogre_render_target_get_best_frame_time (RenderTarget* ogre_render_target)
 {
@@ -229,7 +236,7 @@ float ogre_render_target_get_best_frame_time (RenderTarget* ogre_render_target)
 
 // name: "getWorstFrameTime"
 // type: "float"
-// args: NIL
+// args: "void"
 //
 float ogre_render_target_get_worst_frame_time (RenderTarget* ogre_render_target)
 {
@@ -292,7 +299,7 @@ void ogre_render_target_set_priority (RenderTarget* ogre_render_target, unsigned
 
 // name: "getPriority"
 // type: "uchar"
-// args: NIL
+// args: "void"
 //
 unsigned char ogre_render_target_get_priority (RenderTarget* ogre_render_target)
 {
@@ -301,7 +308,7 @@ unsigned char ogre_render_target_get_priority (RenderTarget* ogre_render_target)
 
 // name: "isActive"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_render_target_is_active (RenderTarget* ogre_render_target)
 {
@@ -337,7 +344,7 @@ bool ogre_render_target_is_auto_updated (RenderTarget* ogre_render_target)
 
 // name: "suggestPixelFormat"
 // type: "PixelFormat"
-// args: NIL
+// args: "void"
 //
 PixelFormat ogre_render_target_suggest_pixel_format (RenderTarget* ogre_render_target)
 {
@@ -364,7 +371,7 @@ const char* ogre_render_target_write_contents_to_timestamped_file (RenderTarget*
 
 // name: "requiresTextureFlipping"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_render_target_requires_texture_flipping (RenderTarget* ogre_render_target)
 {
@@ -400,7 +407,7 @@ bool ogre_render_target_is_primary (RenderTarget* ogre_render_target)
 
 // name: "isHardwareGammaEnabled"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_render_target_is_hardware_gamma_enabled (RenderTarget* ogre_render_target)
 {
@@ -409,7 +416,7 @@ bool ogre_render_target_is_hardware_gamma_enabled (RenderTarget* ogre_render_tar
 
 // name: "getFSAA"
 // type: "uint"
-// args: NIL
+// args: "void"
 //
 unsigned int ogre_render_target_get_fsaa (RenderTarget* ogre_render_target)
 {

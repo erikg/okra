@@ -14,11 +14,12 @@
 (in-package :okra-system)
 
 (asdf:defsystem :okra
-  :version "1.6.2.1"
+  :version "1.6.2.2"
   :components
     ((:module src
       :components
         ((:file "package")
          (:file "okra" :depends-on ("package"))
+         (:file "perlin-noise" :depends-on ("package" "okra"))
          (:file "vectors" :depends-on ("package" "okra")))))
   :depends-on (:cffi :okra-bindings :okra-common))

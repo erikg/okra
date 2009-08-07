@@ -1,12 +1,3 @@
-#-------------------------------------------------------------------
-# This file is part of the CMake build system for OGRE
-#     (Object-oriented Graphics Rendering Engine)
-# For the latest info, see http://www.ogre3d.org/
-#
-# The contents of this file are placed in the public domain. Feel
-# free to make use of it in any way you like.
-#-------------------------------------------------------------------
-
 ##################################################################
 # Provides some common functionality for the FindPackage modules
 ##################################################################
@@ -40,7 +31,8 @@ macro(create_search_paths PREFIX)
     set(${PREFIX}_INC_SEARCH_PATH ${${PREFIX}_INC_SEARCH_PATH}
       ${dir}/include ${dir}/include/${PREFIX} ${dir}/Headers)
     set(${PREFIX}_LIB_SEARCH_PATH ${${PREFIX}_LIB_SEARCH_PATH}
-      ${dir}/lib ${dir}/lib/${PREFIX} ${dir}/Libs)
+      ${dir}/lib ${dir}/lib/${PREFIX} ${dir}/Libs
+      ${dir}/bin/release)
   endforeach(dir)
   set(${PREFIX}_FRAMEWORK_SEARCH_PATH ${${PREFIX}_PREFIX_PATH})
 endmacro(create_search_paths)

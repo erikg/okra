@@ -11,10 +11,7 @@
 //
 // This file was generated on: [TMPL_VAR "date"].
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
