@@ -11,7 +11,10 @@
 #
 # This file was generated on: [TMPL_VAR "date"].
 
-set(LIBOKRA_SOURCE_FILES "../src/handwritten.cpp"[TMPL_LOOP "files"] "../src/[TMPL_VAR "file"]"[/TMPL_LOOP])
+set(LIBOKRA_SOURCE_FILES
+    "../../3rd-party/moc/CollisionTools.cpp"
+    "../src/handwritten/misc.cpp" "../src/handwritten/moc.cpp"
+   [TMPL_LOOP "files"] "../src/[TMPL_VAR "file"]"[/TMPL_LOOP])
 
 add_library(okra ${LIBOKRA_SOURCE_FILES})
 

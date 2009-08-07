@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="Root" >
+        <Property Name="InheritsAlpha" Value="False" />
+        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{0,640},{0,480}}" />
+        <Window Type="AquaLook/FrameWindow" Name="Root/Frame" >
+            <Property Name="Font" Value="BlueHighway-10" />
+            <Property Name="Text" Value="FrameWindow" />
+            <Property Name="TitlebarFont" Value="BlueHighway-10" />
+            <Property Name="RollUpEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="TitlebarEnabled" Value="True" />
+            <Property Name="UnifiedAreaRect" Value="{{0,14},{0,10},{0,288},{0,446}}" />
+            <Window Type="AquaLook/Button" Name="Root/Frame/ButtonOK" >
+                <Property Name="Font" Value="BlueHighway-10" />
+                <Property Name="Text" Value="OK" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,39},{0,393},{0,102},{0,419}}" />
+            </Window>
+            <Window Type="AquaLook/Button" Name="Root/Frame/ButtonCancel" >
+                <Property Name="Font" Value="BlueHighway-10" />
+                <Property Name="Text" Value="Cancel" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,161},{0,394},{0,224},{0,420}}" />
+            </Window>
+            <Window Type="AquaLook/Slider" Name="Root/Frame/VertSlider" >
+                <Property Name="Font" Value="BlueHighway-10" />
+                <Property Name="CurrentValue" Value="0" />
+                <Property Name="MaximumValue" Value="1" />
+                <Property Name="ClickStepSize" Value="0.01" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,15},{0,25},{0,31},{0,119}}" />
+            </Window>
+            <Window Type="AquaLook/StaticText" Name="Root/Frame/StaticText" >
+                <Property Name="Font" Value="BlueHighway-10" />
+                <Property Name="Text" Value="StaticText" />
+                <Property Name="TextColours" Value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,35},{0,26},{0,127},{0,50}}" />
+            </Window>
+            <Window Type="AquaLook/Listbox" Name="Root/Frame/Listbox" >
+                <Property Name="Font" Value="BlueHighway-10" />
+                <Property Name="Text" >Listbox
+</Property>
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,138},{0,26},{0,259},{0,87}}" />
+                <Property Name="ForceVertScrollbar" Value="True" />
+            </Window>
+            <Window Type="AquaLook/Checkbox" Name="Root/Frame/Checkbox0" >
+                <Property Name="Font" Value="BlueHighway-10" />
+                <Property Name="Text" Value="Checkbox0" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,139},{0,106},{0,209},{0,126}}" />
+            </Window>
+            <Window Type="AquaLook/Checkbox" Name="Root/Frame/Checkbox1" >
+                <Property Name="Font" Value="BlueHighway-10" />
+                <Property Name="Text" Value="Checkbox1" />
+                <Property Name="Selected" Value="True" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,139},{0,90},{0,209},{0,110}}" />
+            </Window>
+            <Window Type="AquaLook/RadioButton" Name="Root/Frame/RadioButton0" >
+                <Property Name="Font" Value="BlueHighway-10" />
+                <Property Name="Text" Value="RadioButton0" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,39},{0,91},{0,120},{0,111}}" />
+            </Window>
+            <Window Type="AquaLook/RadioButton" Name="Root/Frame/RadioButton1" >
+                <Property Name="Font" Value="BlueHighway-10" />
+                <Property Name="Text" Value="RadioButton1" />
+                <Property Name="Selected" Value="True" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,39},{0,109},{0,120},{0,129}}" />
+            </Window>
+            <Window Type="AquaLook/Combobox" Name="Root/Frame/Combobox" >
+                <Property Name="Font" Value="BlueHighway-10" />
+                <Property Name="Text" Value="Combobox" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,36},{0,55},{0,126},{0,197}}" />
+                <Property Name="MaxEditTextLength" Value="1073741823" />
+            </Window>
+            <Window Type="AquaLook/SliderHoriz" Name="Root/Frame/HorizSlider" >
+                <Property Name="CurrentValue" Value="0" />
+                <Property Name="MaximumValue" Value="1" />
+                <Property Name="ClickStepSize" Value="0.01" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,14},{0,130},{0,257},{0,150}}" />
+            </Window>
+            <Window Type="AquaLook/HorizontalScrollbar" Name="Root/Frame/HorizScrollbar" >
+                <Property Name="PageSize" Value="0" />
+                <Property Name="StepSize" Value="1" />
+                <Property Name="OverlapSize" Value="0" />
+                <Property Name="DocumentSize" Value="1" />
+                <Property Name="ScrollPosition" Value="0" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,31},{0,369},{0,234},{0,390}}" />
+            </Window>
+            <Window Type="AquaLook/VerticalScrollbar" Name="Root/Frame/VertScrollbar" >
+                <Property Name="PageSize" Value="0" />
+                <Property Name="StepSize" Value="1" />
+                <Property Name="OverlapSize" Value="0" />
+                <Property Name="DocumentSize" Value="1" />
+                <Property Name="ScrollPosition" Value="0" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,241},{0,236},{0,261},{0,385}}" />
+            </Window>
+            <Window Type="AquaLook/Spinner" Name="Root/Frame/Spinner" >
+                <Property Name="StepSize" Value="1" />
+                <Property Name="CurrentValue" Value="0" />
+                <Property Name="MaximumValue" Value="32767" />
+                <Property Name="MinimumValue" Value="-32768" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,17},{0,192},{0,60},{0,230}}" />
+            </Window>
+            <Window Type="AquaLook/Editbox" Name="Root/Frame/Editbox" >
+                <Property Name="Text" Value="Editbox" />
+                <Property Name="MaxTextLength" Value="1073741823" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,68},{0,194},{0,252},{0,224}}" />
+            </Window>
+            <Window Type="AquaLook/ProgressBar" Name="Root/Frame/ProgressBar" >
+                <Property Name="StepSize" Value="0.01" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="CurrentProgress" Value="0" />
+                <Property Name="UnifiedAreaRect" Value="{{0,14},{0,153},{0,257},{0,192}}" />
+            </Window>
+        </Window>
+    </Window>
+</GUILayout>

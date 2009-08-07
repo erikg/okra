@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:32.
+;;;; This file was generated on: 2009-08-07 15:52:10.
 
 (in-package :okra-bindings)
 
@@ -125,21 +125,6 @@
   (ogre-root-get-render-system (pointer-to this)))
 
 
-;; name: "initialise"
-;; type: "RenderWindow*"
-;; args: (("bool" . "autoCreateWindow") ("const String&" . "windowTitle") ("const String&" . "customCapabilitiesConfig"))
-;;
-(defcfun "ogre_root_initialise"
-    :pointer
-  (ogre-root :pointer)
-  (auto-create-window :boolean)
-  (window-title :string)
-  (custom-capabilities-config :string))
-
-(defmethod initialise ((this root) auto-create-window window-title custom-capabilities-config)
-  (ogre-root-initialise (pointer-to this) auto-create-window window-title custom-capabilities-config))
-
-
 ;; name: "isInitialised"
 ;; type: "bool"
 ;; args: "void"
@@ -216,20 +201,6 @@
   (ogre-root-get-scene-manager-meta-data-iterator (pointer-to this)))
 
 
-;; name: "createSceneManager"
-;; type: "SceneManager*"
-;; args: (("const String&" . "typeName") ("const String&" . "instanceName"))
-;;
-(defcfun "ogre_root_create_scene_manager"
-    :pointer
-  (ogre-root :pointer)
-  (type-name :string)
-  (instance-name :string))
-
-(defmethod create-scene-manager ((this root) type-name instance-name)
-  (ogre-root-create-scene-manager (pointer-to this) type-name instance-name))
-
-
 ;; name: "destroySceneManager"
 ;; type: "void"
 ;; args: (("SceneManager*" . "sm"))
@@ -241,19 +212,6 @@
 
 (defmethod destroy-scene-manager ((this root) sm)
   (ogre-root-destroy-scene-manager (pointer-to this) sm))
-
-
-;; name: "getSceneManager"
-;; type: "SceneManager*"
-;; args: (("const String&" . "instanceName"))
-;;
-(defcfun "ogre_root_get_scene_manager"
-    :pointer
-  (ogre-root :pointer)
-  (instance-name :string))
-
-(defmethod get-scene-manager ((this root) instance-name)
-  (ogre-root-get-scene-manager (pointer-to this) instance-name))
 
 
 ;; name: "getSceneManagerIterator"
@@ -452,19 +410,6 @@
   (ogre-root-create-render-window (pointer-to this) name width height full-screen misc-params))
 
 
-;; name: "detachRenderTarget"
-;; type: "void"
-;; args: (("const String&" . "name"))
-;;
-(defcfun "ogre_root_detach_render_target"
-    :void
-  (ogre-root :pointer)
-  (name :string))
-
-(defmethod detach-render-target ((this root) name)
-  (ogre-root-detach-render-target (pointer-to this) name))
-
-
 ;; name: "getRenderTarget"
 ;; type: "RenderTarget*"
 ;; args: (("const String&" . "name"))
@@ -528,6 +473,18 @@
 
 (defmethod uninstall-plugin ((this root) plugin)
   (ogre-root-uninstall-plugin (pointer-to this) plugin))
+
+
+;; name: "getInstalledPlugins"
+;; type: "const PluginInstanceList&"
+;; args: "void"
+;;
+(defcfun "ogre_root_get_installed_plugins"
+    :pointer
+  (ogre-root :pointer))
+
+(defmethod get-installed-plugins ((this root))
+  (ogre-root-get-installed-plugins (pointer-to this)))
 
 
 ;; name: "getTimer"
@@ -693,6 +650,118 @@
 
 (defmethod get-movable-object-factory ((this root) type-name)
   (ogre-root-get-movable-object-factory (pointer-to this) type-name))
+
+
+;; name: "getMovableObjectFactoryIterator"
+;; type: "MovableObjectFactoryIterator"
+;; args: "void"
+;;
+(defcfun "ogre_root_get_movable_object_factory_iterator"
+    :pointer
+  (ogre-root :pointer))
+
+(defmethod get-movable-object-factory-iterator ((this root))
+  (ogre-root-get-movable-object-factory-iterator (pointer-to this)))
+
+
+;;; Overloaded Foreign Functions
+
+;; name: "initialise"
+;; type: "RenderWindow*"
+;; args: (("bool" . "autoCreateWindow") ("const String&" . "windowTitle") ("const String&" . "customCapabilitiesConfig"))
+;;
+(defcfun "ogre_root_initialise_bool_string_string"
+    :pointer
+  (ogre-root :pointer)
+  (auto-create-window :boolean)
+  (window-title :string)
+  (custom-capabilities-config :string))
+
+
+;; name: "createSceneManager"
+;; type: "SceneManager*"
+;; args: (("const String&" . "typeName") ("const String&" . "instanceName"))
+;;
+(defcfun "ogre_root_create_scene_manager_string_string"
+    :pointer
+  (ogre-root :pointer)
+  (type-name :string)
+  (instance-name :string))
+
+
+;; name: "createSceneManager"
+;; type: "SceneManager*"
+;; args: (("SceneTypeMask" . "typeMask") ("const String&" . "instanceName"))
+;;
+(defcfun "ogre_root_create_scene_manager_scenetypemask_string"
+    :pointer
+  (ogre-root :pointer)
+  (type-mask :uint16)
+  (instance-name :string))
+
+
+;; name: "getSceneManager"
+;; type: "SceneManager*"
+;; args: (("const String&" . "instanceName"))
+;;
+(defcfun "ogre_root_get_scene_manager_string"
+    :pointer
+  (ogre-root :pointer)
+  (instance-name :string))
+
+
+;; name: "detachRenderTarget"
+;; type: "void"
+;; args: (("RenderTarget*" . "pWin"))
+;;
+(defcfun "ogre_root_detach_render_target_rendertarget"
+    :void
+  (ogre-root :pointer)
+  (pwin :pointer))
+
+
+;; name: "detachRenderTarget"
+;; type: "void"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_root_detach_render_target_string"
+    :void
+  (ogre-root :pointer)
+  (name :string))
+
+
+;;; Methods for Overloaded Foreign Functions
+
+(defmethod get-scene-manager ((this root) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-root-get-scene-manager-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod initialise ((this root) &optional (arg0 nil) (arg1 nil) (arg2 nil))
+  (cond
+    ((and (typep arg0 'boolean) (typep arg1 'string) (typep arg2 'string))
+     (ogre-root-initialise-bool-string-string (pointer-to this) arg0 arg1 arg2))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod create-scene-manager ((this root) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 'integer) (typep arg1 'string))
+     (ogre-root-create-scene-manager-scenetypemask-string (pointer-to this) arg0 arg1))
+    ((and (typep arg0 'string) (typep arg1 'string))
+     (ogre-root-create-scene-manager-string-string (pointer-to this) arg0 arg1))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod detach-render-target ((this root) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-root-detach-render-target-string (pointer-to this) arg0))
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-root-detach-render-target-rendertarget (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
 
 
 

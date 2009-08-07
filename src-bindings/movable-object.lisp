@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:31.
+;;;; This file was generated on: 2009-08-07 15:52:09.
 
 (in-package :okra-bindings)
 
@@ -168,19 +168,6 @@
     (ogre-movable-object-get-world-bounding-sphere (pointer-to this) array derive)
     (vector (mem-aref array 'okra-real 0) (mem-aref array 'okra-real 1)
             (mem-aref array 'okra-real 2) (mem-aref array 'okra-real 3))))
-
-
-;; name: "setVisible"
-;; type: "void"
-;; args: (("bool" . "visible"))
-;;
-(defcfun "ogre_movable_object_set_visible"
-    :void
-  (ogre-movable-object :pointer)
-  (visible :boolean))
-
-(defmethod set-visible ((this movable-object) visible)
-  (ogre-movable-object-set-visible (pointer-to this) visible))
 
 
 ;; name: "getVisible"
@@ -551,19 +538,6 @@
   (ogre-movable-object-visit-renderables (pointer-to this) visitor debug-renderables))
 
 
-;; name: "setDebugDisplayEnabled"
-;; type: "void"
-;; args: (("bool" . "enabled"))
-;;
-(defcfun "ogre_movable_object_set_debug_display_enabled"
-    :void
-  (ogre-movable-object :pointer)
-  (enabled :boolean))
-
-(defmethod set-debug-display-enabled ((this movable-object) enabled)
-  (ogre-movable-object-set-debug-display-enabled (pointer-to this) enabled))
-
-
 ;; name: "isDebugDisplayEnabled"
 ;; type: "bool"
 ;; args: "void"
@@ -574,6 +548,62 @@
 
 (defmethod is-debug-display-enabled ((this movable-object))
   (ogre-movable-object-is-debug-display-enabled (pointer-to this)))
+
+
+;;; Overloaded Foreign Functions
+
+;; name: "setVisible"
+;; type: "void"
+;; args: (("bool" . "visible"))
+;;
+(defcfun "ogre_movable_object_set_visible_bool"
+    :void
+  (ogre-movable-object :pointer)
+  (visible :boolean))
+
+
+;; name: "isVisible"
+;; type: "bool"
+;; args: "void"
+;;
+(defcfun "ogre_movable_object_is_visible_void"
+    :boolean
+  (ogre-movable-object :pointer))
+
+
+;; name: "setDebugDisplayEnabled"
+;; type: "void"
+;; args: (("bool" . "enabled"))
+;;
+(defcfun "ogre_movable_object_set_debug_display_enabled_bool"
+    :void
+  (ogre-movable-object :pointer)
+  (enabled :boolean))
+
+
+;;; Methods for Overloaded Foreign Functions
+
+(defmethod is-visible ((this movable-object) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 'null) (typep arg1 'null))
+     (ogre-movable-object-is-visible-void (pointer-to this)))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-visible ((this movable-object) &optional (arg0 nil) (arg1 nil))
+  (declare (ignore arg1))
+  (cond
+    ((and (typep arg0 'boolean))
+     (ogre-movable-object-set-visible-bool (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-debug-display-enabled ((this movable-object) &optional (arg0 nil) (arg1 nil))
+  (declare (ignore arg1))
+  (cond
+    ((and (typep arg0 'boolean))
+     (ogre-movable-object-set-debug-display-enabled-bool (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
 
 
 

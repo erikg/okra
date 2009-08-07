@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:31.
+;;;; This file was generated on: 2009-08-07 15:52:09.
 
 (in-package :okra-bindings)
 
@@ -47,19 +47,6 @@
   (ogre-light-get-type (pointer-to this)))
 
 
-;; name: "setDiffuseColour"
-;; type: "void"
-;; args: (("const ColourValue&" . "colour"))
-;;
-(defcfun "ogre_light_set_diffuse_colour"
-    :void
-  (ogre-light :pointer)
-  (colour okra-array4))
-
-(defmethod set-diffuse-colour ((this light) colour)
-  (ogre-light-set-diffuse-colour (pointer-to this) colour))
-
-
 ;; name: "getDiffuseColour"
 ;; type: "const ColourValue&"
 ;; args: "void"
@@ -74,19 +61,6 @@
     (ogre-light-get-diffuse-colour (pointer-to this) array)
     (vector (mem-aref array 'okra-real 0) (mem-aref array 'okra-real 1)
             (mem-aref array 'okra-real 2) (mem-aref array 'okra-real 3))))
-
-
-;; name: "setSpecularColour"
-;; type: "void"
-;; args: (("const ColourValue&" . "colour"))
-;;
-(defcfun "ogre_light_set_specular_colour"
-    :void
-  (ogre-light :pointer)
-  (colour okra-array4))
-
-(defmethod set-specular-colour ((this light) colour)
-  (ogre-light-set-specular-colour (pointer-to this) colour))
 
 
 ;; name: "getSpecularColour"
@@ -169,19 +143,6 @@
   (ogre-light-get-attenuation-quadric (pointer-to this)))
 
 
-;; name: "setPosition"
-;; type: "void"
-;; args: (("const Vector3&" . "vec"))
-;;
-(defcfun "ogre_light_set_position"
-    :void
-  (ogre-light :pointer)
-  (vec okra-array3))
-
-(defmethod set-position ((this light) vec)
-  (ogre-light-set-position (pointer-to this) vec))
-
-
 ;; name: "getPosition"
 ;; type: "const Vector3&"
 ;; args: "void"
@@ -196,19 +157,6 @@
     (ogre-light-get-position (pointer-to this) array)
     (vector (mem-aref array 'okra-real 0) (mem-aref array 'okra-real 1)
             (mem-aref array 'okra-real 2))))
-
-
-;; name: "setDirection"
-;; type: "void"
-;; args: (("const Vector3&" . "vec"))
-;;
-(defcfun "ogre_light_set_direction"
-    :void
-  (ogre-light :pointer)
-  (vec okra-array3))
-
-(defmethod set-direction ((this light) vec)
-  (ogre-light-set-direction (pointer-to this) vec))
 
 
 ;; name: "getDirection"
@@ -387,19 +335,6 @@
             (mem-aref array 'okra-real 2))))
 
 
-;; name: "setVisible"
-;; type: "void"
-;; args: (("bool" . "visible"))
-;;
-(defcfun "ogre_light_set_visible"
-    :void
-  (ogre-light :pointer)
-  (visible :boolean))
-
-(defmethod set-visible ((this light) visible)
-  (ogre-light-set-visible (pointer-to this) visible))
-
-
 ;; name: "getBoundingRadius"
 ;; type: "Real"
 ;; args: "void"
@@ -552,6 +487,174 @@
 
 (defmethod get-shadow-far-distance-squared ((this light))
   (ogre-light-get-shadow-far-distance-squared (pointer-to this)))
+
+
+;;; Overloaded Foreign Functions
+
+;; name: "setDiffuseColour"
+;; type: "void"
+;; args: (("Real" . "red") ("Real" . "green") ("Real" . "blue"))
+;;
+(defcfun "ogre_light_set_diffuse_colour_real_real_real"
+    :void
+  (ogre-light :pointer)
+  (red okra-real)
+  (green okra-real)
+  (blue okra-real))
+
+
+;; name: "setDiffuseColour"
+;; type: "void"
+;; args: (("const ColourValue&" . "colour"))
+;;
+(defcfun "ogre_light_set_diffuse_colour_colourvalue"
+    :void
+  (ogre-light :pointer)
+  (colour okra-array4))
+
+
+;; name: "setSpecularColour"
+;; type: "void"
+;; args: (("Real" . "red") ("Real" . "green") ("Real" . "blue"))
+;;
+(defcfun "ogre_light_set_specular_colour_real_real_real"
+    :void
+  (ogre-light :pointer)
+  (red okra-real)
+  (green okra-real)
+  (blue okra-real))
+
+
+;; name: "setSpecularColour"
+;; type: "void"
+;; args: (("const ColourValue&" . "colour"))
+;;
+(defcfun "ogre_light_set_specular_colour_colourvalue"
+    :void
+  (ogre-light :pointer)
+  (colour okra-array4))
+
+
+;; name: "setPosition"
+;; type: "void"
+;; args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+;;
+(defcfun "ogre_light_set_position_real_real_real"
+    :void
+  (ogre-light :pointer)
+  (x okra-real)
+  (y okra-real)
+  (z okra-real))
+
+
+;; name: "setPosition"
+;; type: "void"
+;; args: (("const Vector3&" . "vec"))
+;;
+(defcfun "ogre_light_set_position_vector3"
+    :void
+  (ogre-light :pointer)
+  (vec okra-array3))
+
+
+;; name: "setDirection"
+;; type: "void"
+;; args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+;;
+(defcfun "ogre_light_set_direction_real_real_real"
+    :void
+  (ogre-light :pointer)
+  (x okra-real)
+  (y okra-real)
+  (z okra-real))
+
+
+;; name: "setDirection"
+;; type: "void"
+;; args: (("const Vector3&" . "vec"))
+;;
+(defcfun "ogre_light_set_direction_vector3"
+    :void
+  (ogre-light :pointer)
+  (vec okra-array3))
+
+
+;; name: "getDerivedPosition"
+;; type: "const Vector3&"
+;; args: (("bool" . "cameraRelativeIfSet"))
+;;
+(defcfun "ogre_light_get_derived_position_bool"
+    :void
+  (ogre-light :pointer)
+  (array3 :pointer)
+  (camera-relative-if-set :boolean))
+
+
+;; name: "setVisible"
+;; type: "void"
+;; args: (("bool" . "visible"))
+;;
+(defcfun "ogre_light_set_visible_bool"
+    :void
+  (ogre-light :pointer)
+  (visible :boolean))
+
+
+;;; Methods for Overloaded Foreign Functions
+
+(defmethod set-position ((this light) &optional (arg0 nil) (arg1 nil) (arg2 nil))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real))
+     (ogre-light-set-position-real-real-real (pointer-to this) arg0 arg1 arg2))
+    ((and (typep arg0 '(simple-vector 3)))
+     (ogre-light-set-position-vector3 (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-direction ((this light) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil) (arg4 nil))
+  (declare (ignore arg3 arg4))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real))
+     (ogre-light-set-direction-real-real-real (pointer-to this) arg0 arg1 arg2))
+    ((and (typep arg0 '(simple-vector 3)))
+     (ogre-light-set-direction-vector3 (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod get-derived-position ((this light) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'boolean))
+  (with-foreign-object (array 'okra-real 3)
+       (ogre-light-get-derived-position-bool (pointer-to this) array arg0)
+    (vector (mem-aref array 'okra-real 0) (mem-aref array 'okra-real 1)
+            (mem-aref array 'okra-real 2))))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-diffuse-colour ((this light) &optional (arg0 nil) (arg1 nil) (arg2 nil))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real))
+     (ogre-light-set-diffuse-colour-real-real-real (pointer-to this) arg0 arg1 arg2))
+    ((and (typep arg0 '(simple-vector 4)))
+     (ogre-light-set-diffuse-colour-colourvalue (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-specular-colour ((this light) &optional (arg0 nil) (arg1 nil) (arg2 nil))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real))
+     (ogre-light-set-specular-colour-real-real-real (pointer-to this) arg0 arg1 arg2))
+    ((and (typep arg0 '(simple-vector 4)))
+     (ogre-light-set-specular-colour-colourvalue (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-visible ((this light) &optional (arg0 nil) (arg1 nil))
+  (declare (ignore arg1))
+  (cond
+    ((and (typep arg0 'boolean))
+     (ogre-light-set-visible-bool (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
 
 
 

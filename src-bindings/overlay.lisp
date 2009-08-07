@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:31.
+;;;; This file was generated on: 2009-08-07 15:52:09.
 
 (in-package :okra-bindings)
 
@@ -21,19 +21,6 @@
 
 
 ;;; Foreign Functions & Methods
-
-;; name: "getChild"
-;; type: "OverlayContainer*"
-;; args: (("const String&" . "name"))
-;;
-(defcfun "ogre_overlay_get_child"
-    :pointer
-  (ogre-overlay :pointer)
-  (name :string))
-
-(defmethod get-child ((this overlay) name)
-  (ogre-overlay-get-child (pointer-to this) name))
-
 
 ;; name: "getName"
 ;; type: "const String&"
@@ -54,7 +41,7 @@
 (defcfun "ogre_overlay_set_zorder"
     :void
   (ogre-overlay :pointer)
-  (zorder :unsigned-short))
+  (zorder :ushort))
 
 (defmethod set-zorder ((this overlay) zorder)
   (ogre-overlay-set-zorder (pointer-to this) zorder))
@@ -65,7 +52,7 @@
 ;; args: "void"
 ;;
 (defcfun "ogre_overlay_get_zorder"
-    :unsigned-short
+    :ushort
   (ogre-overlay :pointer))
 
 (defmethod get-zorder ((this overlay))
@@ -162,7 +149,7 @@
 
 ;; name: "clear"
 ;; type: "void"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_overlay_clear"
     :void
@@ -249,19 +236,6 @@
   (ogre-overlay-get-rotate (pointer-to this)))
 
 
-;; name: "rotate"
-;; type: "void"
-;; args: (("const Radian&" . "angle"))
-;;
-(defcfun "ogre_overlay_rotate"
-    :void
-  (ogre-overlay :pointer)
-  (angle okra-real))
-
-(defmethod rotate ((this overlay) angle)
-  (ogre-overlay-rotate (pointer-to this) angle))
-
-
 ;; name: "getScaleX"
 ;; type: "Real"
 ;; args: "void"
@@ -302,7 +276,7 @@
 
 ;; name: "get2DElementsIterator"
 ;; type: "Overlay2DElementsIterator"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_overlay_get2_delements_iterator"
     :pointer
@@ -322,6 +296,80 @@
 
 (defmethod get-origin ((this overlay))
   (ogre-overlay-get-origin (pointer-to this)))
+
+
+;;; Overloaded Foreign Functions
+
+;; name: "getChild"
+;; type: "OverlayContainer*"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_overlay_get_child_string"
+    :pointer
+  (ogre-overlay :pointer)
+  (name :string))
+
+
+;; name: "isVisible"
+;; type: "bool"
+;; args: "void"
+;;
+(defcfun "ogre_overlay_is_visible_void"
+    :boolean
+  (ogre-overlay :pointer))
+
+
+;; name: "rotate"
+;; type: "void"
+;; args: (("const Radian&" . "angle"))
+;;
+(defcfun "ogre_overlay_rotate_radian"
+    :void
+  (ogre-overlay :pointer)
+  (angle okra-real))
+
+
+;; name: "setScale"
+;; type: "void"
+;; args: (("Real" . "x") ("Real" . "y"))
+;;
+(defcfun "ogre_overlay_set_scale_real_real"
+    :void
+  (ogre-overlay :pointer)
+  (x okra-real)
+  (y okra-real))
+
+
+;;; Methods for Overloaded Foreign Functions
+
+(defmethod rotate ((this overlay) &optional (arg0 nil) (arg1 nil) (arg2 nil))
+  (declare (ignore arg1 arg2))
+  (cond
+    ((and (typep arg0 'real))
+     (ogre-overlay-rotate-radian (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod is-visible ((this overlay) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 'null) (typep arg1 'null))
+     (ogre-overlay-is-visible-void (pointer-to this)))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-scale ((this overlay) &optional (arg0 nil) (arg1 nil) (arg2 nil))
+  (declare (ignore arg2))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real))
+     (ogre-overlay-set-scale-real-real (pointer-to this) arg0 arg1))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod get-child ((this overlay) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-overlay-get-child-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
 
 
 

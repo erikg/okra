@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:32.
+;;;; This file was generated on: 2009-08-07 15:52:10.
 
 (in-package :okra-bindings)
 
@@ -85,19 +85,6 @@
   (ogre-render-target-get-colour-depth (pointer-to this)))
 
 
-;; name: "update"
-;; type: "void"
-;; args: (("bool" . "swapBuffers"))
-;;
-(defcfun "ogre_render_target_update"
-    :void
-  (ogre-render-target :pointer)
-  (swap-buffers :boolean))
-
-(defmethod update ((this render-target) swap-buffers)
-  (ogre-render-target-update (pointer-to this) swap-buffers))
-
-
 ;; name: "swapBuffers"
 ;; type: "void"
 ;; args: (("bool" . "waitForVSync"))
@@ -141,19 +128,6 @@
   (ogre-render-target-get-num-viewports (pointer-to this)))
 
 
-;; name: "getViewport"
-;; type: "Viewport*"
-;; args: (("unsigned short" . "index"))
-;;
-(defcfun "ogre_render_target_get_viewport"
-    :pointer
-  (ogre-render-target :pointer)
-  (index :unsigned-short))
-
-(defmethod get-viewport ((this render-target) index)
-  (ogre-render-target-get-viewport (pointer-to this) index))
-
-
 ;; name: "removeViewport"
 ;; type: "void"
 ;; args: (("int" . "ZOrder"))
@@ -179,25 +153,9 @@
   (ogre-render-target-remove-all-viewports (pointer-to this)))
 
 
-;; name: "getStatistics"
-;; type: "void"
-;; args: (("float&" . "lastFPS") ("float&" . "avgFPS") ("float&" . "bestFPS") ("float&" . "worstFPS"))
-;;
-(defcfun "ogre_render_target_get_statistics"
-    :void
-  (ogre-render-target :pointer)
-  (last-fps :pointer)
-  (avg-fps :pointer)
-  (best-fps :pointer)
-  (worst-fps :pointer))
-
-(defmethod get-statistics ((this render-target) last-fps avg-fps best-fps worst-fps)
-  (ogre-render-target-get-statistics (pointer-to this) last-fps avg-fps best-fps worst-fps))
-
-
 ;; name: "getLastFPS"
 ;; type: "float"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_render_target_get_last_fps"
     :float
@@ -209,7 +167,7 @@
 
 ;; name: "getAverageFPS"
 ;; type: "float"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_render_target_get_average_fps"
     :float
@@ -221,7 +179,7 @@
 
 ;; name: "getBestFPS"
 ;; type: "float"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_render_target_get_best_fps"
     :float
@@ -233,7 +191,7 @@
 
 ;; name: "getWorstFPS"
 ;; type: "float"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_render_target_get_worst_fps"
     :float
@@ -245,7 +203,7 @@
 
 ;; name: "getBestFrameTime"
 ;; type: "float"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_render_target_get_best_frame_time"
     :float
@@ -257,7 +215,7 @@
 
 ;; name: "getWorstFrameTime"
 ;; type: "float"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_render_target_get_worst_frame_time"
     :float
@@ -338,7 +296,7 @@
 (defcfun "ogre_render_target_set_priority"
     :void
   (ogre-render-target :pointer)
-  (priority :unsigned-char))
+  (priority :uchar))
 
 (defmethod set-priority ((this render-target) priority)
   (ogre-render-target-set-priority (pointer-to this) priority))
@@ -346,10 +304,10 @@
 
 ;; name: "getPriority"
 ;; type: "uchar"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_render_target_get_priority"
-    :unsigned-char
+    :uchar
   (ogre-render-target :pointer))
 
 (defmethod get-priority ((this render-target))
@@ -358,7 +316,7 @@
 
 ;; name: "isActive"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_render_target_is_active"
     :boolean
@@ -408,7 +366,7 @@
 
 ;; name: "suggestPixelFormat"
 ;; type: "PixelFormat"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_render_target_suggest_pixel_format"
     pixel-format
@@ -447,7 +405,7 @@
 
 ;; name: "requiresTextureFlipping"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_render_target_requires_texture_flipping"
     :boolean
@@ -495,7 +453,7 @@
 
 ;; name: "isHardwareGammaEnabled"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_render_target_is_hardware_gamma_enabled"
     :boolean
@@ -507,14 +465,83 @@
 
 ;; name: "getFSAA"
 ;; type: "uint"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_render_target_get_fsaa"
-    :unsigned-int
+    :uint
   (ogre-render-target :pointer))
 
 (defmethod get-fsaa ((this render-target))
   (ogre-render-target-get-fsaa (pointer-to this)))
+
+
+;;; Overloaded Foreign Functions
+
+;; name: "update"
+;; type: "void"
+;; args: (("bool" . "swapBuffers"))
+;;
+(defcfun "ogre_render_target_update_bool"
+    :void
+  (ogre-render-target :pointer)
+  (swap-buffers :boolean))
+
+
+;; name: "getViewport"
+;; type: "Viewport*"
+;; args: (("unsigned short" . "index"))
+;;
+(defcfun "ogre_render_target_get_viewport_unsignedshort"
+    :pointer
+  (ogre-render-target :pointer)
+  (index :unsigned-short))
+
+
+;; name: "getStatistics"
+;; type: "void"
+;; args: (("float&" . "lastFPS") ("float&" . "avgFPS") ("float&" . "bestFPS") ("float&" . "worstFPS"))
+;;
+(defcfun "ogre_render_target_get_statistics_float_float_float_float"
+    :void
+  (ogre-render-target :pointer)
+  (last-fps :pointer)
+  (avg-fps :pointer)
+  (best-fps :pointer)
+  (worst-fps :pointer))
+
+
+;; name: "getStatistics"
+;; type: "const FrameStats&"
+;; args: "void"
+;;
+(defcfun "ogre_render_target_get_statistics_void"
+    :pointer
+  (ogre-render-target :pointer))
+
+
+;;; Methods for Overloaded Foreign Functions
+
+(defmethod get-viewport ((this render-target) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'integer))
+     (ogre-render-target-get-viewport-unsignedshort (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod update ((this render-target) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'boolean))
+     (ogre-render-target-update-bool (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod get-statistics ((this render-target) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil))
+  (cond
+    ((and (typep arg0 'null) (typep arg1 'null) (typep arg2 'null) (typep arg3 'null))
+     (ogre-render-target-get-statistics-void (pointer-to this)))
+    ((and (typep arg0 'cffi:foreign-pointer) (typep arg1 'cffi:foreign-pointer) (typep arg2 'cffi:foreign-pointer) (typep arg3 'cffi:foreign-pointer))
+     (ogre-render-target-get-statistics-float-float-float-float (pointer-to this) arg0 arg1 arg2 arg3))
+    (t (error "Overloaded method not defined for this class."))))
 
 
 

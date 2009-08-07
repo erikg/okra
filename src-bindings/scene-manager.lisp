@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:32.
+;;;; This file was generated on: 2009-08-07 15:52:10.
 
 (in-package :okra-bindings)
 
@@ -70,19 +70,6 @@
 
 (defmethod has-camera ((this scene-manager) name)
   (ogre-scene-manager-has-camera (pointer-to this) name))
-
-
-;; name: "destroyCamera"
-;; type: "void"
-;; args: (("Camera*" . "cam"))
-;;
-(defcfun "ogre_scene_manager_destroy_camera"
-    :void
-  (ogre-scene-manager :pointer)
-  (cam :pointer))
-
-(defmethod destroy-camera ((this scene-manager) cam)
-  (ogre-scene-manager-destroy-camera (pointer-to this) cam))
 
 
 ;; name: "destroyAllCameras"
@@ -163,19 +150,6 @@
   (ogre-scene-manager-get-light-scissor-rect (pointer-to this) l cam))
 
 
-;; name: "destroyLight"
-;; type: "void"
-;; args: (("Light*" . "light"))
-;;
-(defcfun "ogre_scene_manager_destroy_light"
-    :void
-  (ogre-scene-manager :pointer)
-  (light :pointer))
-
-(defmethod destroy-light ((this scene-manager) light)
-  (ogre-scene-manager-destroy-light (pointer-to this) light))
-
-
 ;; name: "destroyAllLights"
 ;; type: "void"
 ;; args: "void"
@@ -186,32 +160,6 @@
 
 (defmethod destroy-all-lights ((this scene-manager))
   (ogre-scene-manager-destroy-all-lights (pointer-to this)))
-
-
-;; name: "createSceneNode"
-;; type: "SceneNode*"
-;; args: (("const String&" . "name"))
-;;
-(defcfun "ogre_scene_manager_create_scene_node"
-    :pointer
-  (ogre-scene-manager :pointer)
-  (name :string))
-
-(defmethod create-scene-node ((this scene-manager) name)
-  (ogre-scene-manager-create-scene-node (pointer-to this) name))
-
-
-;; name: "destroySceneNode"
-;; type: "void"
-;; args: (("SceneNode*" . "sn"))
-;;
-(defcfun "ogre_scene_manager_destroy_scene_node"
-    :void
-  (ogre-scene-manager :pointer)
-  (sn :pointer))
-
-(defmethod destroy-scene-node ((this scene-manager) sn)
-  (ogre-scene-manager-destroy-scene-node (pointer-to this) sn))
 
 
 ;; name: "getRootSceneNode"
@@ -252,20 +200,6 @@
   (ogre-scene-manager-has-scene-node (pointer-to this) name))
 
 
-;; name: "createEntity"
-;; type: "Entity*"
-;; args: (("const String&" . "entityName") ("PrefabType" . "ptype"))
-;;
-(defcfun "ogre_scene_manager_create_entity"
-    :pointer
-  (ogre-scene-manager :pointer)
-  (entity-name :string)
-  (ptype prefab-type))
-
-(defmethod create-entity ((this scene-manager) entity-name ptype)
-  (ogre-scene-manager-create-entity (pointer-to this) entity-name ptype))
-
-
 ;; name: "getEntity"
 ;; type: "Entity*"
 ;; args: (("const String&" . "name"))
@@ -290,19 +224,6 @@
 
 (defmethod has-entity ((this scene-manager) name)
   (ogre-scene-manager-has-entity (pointer-to this) name))
-
-
-;; name: "destroyEntity"
-;; type: "void"
-;; args: (("Entity*" . "ent"))
-;;
-(defcfun "ogre_scene_manager_destroy_entity"
-    :void
-  (ogre-scene-manager :pointer)
-  (ent :pointer))
-
-(defmethod destroy-entity ((this scene-manager) ent)
-  (ogre-scene-manager-destroy-entity (pointer-to this) ent))
 
 
 ;; name: "destroyAllEntities"
@@ -356,19 +277,6 @@
   (ogre-scene-manager-has-manual-object (pointer-to this) name))
 
 
-;; name: "destroyManualObject"
-;; type: "void"
-;; args: (("ManualObject*" . "obj"))
-;;
-(defcfun "ogre_scene_manager_destroy_manual_object"
-    :void
-  (ogre-scene-manager :pointer)
-  (obj :pointer))
-
-(defmethod destroy-manual-object ((this scene-manager) obj)
-  (ogre-scene-manager-destroy-manual-object (pointer-to this) obj))
-
-
 ;; name: "destroyAllManualObjects"
 ;; type: "void"
 ;; args: "void"
@@ -418,19 +326,6 @@
 
 (defmethod has-billboard-chain ((this scene-manager) name)
   (ogre-scene-manager-has-billboard-chain (pointer-to this) name))
-
-
-;; name: "destroyBillboardChain"
-;; type: "void"
-;; args: (("BillboardChain*" . "obj"))
-;;
-(defcfun "ogre_scene_manager_destroy_billboard_chain"
-    :void
-  (ogre-scene-manager :pointer)
-  (obj :pointer))
-
-(defmethod destroy-billboard-chain ((this scene-manager) obj)
-  (ogre-scene-manager-destroy-billboard-chain (pointer-to this) obj))
 
 
 ;; name: "destroyAllBillboardChains"
@@ -484,19 +379,6 @@
   (ogre-scene-manager-has-ribbon-trail (pointer-to this) name))
 
 
-;; name: "destroyRibbonTrail"
-;; type: "void"
-;; args: (("RibbonTrail*" . "obj"))
-;;
-(defcfun "ogre_scene_manager_destroy_ribbon_trail"
-    :void
-  (ogre-scene-manager :pointer)
-  (obj :pointer))
-
-(defmethod destroy-ribbon-trail ((this scene-manager) obj)
-  (ogre-scene-manager-destroy-ribbon-trail (pointer-to this) obj))
-
-
 ;; name: "destroyAllRibbonTrails"
 ;; type: "void"
 ;; args: "void"
@@ -507,21 +389,6 @@
 
 (defmethod destroy-all-ribbon-trails ((this scene-manager))
   (ogre-scene-manager-destroy-all-ribbon-trails (pointer-to this)))
-
-
-;; name: "createParticleSystem"
-;; type: "ParticleSystem*"
-;; args: (("const String&" . "name") ("size_t" . "quota") ("const String&" . "resourceGroup"))
-;;
-(defcfun "ogre_scene_manager_create_particle_system"
-    :pointer
-  (ogre-scene-manager :pointer)
-  (name :string)
-  (quota :unsigned-int)
-  (resource-group :string))
-
-(defmethod create-particle-system ((this scene-manager) name quota resource-group)
-  (ogre-scene-manager-create-particle-system (pointer-to this) name quota resource-group))
 
 
 ;; name: "getParticleSystem"
@@ -548,19 +415,6 @@
 
 (defmethod has-particle-system ((this scene-manager) name)
   (ogre-scene-manager-has-particle-system (pointer-to this) name))
-
-
-;; name: "destroyParticleSystem"
-;; type: "void"
-;; args: (("ParticleSystem*" . "obj"))
-;;
-(defcfun "ogre_scene_manager_destroy_particle_system"
-    :void
-  (ogre-scene-manager :pointer)
-  (obj :pointer))
-
-(defmethod destroy-particle-system ((this scene-manager) obj)
-  (ogre-scene-manager-destroy-particle-system (pointer-to this) obj))
 
 
 ;; name: "destroyAllParticleSystems"
@@ -614,45 +468,6 @@
     (ogre-scene-manager-get-ambient-light (pointer-to this) array)
     (vector (mem-aref array 'okra-real 0) (mem-aref array 'okra-real 1)
             (mem-aref array 'okra-real 2) (mem-aref array 'okra-real 3))))
-
-
-;; name: "prepareWorldGeometry"
-;; type: "void"
-;; args: (("const String&" . "filename"))
-;;
-(defcfun "ogre_scene_manager_prepare_world_geometry"
-    :void
-  (ogre-scene-manager :pointer)
-  (filename :string))
-
-(defmethod prepare-world-geometry ((this scene-manager) filename)
-  (ogre-scene-manager-prepare-world-geometry (pointer-to this) filename))
-
-
-;; name: "setWorldGeometry"
-;; type: "void"
-;; args: (("const String&" . "filename"))
-;;
-(defcfun "ogre_scene_manager_set_world_geometry"
-    :void
-  (ogre-scene-manager :pointer)
-  (filename :string))
-
-(defmethod set-world-geometry ((this scene-manager) filename)
-  (ogre-scene-manager-set-world-geometry (pointer-to this) filename))
-
-
-;; name: "estimateWorldGeometry"
-;; type: "size_t"
-;; args: (("const String&" . "filename"))
-;;
-(defcfun "ogre_scene_manager_estimate_world_geometry"
-    :unsigned-int
-  (ogre-scene-manager :pointer)
-  (filename :string))
-
-(defmethod estimate-world-geometry ((this scene-manager) filename)
-  (ogre-scene-manager-estimate-world-geometry (pointer-to this) filename))
 
 
 ;; name: "getSuggestedViewpoint"
@@ -782,6 +597,18 @@
   (ogre-scene-manager-get-sky-plane-node (pointer-to this)))
 
 
+;; name: "getSkyPlaneGenParameters"
+;; type: "const SkyPlaneGenParameters&"
+;; args: "void"
+;;
+(defcfun "ogre_scene_manager_get_sky_plane_gen_parameters"
+    :pointer
+  (ogre-scene-manager :pointer))
+
+(defmethod get-sky-plane-gen-parameters ((this scene-manager))
+  (ogre-scene-manager-get-sky-plane-gen-parameters (pointer-to this)))
+
+
 ;; name: "setSkyBox"
 ;; type: "void"
 ;; args: (("bool" . "enable") ("const String&" . "materialName") ("Real" . "distance") ("bool" . "drawFirst") ("const Quaternion&" . "orientation") ("const String&" . "groupName"))
@@ -822,6 +649,18 @@
 
 (defmethod get-sky-box-node ((this scene-manager))
   (ogre-scene-manager-get-sky-box-node (pointer-to this)))
+
+
+;; name: "getSkyBoxGenParameters"
+;; type: "const SkyBoxGenParameters&"
+;; args: "void"
+;;
+(defcfun "ogre_scene_manager_get_sky_box_gen_parameters"
+    :pointer
+  (ogre-scene-manager :pointer))
+
+(defmethod get-sky-box-gen-parameters ((this scene-manager))
+  (ogre-scene-manager-get-sky-box-gen-parameters (pointer-to this)))
 
 
 ;; name: "setSkyDome"
@@ -869,6 +708,18 @@
 
 (defmethod get-sky-dome-node ((this scene-manager))
   (ogre-scene-manager-get-sky-dome-node (pointer-to this)))
+
+
+;; name: "getSkyDomeGenParameters"
+;; type: "const SkyDomeGenParameters&"
+;; args: "void"
+;;
+(defcfun "ogre_scene_manager_get_sky_dome_gen_parameters"
+    :pointer
+  (ogre-scene-manager :pointer))
+
+(defmethod get-sky-dome-gen-parameters ((this scene-manager))
+  (ogre-scene-manager-get-sky-dome-gen-parameters (pointer-to this)))
 
 
 ;; name: "setFog"
@@ -990,19 +841,6 @@
 
 (defmethod has-billboard-set ((this scene-manager) name)
   (ogre-scene-manager-has-billboard-set (pointer-to this) name))
-
-
-;; name: "destroyBillboardSet"
-;; type: "void"
-;; args: (("BillboardSet*" . "set"))
-;;
-(defcfun "ogre_scene_manager_destroy_billboard_set"
-    :void
-  (ogre-scene-manager :pointer)
-  (set :pointer))
-
-(defmethod destroy-billboard-set ((this scene-manager) set)
-  (ogre-scene-manager-destroy-billboard-set (pointer-to this) set))
 
 
 ;; name: "destroyAllBillboardSets"
@@ -1332,7 +1170,7 @@
 
 ;; name: "getShowBoundingBoxes"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_scene_manager_get_show_bounding_boxes"
     :boolean
@@ -1422,6 +1260,30 @@
 
 (defmethod destroy-query ((this scene-manager) query)
   (ogre-scene-manager-destroy-query (pointer-to this) query))
+
+
+;; name: "getCameraIterator"
+;; type: "CameraIterator"
+;; args: "void"
+;;
+(defcfun "ogre_scene_manager_get_camera_iterator"
+    :pointer
+  (ogre-scene-manager :pointer))
+
+(defmethod get-camera-iterator ((this scene-manager))
+  (ogre-scene-manager-get-camera-iterator (pointer-to this)))
+
+
+;; name: "getAnimationIterator"
+;; type: "AnimationIterator"
+;; args: "void"
+;;
+(defcfun "ogre_scene_manager_get_animation_iterator"
+    :pointer
+  (ogre-scene-manager :pointer))
+
+(defmethod get-animation-iterator ((this scene-manager))
+  (ogre-scene-manager-get-animation-iterator (pointer-to this)))
 
 
 ;; name: "getAnimationStateIterator"
@@ -1615,25 +1477,9 @@
   (ogre-scene-manager-set-shadow-texture-size (pointer-to this) size))
 
 
-;; name: "setShadowTextureConfig"
-;; type: "void"
-;; args: (("size_t" . "shadowIndex") ("unsigned short" . "width") ("unsigned short" . "height") ("PixelFormat" . "format"))
-;;
-(defcfun "ogre_scene_manager_set_shadow_texture_config"
-    :void
-  (ogre-scene-manager :pointer)
-  (shadow-index :unsigned-int)
-  (width :unsigned-short)
-  (height :unsigned-short)
-  (format pixel-format))
-
-(defmethod set-shadow-texture-config ((this scene-manager) shadow-index width height format)
-  (ogre-scene-manager-set-shadow-texture-config (pointer-to this) shadow-index width height format))
-
-
 ;; name: "getShadowTextureConfigIterator"
 ;; type: "ConstShadowTextureConfigIterator"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_scene_manager_get_shadow_texture_config_iterator"
     :pointer
@@ -1853,7 +1699,7 @@
 
 ;; name: "getShadowCasterRenderBackFaces"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_scene_manager_get_shadow_caster_render_back_faces"
     :boolean
@@ -1878,7 +1724,7 @@
 
 ;; name: "getShadowCameraSetup"
 ;; type: "const ShadowCameraSetupPtr&"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_scene_manager_get_shadow_camera_setup"
     :pointer
@@ -1988,7 +1834,7 @@
 
 ;; name: "getShadowUseLightClipPlanes"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_scene_manager_get_shadow_use_light_clip_planes"
     :boolean
@@ -2037,19 +1883,6 @@
   (ogre-scene-manager-has-static-geometry (pointer-to this) name))
 
 
-;; name: "destroyStaticGeometry"
-;; type: "void"
-;; args: (("StaticGeometry*" . "geom"))
-;;
-(defcfun "ogre_scene_manager_destroy_static_geometry"
-    :void
-  (ogre-scene-manager :pointer)
-  (geom :pointer))
-
-(defmethod destroy-static-geometry ((this scene-manager) geom)
-  (ogre-scene-manager-destroy-static-geometry (pointer-to this) geom))
-
-
 ;; name: "destroyAllStaticGeometry"
 ;; type: "void"
 ;; args: "void"
@@ -2088,19 +1921,6 @@
   (ogre-scene-manager-get-instanced-geometry (pointer-to this) name))
 
 
-;; name: "destroyInstancedGeometry"
-;; type: "void"
-;; args: (("InstancedGeometry*" . "geom"))
-;;
-(defcfun "ogre_scene_manager_destroy_instanced_geometry"
-    :void
-  (ogre-scene-manager :pointer)
-  (geom :pointer))
-
-(defmethod destroy-instanced-geometry ((this scene-manager) geom)
-  (ogre-scene-manager-destroy-instanced-geometry (pointer-to this) geom))
-
-
 ;; name: "destroyAllInstancedGeometry"
 ;; type: "void"
 ;; args: "void"
@@ -2126,19 +1946,6 @@
 
 (defmethod create-movable-object ((this scene-manager) name type-name params)
   (ogre-scene-manager-create-movable-object (pointer-to this) name type-name params))
-
-
-;; name: "destroyMovableObject"
-;; type: "void"
-;; args: (("MovableObject*" . "m"))
-;;
-(defcfun "ogre_scene_manager_destroy_movable_object"
-    :void
-  (ogre-scene-manager :pointer)
-  (m :pointer))
-
-(defmethod destroy-movable-object ((this scene-manager) m)
-  (ogre-scene-manager-destroy-movable-object (pointer-to this) m))
 
 
 ;; name: "destroyAllMovableObjectsByType"
@@ -2194,6 +2001,19 @@
   (ogre-scene-manager-has-movable-object (pointer-to this) name type-name))
 
 
+;; name: "getMovableObjectIterator"
+;; type: "MovableObjectIterator"
+;; args: (("const String&" . "typeName"))
+;;
+(defcfun "ogre_scene_manager_get_movable_object_iterator"
+    :pointer
+  (ogre-scene-manager :pointer)
+  (type-name :string))
+
+(defmethod get-movable-object-iterator ((this scene-manager) type-name)
+  (ogre-scene-manager-get-movable-object-iterator (pointer-to this) type-name))
+
+
 ;; name: "injectMovableObject"
 ;; type: "void"
 ;; args: (("MovableObject*" . "m"))
@@ -2205,20 +2025,6 @@
 
 (defmethod inject-movable-object ((this scene-manager) m)
   (ogre-scene-manager-inject-movable-object (pointer-to this) m))
-
-
-;; name: "extractMovableObject"
-;; type: "void"
-;; args: (("const String&" . "name") ("const String&" . "typeName"))
-;;
-(defcfun "ogre_scene_manager_extract_movable_object"
-    :void
-  (ogre-scene-manager :pointer)
-  (name :string)
-  (type-name :string))
-
-(defmethod extract-movable-object ((this scene-manager) name type-name)
-  (ogre-scene-manager-extract-movable-object (pointer-to this) name type-name))
 
 
 ;; name: "extractAllMovableObjectsByType"
@@ -2299,7 +2105,7 @@
 
 ;; name: "getNormaliseNormalsOnScale"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_scene_manager_get_normalise_normals_on_scale"
     :boolean
@@ -2324,7 +2130,7 @@
 
 ;; name: "getFlipCullingOnNegativeScale"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_scene_manager_get_flip_culling_on_negative_scale"
     :boolean
@@ -2336,7 +2142,7 @@
 
 ;; name: "getDestinationRenderSystem"
 ;; type: "RenderSystem*"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_scene_manager_get_destination_render_system"
     :pointer
@@ -2400,7 +2206,7 @@
 
 ;; name: "getCameraRelativeRendering"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_scene_manager_get_camera_relative_rendering"
     :boolean
@@ -2408,6 +2214,620 @@
 
 (defmethod get-camera-relative-rendering ((this scene-manager))
   (ogre-scene-manager-get-camera-relative-rendering (pointer-to this)))
+
+
+;;; Overloaded Foreign Functions
+
+;; name: "getCamera"
+;; type: "Camera*"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_scene_manager_get_camera_string"
+    :pointer
+  (ogre-scene-manager :pointer)
+  (name :string))
+
+
+;; name: "destroyCamera"
+;; type: "void"
+;; args: (("Camera*" . "cam"))
+;;
+(defcfun "ogre_scene_manager_destroy_camera_camera"
+    :void
+  (ogre-scene-manager :pointer)
+  (cam :pointer))
+
+
+;; name: "destroyCamera"
+;; type: "void"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_scene_manager_destroy_camera_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (name :string))
+
+
+;; name: "destroyLight"
+;; type: "void"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_scene_manager_destroy_light_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (name :string))
+
+
+;; name: "destroyLight"
+;; type: "void"
+;; args: (("Light*" . "light"))
+;;
+(defcfun "ogre_scene_manager_destroy_light_light"
+    :void
+  (ogre-scene-manager :pointer)
+  (light :pointer))
+
+
+;; name: "createSceneNode"
+;; type: "SceneNode*"
+;; args: "void"
+;;
+(defcfun "ogre_scene_manager_create_scene_node_void"
+    :pointer
+  (ogre-scene-manager :pointer))
+
+
+;; name: "createSceneNode"
+;; type: "SceneNode*"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_scene_manager_create_scene_node_string"
+    :pointer
+  (ogre-scene-manager :pointer)
+  (name :string))
+
+
+;; name: "destroySceneNode"
+;; type: "void"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_scene_manager_destroy_scene_node_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (name :string))
+
+
+;; name: "destroySceneNode"
+;; type: "void"
+;; args: (("SceneNode*" . "sn"))
+;;
+(defcfun "ogre_scene_manager_destroy_scene_node_scenenode"
+    :void
+  (ogre-scene-manager :pointer)
+  (sn :pointer))
+
+
+;; name: "createEntity"
+;; type: "Entity*"
+;; args: (("const String&" . "entityName") ("const String&" . "meshName"))
+;;
+(defcfun "ogre_scene_manager_create_entity_string_string"
+    :pointer
+  (ogre-scene-manager :pointer)
+  (entity-name :string)
+  (mesh-name :string))
+
+
+;; name: "createEntity"
+;; type: "Entity*"
+;; args: (("const String&" . "entityName") ("PrefabType" . "ptype"))
+;;
+(defcfun "ogre_scene_manager_create_entity_string_prefabtype"
+    :pointer
+  (ogre-scene-manager :pointer)
+  (entity-name :string)
+  (ptype prefab-type))
+
+
+;; name: "destroyEntity"
+;; type: "void"
+;; args: (("Entity*" . "ent"))
+;;
+(defcfun "ogre_scene_manager_destroy_entity_entity"
+    :void
+  (ogre-scene-manager :pointer)
+  (ent :pointer))
+
+
+;; name: "destroyEntity"
+;; type: "void"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_scene_manager_destroy_entity_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (name :string))
+
+
+;; name: "destroyManualObject"
+;; type: "void"
+;; args: (("ManualObject*" . "obj"))
+;;
+(defcfun "ogre_scene_manager_destroy_manual_object_manualobject"
+    :void
+  (ogre-scene-manager :pointer)
+  (obj :pointer))
+
+
+;; name: "destroyManualObject"
+;; type: "void"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_scene_manager_destroy_manual_object_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (name :string))
+
+
+;; name: "destroyBillboardChain"
+;; type: "void"
+;; args: (("BillboardChain*" . "obj"))
+;;
+(defcfun "ogre_scene_manager_destroy_billboard_chain_billboardchain"
+    :void
+  (ogre-scene-manager :pointer)
+  (obj :pointer))
+
+
+;; name: "destroyBillboardChain"
+;; type: "void"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_scene_manager_destroy_billboard_chain_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (name :string))
+
+
+;; name: "destroyRibbonTrail"
+;; type: "void"
+;; args: (("RibbonTrail*" . "obj"))
+;;
+(defcfun "ogre_scene_manager_destroy_ribbon_trail_ribbontrail"
+    :void
+  (ogre-scene-manager :pointer)
+  (obj :pointer))
+
+
+;; name: "destroyRibbonTrail"
+;; type: "void"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_scene_manager_destroy_ribbon_trail_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (name :string))
+
+
+;; name: "createParticleSystem"
+;; type: "ParticleSystem*"
+;; args: (("const String&" . "name") ("const String&" . "templateName"))
+;;
+(defcfun "ogre_scene_manager_create_particle_system_string_string"
+    :pointer
+  (ogre-scene-manager :pointer)
+  (name :string)
+  (template-name :string))
+
+
+;; name: "createParticleSystem"
+;; type: "ParticleSystem*"
+;; args: (("const String&" . "name") ("size_t" . "quota") ("const String&" . "resourceGroup"))
+;;
+(defcfun "ogre_scene_manager_create_particle_system_string_size_t_string"
+    :pointer
+  (ogre-scene-manager :pointer)
+  (name :string)
+  (quota :unsigned-int)
+  (resource-group :string))
+
+
+;; name: "destroyParticleSystem"
+;; type: "void"
+;; args: (("ParticleSystem*" . "obj"))
+;;
+(defcfun "ogre_scene_manager_destroy_particle_system_particlesystem"
+    :void
+  (ogre-scene-manager :pointer)
+  (obj :pointer))
+
+
+;; name: "destroyParticleSystem"
+;; type: "void"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_scene_manager_destroy_particle_system_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (name :string))
+
+
+;; name: "prepareWorldGeometry"
+;; type: "void"
+;; args: (("const String&" . "filename"))
+;;
+(defcfun "ogre_scene_manager_prepare_world_geometry_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (filename :string))
+
+
+;; name: "prepareWorldGeometry"
+;; type: "void"
+;; args: (("DataStreamPtr&" . "stream") ("const String&" . "typeName"))
+;;
+(defcfun "ogre_scene_manager_prepare_world_geometry_datastreamptr_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (stream :pointer)
+  (type-name :string))
+
+
+;; name: "setWorldGeometry"
+;; type: "void"
+;; args: (("const String&" . "filename"))
+;;
+(defcfun "ogre_scene_manager_set_world_geometry_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (filename :string))
+
+
+;; name: "setWorldGeometry"
+;; type: "void"
+;; args: (("DataStreamPtr&" . "stream") ("const String&" . "typeName"))
+;;
+(defcfun "ogre_scene_manager_set_world_geometry_datastreamptr_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (stream :pointer)
+  (type-name :string))
+
+
+;; name: "estimateWorldGeometry"
+;; type: "size_t"
+;; args: (("const String&" . "filename"))
+;;
+(defcfun "ogre_scene_manager_estimate_world_geometry_string"
+    :unsigned-int
+  (ogre-scene-manager :pointer)
+  (filename :string))
+
+
+;; name: "estimateWorldGeometry"
+;; type: "size_t"
+;; args: (("DataStreamPtr&" . "stream") ("const String&" . "typeName"))
+;;
+(defcfun "ogre_scene_manager_estimate_world_geometry_datastreamptr_string"
+    :unsigned-int
+  (ogre-scene-manager :pointer)
+  (stream :pointer)
+  (type-name :string))
+
+
+;; name: "destroyBillboardSet"
+;; type: "void"
+;; args: (("BillboardSet*" . "set"))
+;;
+(defcfun "ogre_scene_manager_destroy_billboard_set_billboardset"
+    :void
+  (ogre-scene-manager :pointer)
+  (set :pointer))
+
+
+;; name: "destroyBillboardSet"
+;; type: "void"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_scene_manager_destroy_billboard_set_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (name :string))
+
+
+;; name: "setShadowTextureConfig"
+;; type: "void"
+;; args: (("size_t" . "shadowIndex") ("unsigned short" . "width") ("unsigned short" . "height") ("PixelFormat" . "format"))
+;;
+(defcfun "ogre_scene_manager_set_shadow_texture_config_size_t_unsignedshort_unsignedshort_pixelformat"
+    :void
+  (ogre-scene-manager :pointer)
+  (shadow-index :unsigned-int)
+  (width :unsigned-short)
+  (height :unsigned-short)
+  (format pixel-format))
+
+
+;; name: "setShadowTextureConfig"
+;; type: "void"
+;; args: (("size_t" . "shadowIndex") ("const ShadowTextureConfig&" . "config"))
+;;
+(defcfun "ogre_scene_manager_set_shadow_texture_config_size_t_shadowtextureconfig"
+    :void
+  (ogre-scene-manager :pointer)
+  (shadow-index :unsigned-int)
+  (config :pointer))
+
+
+;; name: "destroyStaticGeometry"
+;; type: "void"
+;; args: (("StaticGeometry*" . "geom"))
+;;
+(defcfun "ogre_scene_manager_destroy_static_geometry_staticgeometry"
+    :void
+  (ogre-scene-manager :pointer)
+  (geom :pointer))
+
+
+;; name: "destroyStaticGeometry"
+;; type: "void"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_scene_manager_destroy_static_geometry_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (name :string))
+
+
+;; name: "destroyInstancedGeometry"
+;; type: "void"
+;; args: (("InstancedGeometry*" . "geom"))
+;;
+(defcfun "ogre_scene_manager_destroy_instanced_geometry_instancedgeometry"
+    :void
+  (ogre-scene-manager :pointer)
+  (geom :pointer))
+
+
+;; name: "destroyInstancedGeometry"
+;; type: "void"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_scene_manager_destroy_instanced_geometry_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (name :string))
+
+
+;; name: "destroyMovableObject"
+;; type: "void"
+;; args: (("const String&" . "name") ("const String&" . "typeName"))
+;;
+(defcfun "ogre_scene_manager_destroy_movable_object_string_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (name :string)
+  (type-name :string))
+
+
+;; name: "destroyMovableObject"
+;; type: "void"
+;; args: (("MovableObject*" . "m"))
+;;
+(defcfun "ogre_scene_manager_destroy_movable_object_movableobject"
+    :void
+  (ogre-scene-manager :pointer)
+  (m :pointer))
+
+
+;; name: "extractMovableObject"
+;; type: "void"
+;; args: (("const String&" . "name") ("const String&" . "typeName"))
+;;
+(defcfun "ogre_scene_manager_extract_movable_object_string_string"
+    :void
+  (ogre-scene-manager :pointer)
+  (name :string)
+  (type-name :string))
+
+
+;; name: "extractMovableObject"
+;; type: "void"
+;; args: (("MovableObject*" . "m"))
+;;
+(defcfun "ogre_scene_manager_extract_movable_object_movableobject"
+    :void
+  (ogre-scene-manager :pointer)
+  (m :pointer))
+
+
+;;; Methods for Overloaded Foreign Functions
+
+(defmethod get-camera ((this scene-manager) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-get-camera-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod destroy-camera ((this scene-manager) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-destroy-camera-string (pointer-to this) arg0))
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-scene-manager-destroy-camera-camera (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod destroy-light ((this scene-manager) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-scene-manager-destroy-light-light (pointer-to this) arg0))
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-destroy-light-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod create-scene-node ((this scene-manager) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'null))
+     (ogre-scene-manager-create-scene-node-void (pointer-to this)))
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-create-scene-node-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod destroy-scene-node ((this scene-manager) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-scene-manager-destroy-scene-node-scenenode (pointer-to this) arg0))
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-destroy-scene-node-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod create-entity ((this scene-manager) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 'string) (typep arg1 'keyword))
+     (ogre-scene-manager-create-entity-string-prefabtype (pointer-to this) arg0 arg1))
+    ((and (typep arg0 'string) (typep arg1 'string))
+     (ogre-scene-manager-create-entity-string-string (pointer-to this) arg0 arg1))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod destroy-entity ((this scene-manager) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-destroy-entity-string (pointer-to this) arg0))
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-scene-manager-destroy-entity-entity (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod destroy-manual-object ((this scene-manager) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-destroy-manual-object-string (pointer-to this) arg0))
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-scene-manager-destroy-manual-object-manualobject (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod destroy-billboard-chain ((this scene-manager) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-destroy-billboard-chain-string (pointer-to this) arg0))
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-scene-manager-destroy-billboard-chain-billboardchain (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod destroy-ribbon-trail ((this scene-manager) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-destroy-ribbon-trail-string (pointer-to this) arg0))
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-scene-manager-destroy-ribbon-trail-ribbontrail (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod create-particle-system ((this scene-manager) &optional (arg0 nil) (arg1 nil) (arg2 nil))
+  (cond
+    ((and (typep arg0 'string) (typep arg1 'integer) (typep arg2 'string))
+     (ogre-scene-manager-create-particle-system-string-size-t-string (pointer-to this) arg0 arg1 arg2))
+    ((and (typep arg0 'string) (typep arg1 'string))
+     (ogre-scene-manager-create-particle-system-string-string (pointer-to this) arg0 arg1))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod destroy-particle-system ((this scene-manager) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-destroy-particle-system-string (pointer-to this) arg0))
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-scene-manager-destroy-particle-system-particlesystem (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod prepare-world-geometry ((this scene-manager) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 'cffi:foreign-pointer) (typep arg1 'string))
+     (ogre-scene-manager-prepare-world-geometry-datastreamptr-string (pointer-to this) arg0 arg1))
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-prepare-world-geometry-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-world-geometry ((this scene-manager) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 'cffi:foreign-pointer) (typep arg1 'string))
+     (ogre-scene-manager-set-world-geometry-datastreamptr-string (pointer-to this) arg0 arg1))
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-set-world-geometry-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod estimate-world-geometry ((this scene-manager) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 'cffi:foreign-pointer) (typep arg1 'string))
+     (ogre-scene-manager-estimate-world-geometry-datastreamptr-string (pointer-to this) arg0 arg1))
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-estimate-world-geometry-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod destroy-billboard-set ((this scene-manager) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-destroy-billboard-set-string (pointer-to this) arg0))
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-scene-manager-destroy-billboard-set-billboardset (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod set-shadow-texture-config ((this scene-manager) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil))
+  (cond
+    ((and (typep arg0 'integer) (typep arg1 'integer) (typep arg2 'integer) (typep arg3 'keyword))
+     (ogre-scene-manager-set-shadow-texture-config-size-t-unsignedshort-unsignedshort-pixelformat (pointer-to this) arg0 arg1 arg2 arg3))
+    ((and (typep arg0 'integer) (typep arg1 'cffi:foreign-pointer))
+     (ogre-scene-manager-set-shadow-texture-config-size-t-shadowtextureconfig (pointer-to this) arg0 arg1))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod destroy-static-geometry ((this scene-manager) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-destroy-static-geometry-string (pointer-to this) arg0))
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-scene-manager-destroy-static-geometry-staticgeometry (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod destroy-instanced-geometry ((this scene-manager) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-destroy-instanced-geometry-string (pointer-to this) arg0))
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-scene-manager-destroy-instanced-geometry-instancedgeometry (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod destroy-movable-object ((this scene-manager) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 'string) (typep arg1 'string))
+     (ogre-scene-manager-destroy-movable-object-string-string (pointer-to this) arg0 arg1))
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-scene-manager-destroy-movable-object-movableobject (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod extract-movable-object ((this scene-manager) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 'string) (typep arg1 'string))
+     (ogre-scene-manager-extract-movable-object-string-string (pointer-to this) arg0 arg1))
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-scene-manager-extract-movable-object-movableobject (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
 
 
 

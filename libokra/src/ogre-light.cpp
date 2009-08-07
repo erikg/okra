@@ -9,12 +9,9 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
@@ -23,18 +20,22 @@ extern "C"
 {
     void ogre_light_set_type (Light*, Light::LightTypes);
     Light::LightTypes ogre_light_get_type (Light*);
-    void ogre_light_set_diffuse_colour (Light*, const okraArray4);
+    void ogre_light_set_diffuse_colour_real_real_real (Light*, Real, Real, Real);
+    void ogre_light_set_diffuse_colour_colourvalue (Light*, const okraArray4);
     void ogre_light_get_diffuse_colour (Light*, okraArray4);
-    void ogre_light_set_specular_colour (Light*, const okraArray4);
+    void ogre_light_set_specular_colour_real_real_real (Light*, Real, Real, Real);
+    void ogre_light_set_specular_colour_colourvalue (Light*, const okraArray4);
     void ogre_light_get_specular_colour (Light*, okraArray4);
     void ogre_light_set_attenuation (Light*, Real, Real, Real, Real);
     Real ogre_light_get_attenuation_range (Light*);
     Real ogre_light_get_attenuation_constant (Light*);
     Real ogre_light_get_attenuation_linear (Light*);
     Real ogre_light_get_attenuation_quadric (Light*);
-    void ogre_light_set_position (Light*, const okraArray3);
+    void ogre_light_set_position_real_real_real (Light*, Real, Real, Real);
+    void ogre_light_set_position_vector3 (Light*, const okraArray3);
     void ogre_light_get_position (Light*, okraArray3);
-    void ogre_light_set_direction (Light*, const okraArray3);
+    void ogre_light_set_direction_real_real_real (Light*, Real, Real, Real);
+    void ogre_light_set_direction_vector3 (Light*, const okraArray3);
     void ogre_light_get_direction (Light*, okraArray3);
     void ogre_light_set_spotlight_range (Light*, Real, Real, Real);
     okraReal ogre_light_get_spotlight_inner_angle (Light*);
@@ -47,8 +48,9 @@ extern "C"
     Real ogre_light_get_power_scale (Light*);
     const AxisAlignedBox& ogre_light_get_bounding_box (Light*);
     const char* ogre_light_get_movable_type (Light*);
+    void ogre_light_get_derived_position_bool (Light*, okraArray3, bool);
     void ogre_light_get_derived_direction (Light*, okraArray3);
-    void ogre_light_set_visible (Light*, bool);
+    void ogre_light_set_visible_bool (Light*, bool);
     Real ogre_light_get_bounding_radius (Light*);
     Vector4 ogre_light_get_as4_dvector (Light*, bool);
     unsigned int ogre_light_get_type_flags (Light*);
@@ -86,9 +88,18 @@ Light::LightTypes ogre_light_get_type (Light* ogre_light)
 
 // name: "setDiffuseColour"
 // type: "void"
+// args: (("Real" . "red") ("Real" . "green") ("Real" . "blue"))
+//
+void ogre_light_set_diffuse_colour_real_real_real (Light* ogre_light, Real red, Real green, Real blue)
+{
+    ogre_light->setDiffuseColour(red, green, blue);
+}
+
+// name: "setDiffuseColour"
+// type: "void"
 // args: (("const ColourValue&" . "colour"))
 //
-void ogre_light_set_diffuse_colour (Light* ogre_light, const okraArray4 colour)
+void ogre_light_set_diffuse_colour_colourvalue (Light* ogre_light, const okraArray4 colour)
 {
     ColourValue ogre_colour = ColourValue(colour[0], colour[1], colour[2], colour[3]);
     ogre_light->setDiffuseColour(ogre_colour);
@@ -109,9 +120,18 @@ void ogre_light_get_diffuse_colour (Light* ogre_light, okraArray4 cv)
 
 // name: "setSpecularColour"
 // type: "void"
+// args: (("Real" . "red") ("Real" . "green") ("Real" . "blue"))
+//
+void ogre_light_set_specular_colour_real_real_real (Light* ogre_light, Real red, Real green, Real blue)
+{
+    ogre_light->setSpecularColour(red, green, blue);
+}
+
+// name: "setSpecularColour"
+// type: "void"
 // args: (("const ColourValue&" . "colour"))
 //
-void ogre_light_set_specular_colour (Light* ogre_light, const okraArray4 colour)
+void ogre_light_set_specular_colour_colourvalue (Light* ogre_light, const okraArray4 colour)
 {
     ColourValue ogre_colour = ColourValue(colour[0], colour[1], colour[2], colour[3]);
     ogre_light->setSpecularColour(ogre_colour);
@@ -177,9 +197,18 @@ Real ogre_light_get_attenuation_quadric (Light* ogre_light)
 
 // name: "setPosition"
 // type: "void"
+// args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+//
+void ogre_light_set_position_real_real_real (Light* ogre_light, Real x, Real y, Real z)
+{
+    ogre_light->setPosition(x, y, z);
+}
+
+// name: "setPosition"
+// type: "void"
 // args: (("const Vector3&" . "vec"))
 //
-void ogre_light_set_position (Light* ogre_light, const okraArray3 vec)
+void ogre_light_set_position_vector3 (Light* ogre_light, const okraArray3 vec)
 {
     Vector3 ogre_vec = Vector3(vec[0], vec[1], vec[2]);
     ogre_light->setPosition(ogre_vec);
@@ -199,9 +228,18 @@ void ogre_light_get_position (Light* ogre_light, okraArray3 v)
 
 // name: "setDirection"
 // type: "void"
+// args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+//
+void ogre_light_set_direction_real_real_real (Light* ogre_light, Real x, Real y, Real z)
+{
+    ogre_light->setDirection(x, y, z);
+}
+
+// name: "setDirection"
+// type: "void"
 // args: (("const Vector3&" . "vec"))
 //
-void ogre_light_set_direction (Light* ogre_light, const okraArray3 vec)
+void ogre_light_set_direction_vector3 (Light* ogre_light, const okraArray3 vec)
 {
     Vector3 ogre_vec = Vector3(vec[0], vec[1], vec[2]);
     ogre_light->setDirection(ogre_vec);
@@ -323,6 +361,18 @@ const char* ogre_light_get_movable_type (Light* ogre_light)
     return ogre_light->getMovableType().c_str();
 }
 
+// name: "getDerivedPosition"
+// type: "const Vector3&"
+// args: (("bool" . "cameraRelativeIfSet"))
+//
+void ogre_light_get_derived_position_bool (Light* ogre_light, okraArray3 v, bool cameraRelativeIfSet)
+{
+    Vector3 ogre_v = ogre_light->getDerivedPosition(cameraRelativeIfSet);
+    v[0] = ogre_v[0];
+    v[1] = ogre_v[1];
+    v[2] = ogre_v[2];
+}
+
 // name: "getDerivedDirection"
 // type: "const Vector3&"
 // args: "void"
@@ -339,7 +389,7 @@ void ogre_light_get_derived_direction (Light* ogre_light, okraArray3 v)
 // type: "void"
 // args: (("bool" . "visible"))
 //
-void ogre_light_set_visible (Light* ogre_light, bool visible)
+void ogre_light_set_visible_bool (Light* ogre_light, bool visible)
 {
     ogre_light->setVisible(visible);
 }

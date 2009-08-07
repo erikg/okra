@@ -9,12 +9,9 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
@@ -43,7 +40,7 @@ bool ogre_timer_set_option (Timer* ogre_timer, const char* strKey, const void* p
 
 // name: "reset"
 // type: "void"
-// args: NIL
+// args: "void"
 //
 void ogre_timer_reset (Timer* ogre_timer)
 {
@@ -52,7 +49,7 @@ void ogre_timer_reset (Timer* ogre_timer)
 
 // name: "getMilliseconds"
 // type: "unsigned long"
-// args: NIL
+// args: "void"
 //
 unsigned long ogre_timer_get_milliseconds (Timer* ogre_timer)
 {
@@ -61,7 +58,7 @@ unsigned long ogre_timer_get_milliseconds (Timer* ogre_timer)
 
 // name: "getMicroseconds"
 // type: "unsigned long"
-// args: NIL
+// args: "void"
 //
 unsigned long ogre_timer_get_microseconds (Timer* ogre_timer)
 {
@@ -70,7 +67,7 @@ unsigned long ogre_timer_get_microseconds (Timer* ogre_timer)
 
 // name: "getMillisecondsCPU"
 // type: "unsigned long"
-// args: NIL
+// args: "void"
 //
 unsigned long ogre_timer_get_milliseconds_cpu (Timer* ogre_timer)
 {
@@ -79,7 +76,7 @@ unsigned long ogre_timer_get_milliseconds_cpu (Timer* ogre_timer)
 
 // name: "getMicrosecondsCPU"
 // type: "unsigned long"
-// args: NIL
+// args: "void"
 //
 unsigned long ogre_timer_get_microseconds_cpu (Timer* ogre_timer)
 {

@@ -9,24 +9,24 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
 
 extern "C"
 {
+    void ogre_overlay_element_initialise_void (OverlayElement*);
     const char* ogre_overlay_element_get_name (OverlayElement*);
     void ogre_overlay_element_show (OverlayElement*);
     void ogre_overlay_element_hide (OverlayElement*);
+    bool ogre_overlay_element_is_visible_void (OverlayElement*);
     bool ogre_overlay_element_is_enabled (OverlayElement*);
     void ogre_overlay_element_set_enabled (OverlayElement*, bool);
-    void ogre_overlay_element_set_dimensions (OverlayElement*, Real, Real);
+    void ogre_overlay_element_set_dimensions_real_real (OverlayElement*, Real, Real);
+    void ogre_overlay_element_set_position_real_real (OverlayElement*, Real, Real);
     void ogre_overlay_element_set_width (OverlayElement*, Real);
     Real ogre_overlay_element_get_width (OverlayElement*);
     void ogre_overlay_element_set_height (OverlayElement*, Real);
@@ -36,7 +36,7 @@ extern "C"
     void ogre_overlay_element_set_top (OverlayElement*, Real);
     Real ogre_overlay_element_get_top (OverlayElement*);
     const char* ogre_overlay_element_get_material_name (OverlayElement*);
-    void ogre_overlay_element_set_material_name (OverlayElement*, const char*);
+    void ogre_overlay_element_set_material_name_string (OverlayElement*, const char*);
     const MaterialPtr& ogre_overlay_element_get_material (OverlayElement*);
     void ogre_overlay_element_get_world_transforms (OverlayElement*, Matrix4*);
     void ogre_overlay_element_visit_renderables (OverlayElement*, Renderable::Visitor*, bool);
@@ -68,6 +68,15 @@ extern "C"
 
 // Functions
 
+// name: "initialise"
+// type: "void"
+// args: "void"
+//
+void ogre_overlay_element_initialise_void (OverlayElement* ogre_overlay_element)
+{
+    ogre_overlay_element->initialise();
+}
+
 // name: "getName"
 // type: "const String&"
 // args: "void"
@@ -95,9 +104,18 @@ void ogre_overlay_element_hide (OverlayElement* ogre_overlay_element)
     ogre_overlay_element->hide();
 }
 
+// name: "isVisible"
+// type: "bool"
+// args: "void"
+//
+bool ogre_overlay_element_is_visible_void (OverlayElement* ogre_overlay_element)
+{
+    return ogre_overlay_element->isVisible();
+}
+
 // name: "isEnabled"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_overlay_element_is_enabled (OverlayElement* ogre_overlay_element)
 {
@@ -117,9 +135,18 @@ void ogre_overlay_element_set_enabled (OverlayElement* ogre_overlay_element, boo
 // type: "void"
 // args: (("Real" . "width") ("Real" . "height"))
 //
-void ogre_overlay_element_set_dimensions (OverlayElement* ogre_overlay_element, Real width, Real height)
+void ogre_overlay_element_set_dimensions_real_real (OverlayElement* ogre_overlay_element, Real width, Real height)
 {
     ogre_overlay_element->setDimensions(width, height);
+}
+
+// name: "setPosition"
+// type: "void"
+// args: (("Real" . "left") ("Real" . "top"))
+//
+void ogre_overlay_element_set_position_real_real (OverlayElement* ogre_overlay_element, Real left, Real top)
+{
+    ogre_overlay_element->setPosition(left, top);
 }
 
 // name: "setWidth"
@@ -207,7 +234,7 @@ const char* ogre_overlay_element_get_material_name (OverlayElement* ogre_overlay
 // type: "void"
 // args: (("const String&" . "matName"))
 //
-void ogre_overlay_element_set_material_name (OverlayElement* ogre_overlay_element, const char* matName)
+void ogre_overlay_element_set_material_name_string (OverlayElement* ogre_overlay_element, const char* matName)
 {
     ogre_overlay_element->setMaterialName(matName);
 }
@@ -354,7 +381,7 @@ OverlayElement* ogre_overlay_element_find_element_at (OverlayElement* ogre_overl
 
 // name: "isContainer"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_overlay_element_is_container (OverlayElement* ogre_overlay_element)
 {
@@ -363,7 +390,7 @@ bool ogre_overlay_element_is_container (OverlayElement* ogre_overlay_element)
 
 // name: "isKeyEnabled"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_overlay_element_is_key_enabled (OverlayElement* ogre_overlay_element)
 {
@@ -372,7 +399,7 @@ bool ogre_overlay_element_is_key_enabled (OverlayElement* ogre_overlay_element)
 
 // name: "isCloneable"
 // type: "bool"
-// args: NIL
+// args: "void"
 //
 bool ogre_overlay_element_is_cloneable (OverlayElement* ogre_overlay_element)
 {
@@ -390,7 +417,7 @@ void ogre_overlay_element_set_cloneable (OverlayElement* ogre_overlay_element, b
 
 // name: "getParent"
 // type: "OverlayContainer*"
-// args: NIL
+// args: "void"
 //
 OverlayContainer* ogre_overlay_element_get_parent (OverlayElement* ogre_overlay_element)
 {
@@ -399,7 +426,7 @@ OverlayContainer* ogre_overlay_element_get_parent (OverlayElement* ogre_overlay_
 
 // name: "getZOrder"
 // type: "ushort"
-// args: NIL
+// args: "void"
 //
 unsigned short ogre_overlay_element_get_zorder (OverlayElement* ogre_overlay_element)
 {
@@ -444,7 +471,7 @@ OverlayElement* ogre_overlay_element_clone (OverlayElement* ogre_overlay_element
 
 // name: "getSourceTemplate"
 // type: "const OverlayElement*"
-// args: NIL
+// args: "void"
 //
 const OverlayElement* ogre_overlay_element_get_source_template (OverlayElement* ogre_overlay_element)
 {

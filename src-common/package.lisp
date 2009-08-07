@@ -11,4 +11,5 @@
 (defpackage :okra-common
   (:use :cl)
   (:export :append1 :asdf :current-date-time-string :error-message :last1
-           :mkfstr :mkstr :quit :unique-id :verbose :write-to-file))
+           :mkfstr :mkstr :print-hash :quit :unique-id :verbose
+           :write-to-file))

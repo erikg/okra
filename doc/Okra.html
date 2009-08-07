@@ -1,0 +1,253 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Okra</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=iso-8859-1">
+    <style type="text/css">
+body {
+  background: white; color: black;
+  margin-left: 3%; margin-right: 7%;
+}
+
+p { margin-top: 1% }
+p.verse { margin-left: 3% }
+
+.example { margin-left: 3% }
+
+h2 {
+  margin-top: 25px;
+  margin-bottom: 0px;
+}
+h3 { margin-bottom: 0px; }
+    </style>
+  </head>
+  <body>
+    <h1>Okra</h1>
+    <!-- Page published by Emacs Muse begins here -->
+<h2>Definitions</h2>
+
+<p class="first">Whenever I refer to directories, file names or commands issued on the
+computer they will be written in <code>monospace and verbatim</code>.</p>
+
+
+
+<h2>Introduction</h2>
+
+<h3>Goal</h3>
+
+<p class="first">Write software that automatically generates Common Lisp (CL) bindings
+for Ogre.</p>
+
+<p>Ogre is a 3D graphics library written in C++.  This means that we'll
+have to generate code for CFFI (my chosen FFI) in CL and we'll have to
+generate C wrapper code for Ogre's C++ classes and methods since
+talking directly to C++ is riddled with problems (which not be further
+discussed in this document).</p>
+
+<p><em>Both the generated C++ code as well as the CL code should be human
+readable and produce as little warnings as possible when compiling!
+(When having to choose between the generated code being readable and
+the code of the bindings generator being readable I have given the
+former priority.  I'm not so sure whether it's a good choice but time
+will tell...)</em></p>
+
+<p>The bindings should be a usable subset of Ogre's API, enough to create
+a game.  Due to various reasons (time, man power, differences between
+C++ and CL) it is probably not possible to ever automatically generate
+complete bindings to the Ogre API.</p>
+
+<p><em>At the time of this writing I am not anymore working exclusively on
+Okra.  I do use Okra in my private projects and through that it will
+slowly grow.</em></p>
+
+
+<h3>Running the examples</h3>
+
+<p class="first">What you need and should know to get the examples running.</p>
+
+<h4>General</h4>
+
+<p class="first">The startup scripts (the <code>*.sh</code> and <code>*.bat</code> files) expect to be run from
+the <code>examples</code> directory.</p>
+
+
+<h4>Linux</h4>
+
+<p class="first">All examples expect Ogre to be installed so download the source from:
+<a href="http://www.ogre3d.org/download/source">http://www.ogre3d.org/download/source</a> (you'll need &quot;OGRE 1.6.x Source
+for Linux / OSX&quot;).</p>
+
+<p>Configure, compile and install in <code>/usr/local</code>.  Ogre has some
+dependencies which need to be installed first.  Also, see here for
+more information on the whole process:
+<a href="http://www.ogre3d.org/wiki/index.php/Building_From_Source#Linux">http://www.ogre3d.org/wiki/index.php/Building_From_Source#Linux</a></p>
+
+
+<p>The Linux startup scripts are written and tested using SBCL
+(1.0.25.debian at the time of writing) and expect to find <code>sbcl</code> in the
+path.</p>
+
+<p>They expect to find the necessary Ogre libraries in
+<code>/usr/local/lib/OGRE</code> and all others in the <code>lib</code> directory of the Okra
+distribution.</p>
+
+<p>All these options are set in the <code>*.sh</code> files and can be changed there.</p>
+
+
+<h4>Windows</h4>
+
+<p class="first">All examples depend on the Ogre SDK to be installed so download it
+from: <a href="http://www.ogre3d.org/download/sdk">http://www.ogre3d.org/download/sdk</a> (you'll need &quot;OGRE 1.6.x SDK
+for Code::Blocks + MinGW C++ Toolbox&quot;).</p>
+
+<p>Copy the following libraries from <code>&lt;ogre-sdk&gt;/bin/Release</code> to the Okra
+<code>lib</code> directory: <code>cg.dll</code>, <code>OgreMain.dll</code>, <code>OIS.dll</code>,
+<code>Plugin_CgProgramManager.dll</code>, <code>Plugin_OctreeSceneManager.dll</code>,
+<code>RenderSystem_Direct3D9.dll</code> and <code>RenderSystem_GL.dll</code>.</p>
+
+<p>The Windows startup scripts are written and tested using Clozure CL
+and expect to find <code>wx86cl</code> in the path.</p>
+
+<p>All libraries are expected to be found in the <code>lib</code> directory of the
+Okra distribution.</p>
+
+<p>All these settings are in the <code>*.bat</code> files and can be changed there.</p>
+
+
+<h4>Compiling libokra yourself</h4>
+
+<p class="first">If the libokra library that comes with the Okra distribution doesn't
+work you'll need to compile it yourself.  You'll need CMake for that:
+<a href="http://www.cmake.org/cmake/resources/software.html">http://www.cmake.org/cmake/resources/software.html</a></p>
+
+<p>If you have installed CMake on Linux you should issue: <code>cmake -G &quot;Unix
+Makefiles&quot;</code></p>
+
+<p>If you're on Windows you should read the <a href="#windows-mingw">Windows (MinGW)</a> chapter.</p>
+
+
+<h4>Examples</h4>
+
+<p class="first">Start with the simplest example first: <code>simple-okra</code>.</p>
+
+<p>If that works try the <code>physics-and-input</code> example. This example depends
+on both Buclet and clois-lane which you can find at:</p>
+
+<ul>
+<li><a href="http://common-lisp.net/project/buclet/">http://common-lisp.net/project/buclet/</a></li>
+<li><a href="http://common-lisp.net/project/clois-lane/">http://common-lisp.net/project/clois-lane/</a></li>
+</ul>
+
+<p>Make sure both are installed correctly and if you're on Windows copy
+over the DLLs from both the Buclet and clois-lane <code>lib</code> directories to
+the Okra <code>lib</code> directory.  If you're on Linux copy over the
+<code>libclois-lane.so</code> file from the clois-lane <code>lib</code> directory to Okra's <code>lib</code>
+directory.</p>
+
+<p>If you don't want to copy over library files for the above examples
+you'll need to make sure the OS can find them.  (By adapting the
+example startup scripts for example.)</p>
+
+
+<h2><a name="windows-mingw" id="windows-mingw"></a>Windows (MinGW)</h2>
+
+<p class="first">If your libs directory is empty you'll either to download them from
+the homepage or you can try to compile them yourself in which case
+you'll need to download and install MinGW, MSYS and CMake:</p>
+
+<dl>
+<dt><strong>CMake</strong></dt>
+<dd><a href="http://www.cmake.org/cmake/resources/software.html#latest">http://www.cmake.org/cmake/resources/software.html#latest</a></dd>
+<dt><strong>MinGW</strong></dt>
+<dd><a href="http://sourceforge.net/project/showfiles.php?group_id=2435&amp;package_id=240780">http://sourceforge.net/project/showfiles.php?group_id=2435&amp;package_id=240780</a></dd>
+<dt><strong>MSYS</strong></dt><dd>
+<a href="http://sourceforge.net/project/showfiles.php?group_id=2435&amp;package_id=24963">http://sourceforge.net/project/showfiles.php?group_id=2435&amp;package_id=24963</a>
+
+<p><a href="http://sourceforge.net/project/downloading.php?group_id=2435&amp;filename=MSYS-1.0.10.exe&amp;a=14697658">http://sourceforge.net/project/downloading.php?group_id=2435&amp;filename=MSYS-1.0.10.exe&amp;a=14697658</a></p></dd>
+</dl>
+
+<p>Install MinGW first and then MSYS.  Use MSYS version 1.0.10. There's
+guides and information on <a href="http://www.mingw.org/">http://www.mingw.org/</a> if
+needed. (<a href="http://www.mingw.org/wiki/HOWTO_Install_the_MinGW_GCC_Compiler_Suite">http://www.mingw.org/wiki/HOWTO_Install_the_MinGW_GCC_Compiler_Suite</a>)</p>
+
+<p>I suggest first trying the libraries that come with Okra and only then
+the MinGW route unless you're familiar with the latter.</p>
+
+<p>You will need the DLLs from the OgreSDK.  You can download the SDK at:
+<a href="http://www.ogre3d.org/download/sdk">http://www.ogre3d.org/download/sdk</a>
+You need the Code::Blocks + MinGW version (which is currently at version 1.6.1 but this doesn't matter).  You will need at least the following DLLs (from <code>bin/Release</code>):</p>
+
+<ul>
+<li><code>cg.dll</code></li>
+<li><code>OgreMain.dll</code></li>
+<li><code>OIS.dll</code></li>
+<li><code>Plugin_CgProgramManager.dll</code></li>
+<li><code>Plugin_OctreeSceneManager.dll</code></li>
+<li><code>RenderSystem_Direct3D9.dll</code></li>
+<li><code>RenderSystem_GL.dll</code></li>
+</ul>
+
+<p>and ofcourse: <code>libokra.dll</code> (and <code>libclois-lane.dll</code> if you want to run
+the demo that depends on clois-lane).  These last two you will need to
+compile for yourself.</p>
+
+<p>The CMake scripts do not find Ogre correctly on MinGW yet so you'll
+have to check <code>CMakeLists.txt</code> in the Okra directory and change it to
+point to the correct locations (the two lines below &quot;if (MINGW)&quot;).</p>
+
+<p>If all of this is done you can issue: <code>cmake -G &quot;MSYS Makefiles&quot;</code> (not
+&quot;MinGW Makefiles&quot;!)</p>
+
+<p>And then: <code>make</code>.</p>
+
+<p>And if everything goes right (probably not) it should end up in the
+<code>lib</code> directory.</p>
+
+
+
+<h2>Okra Bindings Generator</h2>
+
+<h3>Generating and testing new bindings</h3>
+
+<p class="first">My modus operandi when working on the bindings generator is from
+within Emacs.  I start up Slime with <code>M-x slime</code> and change the
+current directory to that of the bindings generator with <code>M-x slime-cd</code>.</p>
+
+<p>Once I made some changes to the source I do a <code>(asdf:oos 'asdf:load-op
+:okra-bindings-generator)</code> in Slime and place the files in the Okra
+root directory with <code>bin/rsync-generated-bindings.sh</code> (this is from
+within the <code>bindings-generator</code> directory).</p>
+
+<p>I use rsync because it will only replace the files that have been
+changed so that <code>make</code> and the CL implementation only have to recompile
+those changed files which saves a lot of time.  Sometimes this leads
+to problems however and I do <code>bin/install-generated-bindings.sh</code> which
+replaces all the bindings files.  (It also deletes the <code>.fasl</code> files
+which shouldn't be really necessary.)</p>
+
+<p>Then I issue a <code>make</code> from the Okra root directory to create the new C
+wrapper libraries and after that I run one of the examples.
+(<code>./physics-and-input.sh</code> from the <code>examples</code> directory at the time of
+writing since I do not have regression tests yet.)</p>
+
+
+
+
+<h2>FAQ</h2>
+
+<p class="verse">
+Q. Why are both LOOP and ITER (package ITERATE) are being used?<br>
+<br>
+A. When I started programming Common Lisp I preferred ITER, but lately<br>
+&nbsp;&nbsp;&nbsp;&nbsp;I've come to appreciate LOOP, if only because it means less<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dependencies when writing libraries for public consumption.  Ofcourse,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;this argument isn't of much use when using both in a library.<br>
+</p>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </body>
+</html>

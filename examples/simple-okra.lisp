@@ -10,7 +10,7 @@
 ;;;; direct calls to the Ogre bindings.
 
 ;; for development
-#+sbcl (setf *muffled-warnings* 'implicit-generic-function-warning)
+;#+sbcl (setf *muffled-warnings* 'implicit-generic-function-warning)
 
 
 ;;; Packages
@@ -54,8 +54,8 @@
 (setf *light* (make-light))
 (set-type *light* :lt-directional)
 (set-position *light* #(0.0 100.0 0.0))
-(set-diffuse-colour *light* '(0.9 0.9 0.9 1.0))
-(set-specular-colour *light* '(0.9 0.9 0.9 1.0))
+(set-diffuse-colour *light* #(0.9 0.9 0.9 1.0))
+(set-specular-colour *light* #(0.9 0.9 0.9 1.0))
 (set-direction *light* #(1.0 -1.0 -0.5))
 
 ;; misc

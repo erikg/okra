@@ -70,7 +70,6 @@
           (next-iteration))
         (as name = (value-of (first (node :|name| typedef))))
         (as type = (value-of (first (node :|type| typedef))))
-        ;(format t "Considering: ~S => ~S...~%" name type)
         ;; only very basic types are handled
         (when (or (and (not (equal type "UTFString"))
                        (cl-ppcre:scan *regex-caps* type))
@@ -93,6 +92,7 @@
         (parse-doxygen-enums-file file))
   (clrhash *base-classes*)
   (clrhash *classes*)
+  (clrhash *members*)
   (iter (for file in files)
         (as xml = (parse-xml-file file))
         (as base-class-name = (ogre-base-class-name xml))
@@ -116,18 +116,30 @@
                       (next-iteration))
                     (as type = (memberdef-type memberdef))
                     (as args = (memberdef-args memberdef))
-                    (push (list :name name :type type :args args)
-                          (gethash class-name *classes*))))))
+                    (as member = (list :name name :type type :args args))
+                    (unless (blacklisted member)
+                      ;; ":args" could be removed but it looks good in debug
+                      (pushnew (list :args (if (listp args)
+                                               (loop for arg in args
+                                                     collect (if (consp arg)
+                                                                 (car arg)
+                                                                 arg))
+                                               args))
+                               (gethash name *members*)
+                               :test #'equal))
+                    (push member (gethash class-name *classes*))))))
 
 
 ;;; Main Program
 
 (defun generate-bindings (&optional (verbose nil))
   (setf *verbose* verbose)
+  (initialise-templates)
   (parse-doxygen-files)
   (generate-cpp-bindings)
   (generate-lisp-bindings))
 
 
 ;; for development
-(generate-bindings t)
+;(generate-bindings t)
+(generate-bindings)

@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:32.
+;;;; This file was generated on: 2009-08-07 15:52:10.
 
 (in-package :okra-bindings)
 
@@ -38,7 +38,7 @@
 
 ;; name: "reset"
 ;; type: "void"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_timer_reset"
     :void
@@ -50,7 +50,7 @@
 
 ;; name: "getMilliseconds"
 ;; type: "unsigned long"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_timer_get_milliseconds"
     :unsigned-long
@@ -62,7 +62,7 @@
 
 ;; name: "getMicroseconds"
 ;; type: "unsigned long"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_timer_get_microseconds"
     :unsigned-long
@@ -74,7 +74,7 @@
 
 ;; name: "getMillisecondsCPU"
 ;; type: "unsigned long"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_timer_get_milliseconds_cpu"
     :unsigned-long
@@ -86,7 +86,7 @@
 
 ;; name: "getMicrosecondsCPU"
 ;; type: "unsigned long"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_timer_get_microseconds_cpu"
     :unsigned-long
@@ -95,5 +95,9 @@
 (defmethod get-microseconds-cpu ((this timer))
   (ogre-timer-get-microseconds-cpu (pointer-to this)))
 
+
+;;; Overloaded Foreign Functions
+
+;;; Methods for Overloaded Foreign Functions
 
 

@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:31.
+;;;; This file was generated on: 2009-08-07 15:52:10.
 
 (in-package :okra-bindings)
 
@@ -174,20 +174,6 @@
   (ogre-overlay-manager-get-overlay-element (pointer-to this) name is-template))
 
 
-;; name: "destroyOverlayElement"
-;; type: "void"
-;; args: (("OverlayElement*" . "pInstance") ("bool" . "isTemplate"))
-;;
-(defcfun "ogre_overlay_manager_destroy_overlay_element"
-    :void
-  (ogre-overlay-manager :pointer)
-  (pinstance :pointer)
-  (is-template :boolean))
-
-(defmethod destroy-overlay-element ((this overlay-manager) pinstance is-template)
-  (ogre-overlay-manager-destroy-overlay-element (pointer-to this) pinstance is-template))
-
-
 ;; name: "destroyAllOverlayElements"
 ;; type: "void"
 ;; args: (("bool" . "isTemplate"))
@@ -212,6 +198,18 @@
 
 (defmethod add-overlay-element-factory ((this overlay-manager) elem-factory)
   (ogre-overlay-manager-add-overlay-element-factory (pointer-to this) elem-factory))
+
+
+;; name: "getOverlayElementFactoryMap"
+;; type: "const FactoryMap&"
+;; args: "void"
+;;
+(defcfun "ogre_overlay_manager_get_overlay_element_factory_map"
+    :pointer
+  (ogre-overlay-manager :pointer))
+
+(defmethod get-overlay-element-factory-map ((this overlay-manager))
+  (ogre-overlay-manager-get-overlay-element-factory-map (pointer-to this)))
 
 
 ;; name: "createOverlayElementFromTemplate"
@@ -260,7 +258,7 @@
 
 ;; name: "getTemplateIterator"
 ;; type: "TemplateIterator"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_overlay_manager_get_template_iterator"
     :pointer
@@ -281,6 +279,88 @@
 
 (defmethod is-template ((this overlay-manager) str-name)
   (ogre-overlay-manager-is-template (pointer-to this) str-name))
+
+
+;;; Overloaded Foreign Functions
+
+;; name: "create"
+;; type: "Overlay*"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_overlay_manager_create_string"
+    :pointer
+  (ogre-overlay-manager :pointer)
+  (name :string))
+
+
+;; name: "destroy"
+;; type: "void"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_overlay_manager_destroy_string"
+    :void
+  (ogre-overlay-manager :pointer)
+  (name :string))
+
+
+;; name: "destroy"
+;; type: "void"
+;; args: (("Overlay*" . "overlay"))
+;;
+(defcfun "ogre_overlay_manager_destroy_overlay"
+    :void
+  (ogre-overlay-manager :pointer)
+  (overlay :pointer))
+
+
+;; name: "destroyOverlayElement"
+;; type: "void"
+;; args: (("const String&" . "instanceName") ("bool" . "isTemplate"))
+;;
+(defcfun "ogre_overlay_manager_destroy_overlay_element_string_bool"
+    :void
+  (ogre-overlay-manager :pointer)
+  (instance-name :string)
+  (is-template :boolean))
+
+
+;; name: "destroyOverlayElement"
+;; type: "void"
+;; args: (("OverlayElement*" . "pInstance") ("bool" . "isTemplate"))
+;;
+(defcfun "ogre_overlay_manager_destroy_overlay_element_overlayelement_bool"
+    :void
+  (ogre-overlay-manager :pointer)
+  (pinstance :pointer)
+  (is-template :boolean))
+
+
+;;; Methods for Overloaded Foreign Functions
+
+(defmethod create ((this overlay-manager) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil) (arg4 nil))
+  (declare (ignore arg1 arg2 arg3 arg4))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-overlay-manager-create-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod destroy ((this overlay-manager) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'cffi:foreign-pointer))
+     (ogre-overlay-manager-destroy-overlay (pointer-to this) arg0))
+    ((and (typep arg0 'string))
+     (ogre-overlay-manager-destroy-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod destroy-overlay-element ((this overlay-manager) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 'cffi:foreign-pointer) (typep arg1 'boolean))
+     (ogre-overlay-manager-destroy-overlay-element-overlayelement-bool (pointer-to this) arg0 arg1))
+    ((and (typep arg0 'string) (typep arg1 'boolean))
+     (ogre-overlay-manager-destroy-overlay-element-string-bool (pointer-to this) arg0 arg1))
+    (t (error "Overloaded method not defined for this class."))))
 
 
 

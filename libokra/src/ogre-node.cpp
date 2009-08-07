@@ -9,12 +9,9 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
@@ -24,25 +21,41 @@ extern "C"
     const char* ogre_node_get_name (Node*);
     Node* ogre_node_get_parent (Node*);
     void ogre_node_get_orientation (Node*, okraArray4);
-    void ogre_node_set_orientation (Node*, const okraArray4);
+    void ogre_node_set_orientation_quaternion (Node*, const okraArray4);
+    void ogre_node_set_orientation_real_real_real_real (Node*, Real, Real, Real, Real);
     void ogre_node_reset_orientation (Node*);
-    void ogre_node_set_position (Node*, const okraArray3);
+    void ogre_node_set_position_vector3 (Node*, const okraArray3);
+    void ogre_node_set_position_real_real_real (Node*, Real, Real, Real);
     void ogre_node_get_position (Node*, okraArray3);
-    void ogre_node_set_scale (Node*, const okraArray3);
+    void ogre_node_set_scale_vector3 (Node*, const okraArray3);
+    void ogre_node_set_scale_real_real_real (Node*, Real, Real, Real);
     void ogre_node_get_scale (Node*, okraArray3);
     void ogre_node_set_inherit_orientation (Node*, bool);
     bool ogre_node_get_inherit_orientation (Node*);
     void ogre_node_set_inherit_scale (Node*, bool);
     bool ogre_node_get_inherit_scale (Node*);
-    void ogre_node_scale (Node*, const okraArray3);
-    void ogre_node_translate (Node*, const okraArray3, SceneNode::TransformSpace);
+    void ogre_node_scale_vector3 (Node*, const okraArray3);
+    void ogre_node_scale_real_real_real (Node*, Real, Real, Real);
+    void ogre_node_translate_vector3_transformspace (Node*, const okraArray3, SceneNode::TransformSpace);
+    void ogre_node_translate_real_real_real_transformspace (Node*, Real, Real, Real, SceneNode::TransformSpace);
+    void ogre_node_translate_matrix3_vector3_transformspace (Node*, const Matrix3&, const okraArray3, SceneNode::TransformSpace);
+    void ogre_node_translate_matrix3_real_real_real_transformspace (Node*, const Matrix3&, Real, Real, Real, SceneNode::TransformSpace);
+    void ogre_node_roll_radian_transformspace (Node*, Real, SceneNode::TransformSpace);
+    void ogre_node_pitch_radian_transformspace (Node*, Real, SceneNode::TransformSpace);
+    void ogre_node_yaw_radian_transformspace (Node*, Real, SceneNode::TransformSpace);
+    void ogre_node_rotate_vector3_radian_transformspace (Node*, const okraArray3, Real, SceneNode::TransformSpace);
+    void ogre_node_rotate_quaternion_transformspace (Node*, const okraArray4, SceneNode::TransformSpace);
     Matrix3 ogre_node_get_local_axes (Node*);
-    Node* ogre_node_create_child (Node*, const char*, const okraArray3, const okraArray4);
+    Node* ogre_node_create_child_vector3_quaternion (Node*, const okraArray3, const okraArray4);
+    Node* ogre_node_create_child_string_vector3_quaternion (Node*, const char*, const okraArray3, const okraArray4);
     void ogre_node_add_child (Node*, Node*);
     unsigned short ogre_node_num_children (Node*);
-    Node* ogre_node_get_child (Node*, const char*);
+    Node* ogre_node_get_child_unsignedshort (Node*, unsigned short);
+    Node* ogre_node_get_child_string (Node*, const char*);
     Node::ChildNodeIterator ogre_node_get_child_iterator (Node*);
-    Node* ogre_node_remove_child (Node*, const char*);
+    Node* ogre_node_remove_child_unsignedshort (Node*, unsigned short);
+    Node* ogre_node_remove_child_node (Node*, Node*);
+    Node* ogre_node_remove_child_string (Node*, const char*);
     void ogre_node_remove_all_children (Node*);
     const MaterialPtr& ogre_node_get_material (Node*);
     void ogre_node_get_render_operation (Node*, RenderOperation&);
@@ -82,7 +95,7 @@ Node* ogre_node_get_parent (Node* ogre_node)
 
 // name: "getOrientation"
 // type: "const Quaternion&"
-// args: NIL
+// args: "void"
 //
 void ogre_node_get_orientation (Node* ogre_node, okraArray4 q)
 {
@@ -97,10 +110,19 @@ void ogre_node_get_orientation (Node* ogre_node, okraArray4 q)
 // type: "void"
 // args: (("const Quaternion&" . "q"))
 //
-void ogre_node_set_orientation (Node* ogre_node, const okraArray4 q)
+void ogre_node_set_orientation_quaternion (Node* ogre_node, const okraArray4 q)
 {
     Quaternion ogre_q = Quaternion(q[0], q[1], q[2], q[3]);
     ogre_node->setOrientation(ogre_q);
+}
+
+// name: "setOrientation"
+// type: "void"
+// args: (("Real" . "w") ("Real" . "x") ("Real" . "y") ("Real" . "z"))
+//
+void ogre_node_set_orientation_real_real_real_real (Node* ogre_node, Real w, Real x, Real y, Real z)
+{
+    ogre_node->setOrientation(w, x, y, z);
 }
 
 // name: "resetOrientation"
@@ -116,10 +138,19 @@ void ogre_node_reset_orientation (Node* ogre_node)
 // type: "void"
 // args: (("const Vector3&" . "pos"))
 //
-void ogre_node_set_position (Node* ogre_node, const okraArray3 pos)
+void ogre_node_set_position_vector3 (Node* ogre_node, const okraArray3 pos)
 {
     Vector3 ogre_pos = Vector3(pos[0], pos[1], pos[2]);
     ogre_node->setPosition(ogre_pos);
+}
+
+// name: "setPosition"
+// type: "void"
+// args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+//
+void ogre_node_set_position_real_real_real (Node* ogre_node, Real x, Real y, Real z)
+{
+    ogre_node->setPosition(x, y, z);
 }
 
 // name: "getPosition"
@@ -138,10 +169,19 @@ void ogre_node_get_position (Node* ogre_node, okraArray3 v)
 // type: "void"
 // args: (("const Vector3&" . "scale"))
 //
-void ogre_node_set_scale (Node* ogre_node, const okraArray3 scale)
+void ogre_node_set_scale_vector3 (Node* ogre_node, const okraArray3 scale)
 {
     Vector3 ogre_scale = Vector3(scale[0], scale[1], scale[2]);
     ogre_node->setScale(ogre_scale);
+}
+
+// name: "setScale"
+// type: "void"
+// args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+//
+void ogre_node_set_scale_real_real_real (Node* ogre_node, Real x, Real y, Real z)
+{
+    ogre_node->setScale(x, y, z);
 }
 
 // name: "getScale"
@@ -196,20 +236,107 @@ bool ogre_node_get_inherit_scale (Node* ogre_node)
 // type: "void"
 // args: (("const Vector3&" . "scale"))
 //
-void ogre_node_scale (Node* ogre_node, const okraArray3 scale)
+void ogre_node_scale_vector3 (Node* ogre_node, const okraArray3 scale)
 {
     Vector3 ogre_scale = Vector3(scale[0], scale[1], scale[2]);
     ogre_node->scale(ogre_scale);
+}
+
+// name: "scale"
+// type: "void"
+// args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+//
+void ogre_node_scale_real_real_real (Node* ogre_node, Real x, Real y, Real z)
+{
+    ogre_node->scale(x, y, z);
 }
 
 // name: "translate"
 // type: "void"
 // args: (("const Vector3&" . "d") ("TransformSpace" . "relativeTo"))
 //
-void ogre_node_translate (Node* ogre_node, const okraArray3 d, SceneNode::TransformSpace relativeTo)
+void ogre_node_translate_vector3_transformspace (Node* ogre_node, const okraArray3 d, SceneNode::TransformSpace relativeTo)
 {
     Vector3 ogre_d = Vector3(d[0], d[1], d[2]);
     ogre_node->translate(ogre_d, relativeTo);
+}
+
+// name: "translate"
+// type: "void"
+// args: (("Real" . "x") ("Real" . "y") ("Real" . "z") ("TransformSpace" . "relativeTo"))
+//
+void ogre_node_translate_real_real_real_transformspace (Node* ogre_node, Real x, Real y, Real z, SceneNode::TransformSpace relativeTo)
+{
+    ogre_node->translate(x, y, z, relativeTo);
+}
+
+// name: "translate"
+// type: "void"
+// args: (("const Matrix3&" . "axes") ("const Vector3&" . "move") ("TransformSpace" . "relativeTo"))
+//
+void ogre_node_translate_matrix3_vector3_transformspace (Node* ogre_node, const Matrix3& axes, const okraArray3 move, SceneNode::TransformSpace relativeTo)
+{
+    Vector3 ogre_move = Vector3(move[0], move[1], move[2]);
+    ogre_node->translate(axes, ogre_move, relativeTo);
+}
+
+// name: "translate"
+// type: "void"
+// args: (("const Matrix3&" . "axes") ("Real" . "x") ("Real" . "y") ("Real" . "z") ("TransformSpace" . "relativeTo"))
+//
+void ogre_node_translate_matrix3_real_real_real_transformspace (Node* ogre_node, const Matrix3& axes, Real x, Real y, Real z, SceneNode::TransformSpace relativeTo)
+{
+    ogre_node->translate(axes, x, y, z, relativeTo);
+}
+
+// name: "roll"
+// type: "void"
+// args: (("const Radian&" . "angle") ("TransformSpace" . "relativeTo"))
+//
+void ogre_node_roll_radian_transformspace (Node* ogre_node, Real angle, SceneNode::TransformSpace relativeTo)
+{
+    Radian ogre_angle = Radian(angle);
+    ogre_node->roll(ogre_angle, relativeTo);
+}
+
+// name: "pitch"
+// type: "void"
+// args: (("const Radian&" . "angle") ("TransformSpace" . "relativeTo"))
+//
+void ogre_node_pitch_radian_transformspace (Node* ogre_node, Real angle, SceneNode::TransformSpace relativeTo)
+{
+    Radian ogre_angle = Radian(angle);
+    ogre_node->pitch(ogre_angle, relativeTo);
+}
+
+// name: "yaw"
+// type: "void"
+// args: (("const Radian&" . "angle") ("TransformSpace" . "relativeTo"))
+//
+void ogre_node_yaw_radian_transformspace (Node* ogre_node, Real angle, SceneNode::TransformSpace relativeTo)
+{
+    Radian ogre_angle = Radian(angle);
+    ogre_node->yaw(ogre_angle, relativeTo);
+}
+
+// name: "rotate"
+// type: "void"
+// args: (("const Vector3&" . "axis") ("const Radian&" . "angle") ("TransformSpace" . "relativeTo"))
+//
+void ogre_node_rotate_vector3_radian_transformspace (Node* ogre_node, const okraArray3 axis, Real angle, SceneNode::TransformSpace relativeTo)
+{
+    Vector3 ogre_axis = Vector3(axis[0], axis[1], axis[2]);Radian ogre_angle = Radian(angle);
+    ogre_node->rotate(ogre_axis, ogre_angle, relativeTo);
+}
+
+// name: "rotate"
+// type: "void"
+// args: (("const Quaternion&" . "q") ("TransformSpace" . "relativeTo"))
+//
+void ogre_node_rotate_quaternion_transformspace (Node* ogre_node, const okraArray4 q, SceneNode::TransformSpace relativeTo)
+{
+    Quaternion ogre_q = Quaternion(q[0], q[1], q[2], q[3]);
+    ogre_node->rotate(ogre_q, relativeTo);
 }
 
 // name: "getLocalAxes"
@@ -223,9 +350,19 @@ Matrix3 ogre_node_get_local_axes (Node* ogre_node)
 
 // name: "createChild"
 // type: "Node*"
+// args: (("const Vector3&" . "translate") ("const Quaternion&" . "rotate"))
+//
+Node* ogre_node_create_child_vector3_quaternion (Node* ogre_node, const okraArray3 translate, const okraArray4 rotate)
+{
+    Vector3 ogre_translate = Vector3(translate[0], translate[1], translate[2]);Quaternion ogre_rotate = Quaternion(rotate[0], rotate[1], rotate[2], rotate[3]);
+    return ogre_node->createChild(ogre_translate, ogre_rotate);
+}
+
+// name: "createChild"
+// type: "Node*"
 // args: (("const String&" . "name") ("const Vector3&" . "translate") ("const Quaternion&" . "rotate"))
 //
-Node* ogre_node_create_child (Node* ogre_node, const char* name, const okraArray3 translate, const okraArray4 rotate)
+Node* ogre_node_create_child_string_vector3_quaternion (Node* ogre_node, const char* name, const okraArray3 translate, const okraArray4 rotate)
 {
     Vector3 ogre_translate = Vector3(translate[0], translate[1], translate[2]);Quaternion ogre_rotate = Quaternion(rotate[0], rotate[1], rotate[2], rotate[3]);
     return ogre_node->createChild(name, ogre_translate, ogre_rotate);
@@ -251,9 +388,18 @@ unsigned short ogre_node_num_children (Node* ogre_node)
 
 // name: "getChild"
 // type: "Node*"
+// args: (("unsigned short" . "index"))
+//
+Node* ogre_node_get_child_unsignedshort (Node* ogre_node, unsigned short index)
+{
+    return ogre_node->getChild(index);
+}
+
+// name: "getChild"
+// type: "Node*"
 // args: (("const String&" . "name"))
 //
-Node* ogre_node_get_child (Node* ogre_node, const char* name)
+Node* ogre_node_get_child_string (Node* ogre_node, const char* name)
 {
     return ogre_node->getChild(name);
 }
@@ -269,9 +415,27 @@ Node::ChildNodeIterator ogre_node_get_child_iterator (Node* ogre_node)
 
 // name: "removeChild"
 // type: "Node*"
+// args: (("unsigned short" . "index"))
+//
+Node* ogre_node_remove_child_unsignedshort (Node* ogre_node, unsigned short index)
+{
+    return ogre_node->removeChild(index);
+}
+
+// name: "removeChild"
+// type: "Node*"
+// args: (("Node*" . "child"))
+//
+Node* ogre_node_remove_child_node (Node* ogre_node, Node* child)
+{
+    return ogre_node->removeChild(child);
+}
+
+// name: "removeChild"
+// type: "Node*"
 // args: (("const String&" . "name"))
 //
-Node* ogre_node_remove_child (Node* ogre_node, const char* name)
+Node* ogre_node_remove_child_string (Node* ogre_node, const char* name)
 {
     return ogre_node->removeChild(name);
 }

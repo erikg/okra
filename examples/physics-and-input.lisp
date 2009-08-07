@@ -10,19 +10,16 @@
 ;;;; o http://gafferongames.com/game-physics/fix-your-timestep/
 
 ;; for development
-#+sbcl (setf *muffled-warnings* 'implicit-generic-function-warning)
+;#+sbcl (setf *muffled-warnings* 'implicit-generic-function-warning)
 
 
 ;;; Packages
 
 (asdf :buclet)
 (asdf :clois-lane)
-(asdf :iterate)
 (asdf :okra)
 
 (in-package :okra)
-
-(use-package :iterate)
 
 
 ;;; Variables
@@ -226,14 +223,14 @@
 ;; ugly but suffices for now, i'm in it for the cubes
 (defun create-checkerboard (x y z width &optional (checker-size 10.0))
   (let ((halfwit (/ width 2.0)))
-    (iter (for ix from (- x halfwit) to (+ x halfwit) by checker-size)
-          (iter (for iz from (- z halfwit ) to (+ z halfwit) by checker-size)
-                (as colour = (if (evenp (floor (/ (+ ix iz) 10.0)))
-                                 "Test/Blue80"
-                                 "Test/Blue90"))
-                (as square = (create-square ix y iz checker-size :filled t
-                                            :material colour))
-                (attach-object *root-node* (pointer-to square))))))
+    (loop for ix from (- x halfwit) below (+ x halfwit) by checker-size
+          do (loop for iz from (- z halfwit ) below (+ z halfwit) by checker-size
+                   for colour = (if (evenp (floor (/ (+ ix iz) 10.0)))
+                                    "Test/Blue80"
+                                    "Test/Blue90")
+                   for square = (create-square ix y iz checker-size :filled t
+                                               :material colour)
+                   do (attach-object *root-node* (pointer-to square))))))
 
 
 (defun debug-text (text)
@@ -268,89 +265,90 @@
 (defun start-simulation-X ()
   (clois-lane:set-actions *actions*)
   (setf *running* t)
-  (iter (with previous-time = (get-microseconds *timer*))
-        (with time = 0)
-        (while *running*)
-        (as current-time = (get-microseconds *timer*))
-        (as delta-time = (/ (- current-time previous-time) 1000000))
-        (as fps = (/ 1 delta-time))
-        (setf previous-time current-time)
-        (incf time delta-time)
-        (buclet:step-simulation *dynamics-world* (coerce time 'single-float))
-        (iter (for cube in *cubes*)
-              (as frb = (car cube))
-              (as node = (cdr cube))
-              (as o = (buclet:get-orientation frb))
-              (as p = (buclet:get-position frb))
-              (set-orientation node (vector (fourth o) (first o)
-                                            (second o) (third o)))
-              (set-position node (vector (first p) (second p) (third p))))
-        ;; set mouse region since the window might have been resized
-        (clois-lane:set-window-extents (get-actual-width *viewport*)
-                                       (get-actual-height *viewport*))
-        (clois-lane:capture)
-        (do-movement)
-        (debug-text (format nil "fps: ~,2F~%cubes: ~A~%triangles: ~A~%"
-                            fps (length *cubes*) *triangle-count*))
-        (new-frame)))
+  (loop with previous-time = (get-microseconds *timer*)
+        with time = 0
+        while *running*
+        for current-time = (get-microseconds *timer*)
+        for delta-time = (/ (- current-time previous-time) 1000000)
+        for fps = (/ 1 delta-time)
+        do (setf previous-time current-time)
+           (incf time delta-time)
+           (buclet:step-simulation *dynamics-world* (coerce time 'single-float))
+           (loop for cube in *cubes*
+                 for frb = (car cube)
+                 for node = (cdr cube)
+                 for o = (buclet:get-orientation frb)
+                 for p = (buclet:get-position frb)
+                 do (set-orientation node (vector (fourth o) (first o)
+                                                  (second o) (third o)))
+                    (set-position node (vector (first p) (second p) (third p))))
+           ;; set mouse region since the window might have been resized
+           (clois-lane:set-window-extents (get-actual-width *viewport*)
+                                          (get-actual-height *viewport*))
+           (clois-lane:capture)
+           (do-movement)
+           (debug-text (format nil "fps: ~,2F~%cubes: ~A~%triangles: ~A~%"
+                               fps (length *cubes*) *triangle-count*))
+           (new-frame)))
 
 ;(defun start-simulation-free-the-physics ()
 (defun start-simulation ()
   (clois-lane:set-actions *actions*)
   (setf *running* t)
-  (iter (with accumulator = 0)
-        (with fixed-time-step = (coerce (/ 1 60) 'single-float))
-        (with previous-time = (get-microseconds *timer*))
-        (with time = 0)
-        (while *running*)
-        (as current-time = (get-microseconds *timer*))
-        (as delta-time = (/ (- current-time previous-time) 1000000))
-        (as fps = (/ 1 delta-time))
-        (setf previous-time current-time)
-        (incf accumulator delta-time)
-        (iter (while (>= accumulator fixed-time-step))
-              ;; Gaffer?: previousState = currentState
-              (buclet:step-simulation *dynamics-world* fixed-time-step)
-              (incf time fixed-time-step)
-              (decf accumulator fixed-time-step))
-        ;; Gaffer?: const float alpha = accumulator / dt;
-        ;; Gaffer?: state = currentState*alpha + previousState*(1.0f-alpha);
-        (iter (for cube in *cubes*)
-              (as frb = (car cube))
-              (as node = (cdr cube))
-              (as o = (buclet:get-orientation frb))
-              (as p = (buclet:get-position frb))
-              (set-orientation node (vector (fourth o) (first o)
-                                            (second o) (third o)))
-              (set-position node (vector (first p) (second p) (third p))))
-        ;; set mouse region since the window might have been resized
-        (clois-lane:set-window-extents (get-actual-width *viewport*)
-                                       (get-actual-height *viewport*))
-        (clois-lane:capture)
-        (do-movement)
-        (debug-text (format nil "fps: ~,2F~%cubes: ~A~%triangles: ~A~%"
-                           fps (length *cubes*) *triangle-count*))
-        (new-frame)))
+  (loop with accumulator = 0
+        with fixed-time-step = (coerce (/ 1 60) 'single-float)
+        with previous-time = (get-microseconds *timer*)
+        with time = 0
+        while *running*
+        for current-time = (get-microseconds *timer*)
+        for delta-time = (/ (- current-time previous-time) 1000000)
+        for fps = (/ 1 delta-time)
+        do (setf previous-time current-time)
+           (incf accumulator delta-time)
+           (loop while (>= accumulator fixed-time-step)
+                 do ;; Process input at a fixed rate.
+                    (clois-lane:set-window-extents
+                      (get-actual-width *viewport*)
+                      (get-actual-height *viewport*))
+                    (clois-lane:capture)
+                    (do-movement)
+                    ;; Gaffer?: previousState = currentState
+                    (buclet:step-simulation *dynamics-world* fixed-time-step)
+                    (incf time fixed-time-step)
+                    (decf accumulator fixed-time-step))
+           ;; Gaffer?: const float alpha = accumulator / dt;
+           ;; Gaffer?: state = currentState*alpha + previousState*(1.0f-alpha);
+           (loop for cube in *cubes*
+                 for frb = (car cube)
+                 for node = (cdr cube)
+                 for o = (buclet:get-orientation frb)
+                 for p = (buclet:get-position frb)
+                 do (set-orientation node (vector (fourth o) (first o)
+                                                  (second o) (third o)))
+                    (set-position node (vector (first p) (second p) (third p))))
+           (debug-text (format nil "fps: ~,2F~%cubes: ~A~%triangles: ~A~%"
+                               fps (length *cubes*) *triangle-count*))
+           (new-frame)))
 
 
 (defun setup-cubes ()
-  (iter (for x from 40.0 to 68.0 by 7.0)
-        (iter (for y from 40.0 to 64.0 by 8.0)
-              (as cube = (create-cube 5.0 "Example/RedCube"))
-              (as frb = (buclet:create-rigid-body 1.0 *fall-shape*))
-              (as node = (make-child-scene-node))
-              (as z = (+ (- 105.0 x) (random 2.5)))
-              (buclet:set-orientation frb (list 0.4 0.5 0.6 (random 1.0)))
-              ;; getting this from the physics world since the initial settings
-              ;; above get changed and I don't understand quaternions
-              (as o = (buclet:get-orientation frb))
-              (set-orientation node (vector (fourth o) (first o)
-                                            (second o) (third o)))
-              (buclet:set-position frb (list x y z))
-              (set-position node (vector x y z))
-              (buclet:add-rigid-body *dynamics-world* frb)
-              (attach-object node (pointer-to cube))
-              (push (cons frb node) *cubes*)))
+  (loop for x from 40.0 to 68.0 by 7.0
+        do (loop for y from 40.0 to 64.0 by 8.0
+                 for cube = (create-cube 5.0 "Example/RedCube")
+                 for frb = (buclet:create-rigid-body 1.0 *fall-shape*)
+                 for node = (make-child-scene-node)
+                 for z = (+ (- 105.0 x) (random 2.5))
+                 do (buclet:set-orientation frb (list 0.4 0.5 0.6 (random 1.0)))
+                    ;; getting this from the physics world since the initial settings
+                    ;; above get changed and I don't understand quaternions
+                    (let ((o (buclet:get-orientation frb)))
+                      (set-orientation node (vector (fourth o) (first o)
+                                                    (second o) (third o))))
+                    (buclet:set-position frb (list x y z))
+                    (set-position node (vector x y z))
+                    (buclet:add-rigid-body *dynamics-world* frb)
+                    (attach-object node (pointer-to cube))
+                    (push (cons frb node) *cubes*)))
   (new-frame))
 
 
@@ -395,8 +393,13 @@
                                        (get-actual-height *viewport*))))
 
   ;; light
-  (setf *light* (make-light :direction #(-0.40824828 -0.81649655 -0.40824828)
+  (setf *light* (make-light :direction #(-0.408 -0.816 -0.408)
                             :position #(80.0 100.0 80.0)))
+  (set-type *light* :lt-directional)
+  (set-position *light* #(80.0 100.0 80.0))
+  (set-diffuse-colour *light* #(1.0 1.0 1.0 1.0))
+  (set-specular-colour *light* #(1.0 1.0 1.0 1.0))
+  (set-direction *light* #(-0.408 -0.816 -0.408))
 
   ;; misc
   (set-ambient-light *scene-manager* #(0.2 0.2 0.2 1.0))
@@ -426,30 +429,28 @@
 
 ;;; Key Actions
 
-(defun add-cubes (key state)
-  (declare (ignore key))
+(defun add-cubes (key char state)
+  (declare (ignore key char))
   (when (equal state :released)
     (setup-cubes)))
 
 
-(let ((last-state 0))
-  (defun camera-x-look (key state)
-    (declare (ignore key))
+(let ((last-x 0))
+  (defun camera-x-look (axis rel-x abs-x)
+    (declare (ignore axis abs-x))
     (when *mouse-look*
-      ;(camera-yaw *camera1* (* state -0.01)))))
       ;; this smooths the mouse movement a little
-      (yaw *camera* (* (/ (+ state last-state) 2.0) -0.01))
-      (setf last-state state))))
+      (yaw *camera* (* (/ (+ rel-x last-x) 2.0) -0.01))
+      (setf last-x rel-x))))
 
 
-(let ((last-state 0))
-  (defun camera-y-look (key state)
-    (declare (ignore key))
+(let ((last-y 0))
+  (defun camera-y-look (axis rel-y abs-y)
+    (declare (ignore axis abs-y))
     (when *mouse-look*
-      ;(camera-pitch *camera1* (* state 0.01)))))
       ;; this smooths the mouse movement a little
-      (pitch *camera* (* (/ (+ state last-state) 2.0) 0.01))
-      (setf last-state state))))
+      (pitch *camera* (* (/ (+ rel-y last-y) 2.0) 0.01))
+      (setf last-y rel-y))))
 
 
 ;; "(and *move-dir* (not *move-opposite*))" is for when both keys are pressed
@@ -489,55 +490,54 @@
 
 
 ;; for debugging, mainly
-(defun echo-self (key state)
-  (format t "~&key: ~S (~S); state: ~S~%"
-          key (cdr (assoc key clois-lane::+scancodes+)) state))
+(defun echo-self (&rest args)
+  (format t "~&[echo-self] ~S~%" args))
 
 
-(defun move-backward (key state)
-  (declare (ignore key))
+(defun move-backward (key char state)
+  (declare (ignore key char))
   (if (equal state :pressed)
       (setf *move-backward* t)
       (setf *move-backward* nil)))
 
 
-(defun move-down (key state)
-  (declare (ignore key))
+(defun move-down (key char state)
+  (declare (ignore key char))
   (if (equal state :pressed)
       (setf *move-down* t)
       (setf *move-down* nil)))
 
 
-(defun move-forward (key state)
-  (declare (ignore key))
+(defun move-forward (key char state)
+  (declare (ignore key char))
   (if (equal state :pressed)
       (setf *move-forward* t)
       (setf *move-forward* nil)))
 
 
-(defun move-left (key state)
-  (declare (ignore key))
+(defun move-left (key char state)
+  (declare (ignore key char))
   (if (equal state :pressed)
       (setf *move-left* t)
       (setf *move-left* nil)))
 
 
-(defun move-right (key state)
-  (declare (ignore key))
+(defun move-right (key char state)
+  (declare (ignore key char))
   (if (equal state :pressed)
       (setf *move-right* t)
       (setf *move-right* nil)))
 
 
-(defun move-up (key state)
-  (declare (ignore key))
+(defun move-up (key char state)
+  (declare (ignore key char))
   (if (equal state :pressed)
       (setf *move-up* t)
       (setf *move-up* nil)))
 
 
-(defun shoot-cube (key state)
-  (declare (ignore key))
+(defun shoot-cube (key char state)
+  (declare (ignore key char))
   (when (equal state :released)
     (let ((cube (create-cube 5.0 "Example/RedCube"))
           (frb (buclet:create-rigid-body 1.0 *fall-shape*))
@@ -560,22 +560,22 @@
       (push (cons frb node) *cubes*))))
 
 
-(defun stop-running (key state)
-  (declare (ignore key))
+(defun stop-running (key char state)
+  (declare (ignore key char))
   (when (equal state :released)
     (setf *running* nil)))
 
 
-(defun toggle-mouse-look (key state)
-  (declare (ignore key))
+(defun toggle-mouse-look (button state)
+  (declare (ignore button))
   (if (equal state :pressed)
       (setf *mouse-look* t)
       (setf *mouse-look* nil)))
 
 
 (let ((pm-mode :pm-solid))
-  (defun toggle-wireframe (key state)
-    (declare (ignore key))
+  (defun toggle-wireframe (key char state)
+    (declare (ignore key char))
     (when (equal state :released)
       (if (equal pm-mode :pm-solid)
           (progn (set-polygon-mode *camera* :pm-wireframe)

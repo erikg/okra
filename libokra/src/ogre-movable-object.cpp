@@ -9,12 +9,9 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
@@ -32,8 +29,9 @@ extern "C"
     Real ogre_movable_object_get_bounding_radius (MovableObject*);
     const AxisAlignedBox& ogre_movable_object_get_world_bounding_box (MovableObject*, bool);
     const Sphere& ogre_movable_object_get_world_bounding_sphere (MovableObject*, bool);
-    void ogre_movable_object_set_visible (MovableObject*, bool);
+    void ogre_movable_object_set_visible_bool (MovableObject*, bool);
     bool ogre_movable_object_get_visible (MovableObject*);
+    bool ogre_movable_object_is_visible_void (MovableObject*);
     void ogre_movable_object_set_rendering_distance (MovableObject*, Real);
     Real ogre_movable_object_get_rendering_distance (MovableObject*);
     void ogre_movable_object_set_user_object (MovableObject*, UserDefinedObject*);
@@ -61,7 +59,7 @@ extern "C"
     Real ogre_movable_object_get_point_extrusion_distance (MovableObject*, const Light*);
     unsigned int ogre_movable_object_get_type_flags (MovableObject*);
     void ogre_movable_object_visit_renderables (MovableObject*, Renderable::Visitor*, bool);
-    void ogre_movable_object_set_debug_display_enabled (MovableObject*, bool);
+    void ogre_movable_object_set_debug_display_enabled_bool (MovableObject*, bool);
     bool ogre_movable_object_is_debug_display_enabled (MovableObject*);
 }
 
@@ -171,7 +169,7 @@ const Sphere& ogre_movable_object_get_world_bounding_sphere (MovableObject* ogre
 // type: "void"
 // args: (("bool" . "visible"))
 //
-void ogre_movable_object_set_visible (MovableObject* ogre_movable_object, bool visible)
+void ogre_movable_object_set_visible_bool (MovableObject* ogre_movable_object, bool visible)
 {
     ogre_movable_object->setVisible(visible);
 }
@@ -183,6 +181,15 @@ void ogre_movable_object_set_visible (MovableObject* ogre_movable_object, bool v
 bool ogre_movable_object_get_visible (MovableObject* ogre_movable_object)
 {
     return ogre_movable_object->getVisible();
+}
+
+// name: "isVisible"
+// type: "bool"
+// args: "void"
+//
+bool ogre_movable_object_is_visible_void (MovableObject* ogre_movable_object)
+{
+    return ogre_movable_object->isVisible();
 }
 
 // name: "setRenderingDistance"
@@ -432,7 +439,7 @@ void ogre_movable_object_visit_renderables (MovableObject* ogre_movable_object, 
 // type: "void"
 // args: (("bool" . "enabled"))
 //
-void ogre_movable_object_set_debug_display_enabled (MovableObject* ogre_movable_object, bool enabled)
+void ogre_movable_object_set_debug_display_enabled_bool (MovableObject* ogre_movable_object, bool enabled)
 {
     ogre_movable_object->setDebugDisplayEnabled(enabled);
 }

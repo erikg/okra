@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-06-19 15:01:31.
+;;;; This file was generated on: 2009-08-07 15:52:09.
 
 (in-package :okra-bindings)
 
@@ -89,7 +89,7 @@
 
 ;; name: "getDynamic"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_manual_object_get_dynamic"
     :boolean
@@ -110,58 +110,6 @@
 
 (defmethod begin-update ((this manual-object) section-index)
   (ogre-manual-object-begin-update (pointer-to this) section-index))
-
-
-;; name: "position"
-;; type: "void"
-;; args: (("const Vector3&" . "pos"))
-;;
-(defcfun "ogre_manual_object_position"
-    :void
-  (ogre-manual-object :pointer)
-  (pos okra-array3))
-
-(defmethod position ((this manual-object) pos)
-  (ogre-manual-object-position (pointer-to this) pos))
-
-
-;; name: "normal"
-;; type: "void"
-;; args: (("const Vector3&" . "norm"))
-;;
-(defcfun "ogre_manual_object_normal"
-    :void
-  (ogre-manual-object :pointer)
-  (norm okra-array3))
-
-(defmethod normal ((this manual-object) norm)
-  (ogre-manual-object-normal (pointer-to this) norm))
-
-
-;; name: "textureCoord"
-;; type: "void"
-;; args: (("const Vector2&" . "uv"))
-;;
-(defcfun "ogre_manual_object_texture_coord"
-    :void
-  (ogre-manual-object :pointer)
-  (uv :pointer))
-
-(defmethod texture-coord ((this manual-object) uv)
-  (ogre-manual-object-texture-coord (pointer-to this) uv))
-
-
-;; name: "colour"
-;; type: "void"
-;; args: (("const ColourValue&" . "col"))
-;;
-(defcfun "ogre_manual_object_colour"
-    :void
-  (ogre-manual-object :pointer)
-  (col okra-array4))
-
-(defmethod colour ((this manual-object) col)
-  (ogre-manual-object-colour (pointer-to this) col))
 
 
 ;; name: "index"
@@ -337,7 +285,7 @@
 
 ;; name: "getKeepDeclarationOrder"
 ;; type: "bool"
-;; args: NIL
+;; args: "void"
 ;;
 (defcfun "ogre_manual_object_get_keep_declaration_order"
     :boolean
@@ -442,6 +390,217 @@
 
 (defmethod visit-renderables ((this manual-object) visitor debug-renderables)
   (ogre-manual-object-visit-renderables (pointer-to this) visitor debug-renderables))
+
+
+;;; Overloaded Foreign Functions
+
+;; name: "position"
+;; type: "void"
+;; args: (("const Vector3&" . "pos"))
+;;
+(defcfun "ogre_manual_object_position_vector3"
+    :void
+  (ogre-manual-object :pointer)
+  (pos okra-array3))
+
+
+;; name: "position"
+;; type: "void"
+;; args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+;;
+(defcfun "ogre_manual_object_position_real_real_real"
+    :void
+  (ogre-manual-object :pointer)
+  (x okra-real)
+  (y okra-real)
+  (z okra-real))
+
+
+;; name: "normal"
+;; type: "void"
+;; args: (("const Vector3&" . "norm"))
+;;
+(defcfun "ogre_manual_object_normal_vector3"
+    :void
+  (ogre-manual-object :pointer)
+  (norm okra-array3))
+
+
+;; name: "normal"
+;; type: "void"
+;; args: (("Real" . "x") ("Real" . "y") ("Real" . "z"))
+;;
+(defcfun "ogre_manual_object_normal_real_real_real"
+    :void
+  (ogre-manual-object :pointer)
+  (x okra-real)
+  (y okra-real)
+  (z okra-real))
+
+
+;; name: "textureCoord"
+;; type: "void"
+;; args: (("Real" . "u"))
+;;
+(defcfun "ogre_manual_object_texture_coord_real"
+    :void
+  (ogre-manual-object :pointer)
+  (u okra-real))
+
+
+;; name: "textureCoord"
+;; type: "void"
+;; args: (("Real" . "u") ("Real" . "v"))
+;;
+(defcfun "ogre_manual_object_texture_coord_real_real"
+    :void
+  (ogre-manual-object :pointer)
+  (u okra-real)
+  (v okra-real))
+
+
+;; name: "textureCoord"
+;; type: "void"
+;; args: (("Real" . "u") ("Real" . "v") ("Real" . "w"))
+;;
+(defcfun "ogre_manual_object_texture_coord_real_real_real"
+    :void
+  (ogre-manual-object :pointer)
+  (u okra-real)
+  (v okra-real)
+  (w okra-real))
+
+
+;; name: "textureCoord"
+;; type: "void"
+;; args: (("Real" . "x") ("Real" . "y") ("Real" . "z") ("Real" . "w"))
+;;
+(defcfun "ogre_manual_object_texture_coord_real_real_real_real"
+    :void
+  (ogre-manual-object :pointer)
+  (x okra-real)
+  (y okra-real)
+  (z okra-real)
+  (w okra-real))
+
+
+;; name: "textureCoord"
+;; type: "void"
+;; args: (("const Vector2&" . "uv"))
+;;
+(defcfun "ogre_manual_object_texture_coord_vector2"
+    :void
+  (ogre-manual-object :pointer)
+  (uv okra-array2))
+
+
+;; name: "textureCoord"
+;; type: "void"
+;; args: (("const Vector3&" . "uvw"))
+;;
+(defcfun "ogre_manual_object_texture_coord_vector3"
+    :void
+  (ogre-manual-object :pointer)
+  (uvw okra-array3))
+
+
+;; name: "textureCoord"
+;; type: "void"
+;; args: (("const Vector4&" . "xyzw"))
+;;
+(defcfun "ogre_manual_object_texture_coord_vector4"
+    :void
+  (ogre-manual-object :pointer)
+  (xyzw okra-array4))
+
+
+;; name: "colour"
+;; type: "void"
+;; args: (("const ColourValue&" . "col"))
+;;
+(defcfun "ogre_manual_object_colour_colourvalue"
+    :void
+  (ogre-manual-object :pointer)
+  (col okra-array4))
+
+
+;; name: "colour"
+;; type: "void"
+;; args: (("Real" . "r") ("Real" . "g") ("Real" . "b") ("Real" . "a"))
+;;
+(defcfun "ogre_manual_object_colour_real_real_real_real"
+    :void
+  (ogre-manual-object :pointer)
+  (r okra-real)
+  (g okra-real)
+  (b okra-real)
+  (a okra-real))
+
+
+;; name: "setMaterialName"
+;; type: "void"
+;; args: (("size_t" . "subindex") ("const String&" . "name"))
+;;
+(defcfun "ogre_manual_object_set_material_name_size_t_string"
+    :void
+  (ogre-manual-object :pointer)
+  (subindex :unsigned-int)
+  (name :string))
+
+
+;;; Methods for Overloaded Foreign Functions
+
+(defmethod set-material-name ((this manual-object) &optional (arg0 nil) (arg1 nil))
+  (cond
+    ((and (typep arg0 'integer) (typep arg1 'string))
+     (ogre-manual-object-set-material-name-size-t-string (pointer-to this) arg0 arg1))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod position ((this manual-object) &optional (arg0 nil) (arg1 nil) (arg2 nil))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real))
+     (ogre-manual-object-position-real-real-real (pointer-to this) arg0 arg1 arg2))
+    ((and (typep arg0 '(simple-vector 3)))
+     (ogre-manual-object-position-vector3 (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod normal ((this manual-object) &optional (arg0 nil) (arg1 nil) (arg2 nil))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real))
+     (ogre-manual-object-normal-real-real-real (pointer-to this) arg0 arg1 arg2))
+    ((and (typep arg0 '(simple-vector 3)))
+     (ogre-manual-object-normal-vector3 (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod texture-coord ((this manual-object) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real) (typep arg3 'real))
+     (ogre-manual-object-texture-coord-real-real-real-real (pointer-to this) arg0 arg1 arg2 arg3))
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real))
+     (ogre-manual-object-texture-coord-real-real-real (pointer-to this) arg0 arg1 arg2))
+    ((and (typep arg0 'real) (typep arg1 'real))
+     (ogre-manual-object-texture-coord-real-real (pointer-to this) arg0 arg1))
+    ((and (typep arg0 '(simple-vector 4)))
+     (ogre-manual-object-texture-coord-vector4 (pointer-to this) arg0))
+    ((and (typep arg0 '(simple-vector 3)))
+     (ogre-manual-object-texture-coord-vector3 (pointer-to this) arg0))
+    ((and (typep arg0 '(simple-vector 2)))
+     (ogre-manual-object-texture-coord-vector2 (pointer-to this) arg0))
+    ((and (typep arg0 'real))
+     (ogre-manual-object-texture-coord-real (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod colour ((this manual-object) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil))
+  (cond
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real) (typep arg3 'real))
+     (ogre-manual-object-colour-real-real-real-real (pointer-to this) arg0 arg1 arg2 arg3))
+    ((and (typep arg0 '(simple-vector 4)))
+     (ogre-manual-object-colour-colourvalue (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
 
 
 

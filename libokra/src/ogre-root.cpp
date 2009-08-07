@@ -9,12 +9,9 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-06-19 15:01:31.
+// This file was generated on: 2009-08-07 15:52:09.
 
-#include "Ogre.h"
-#include "okra.h"
-
-using namespace Ogre;
+#include "handwritten/okra.h"
 
 
 // Prototypes
@@ -29,16 +26,17 @@ extern "C"
     RenderSystem* ogre_root_get_render_system_by_name (Root*, const char*);
     void ogre_root_set_render_system (Root*, RenderSystem*);
     RenderSystem* ogre_root_get_render_system (Root*);
-    RenderWindow* ogre_root_initialise (Root*, bool, const char*, const char*);
+    RenderWindow* ogre_root_initialise_bool_string_string (Root*, bool, const char*, const char*);
     bool ogre_root_is_initialised (Root*);
     void ogre_root_use_custom_render_system_capabilities (Root*, RenderSystemCapabilities*);
     void ogre_root_add_scene_manager_factory (Root*, SceneManagerFactory*);
     void ogre_root_remove_scene_manager_factory (Root*, SceneManagerFactory*);
     const SceneManagerMetaData* ogre_root_get_scene_manager_meta_data (Root*, const char*);
     SceneManagerEnumerator::MetaDataIterator ogre_root_get_scene_manager_meta_data_iterator (Root*);
-    SceneManager* ogre_root_create_scene_manager (Root*, const char*, const char*);
+    SceneManager* ogre_root_create_scene_manager_string_string (Root*, const char*, const char*);
+    SceneManager* ogre_root_create_scene_manager_scenetypemask_string (Root*, uint16, const char*);
     void ogre_root_destroy_scene_manager (Root*, SceneManager*);
-    SceneManager* ogre_root_get_scene_manager (Root*, const char*);
+    SceneManager* ogre_root_get_scene_manager_string (Root*, const char*);
     SceneManagerEnumerator::SceneManagerIterator ogre_root_get_scene_manager_iterator (Root*);
     TextureManager* ogre_root_get_texture_manager (Root*);
     MeshManager* ogre_root_get_mesh_manager (Root*);
@@ -54,12 +52,14 @@ extern "C"
     void ogre_root_convert_colour_value (Root*, const okraArray4, uint32*);
     RenderWindow* ogre_root_get_auto_created_window (Root*);
     RenderWindow* ogre_root_create_render_window (Root*, const char*, unsigned int, unsigned int, bool, const NameValuePairList*);
-    void ogre_root_detach_render_target (Root*, const char*);
+    void ogre_root_detach_render_target_rendertarget (Root*, RenderTarget*);
+    void ogre_root_detach_render_target_string (Root*, const char*);
     RenderTarget* ogre_root_get_render_target (Root*, const char*);
     void ogre_root_load_plugin (Root*, const char*);
     void ogre_root_unload_plugin (Root*, const char*);
     void ogre_root_install_plugin (Root*, Plugin*);
     void ogre_root_uninstall_plugin (Root*, Plugin*);
+    const Root::PluginInstanceList& ogre_root_get_installed_plugins (Root*);
     Timer* ogre_root_get_timer (Root*);
     unsigned long ogre_root_get_next_frame_number (Root*);
     RenderQueueInvocationSequence* ogre_root_create_render_queue_invocation_sequence (Root*, const char*);
@@ -73,6 +73,7 @@ extern "C"
     void ogre_root_remove_movable_object_factory (Root*, MovableObjectFactory*);
     bool ogre_root_has_movable_object_factory (Root*, const char*);
     MovableObjectFactory* ogre_root_get_movable_object_factory (Root*, const char*);
+    Root::MovableObjectFactoryIterator ogre_root_get_movable_object_factory_iterator (Root*);
 }
 
 
@@ -169,7 +170,7 @@ RenderSystem* ogre_root_get_render_system (Root* ogre_root)
 // type: "RenderWindow*"
 // args: (("bool" . "autoCreateWindow") ("const String&" . "windowTitle") ("const String&" . "customCapabilitiesConfig"))
 //
-RenderWindow* ogre_root_initialise (Root* ogre_root, bool autoCreateWindow, const char* windowTitle, const char* customCapabilitiesConfig)
+RenderWindow* ogre_root_initialise_bool_string_string (Root* ogre_root, bool autoCreateWindow, const char* windowTitle, const char* customCapabilitiesConfig)
 {
     return ogre_root->initialise(autoCreateWindow, windowTitle, customCapabilitiesConfig);
 }
@@ -232,9 +233,18 @@ SceneManagerEnumerator::MetaDataIterator ogre_root_get_scene_manager_meta_data_i
 // type: "SceneManager*"
 // args: (("const String&" . "typeName") ("const String&" . "instanceName"))
 //
-SceneManager* ogre_root_create_scene_manager (Root* ogre_root, const char* typeName, const char* instanceName)
+SceneManager* ogre_root_create_scene_manager_string_string (Root* ogre_root, const char* typeName, const char* instanceName)
 {
     return ogre_root->createSceneManager(typeName, instanceName);
+}
+
+// name: "createSceneManager"
+// type: "SceneManager*"
+// args: (("SceneTypeMask" . "typeMask") ("const String&" . "instanceName"))
+//
+SceneManager* ogre_root_create_scene_manager_scenetypemask_string (Root* ogre_root, uint16 typeMask, const char* instanceName)
+{
+    return ogre_root->createSceneManager(typeMask, instanceName);
 }
 
 // name: "destroySceneManager"
@@ -250,7 +260,7 @@ void ogre_root_destroy_scene_manager (Root* ogre_root, SceneManager* sm)
 // type: "SceneManager*"
 // args: (("const String&" . "instanceName"))
 //
-SceneManager* ogre_root_get_scene_manager (Root* ogre_root, const char* instanceName)
+SceneManager* ogre_root_get_scene_manager_string (Root* ogre_root, const char* instanceName)
 {
     return ogre_root->getSceneManager(instanceName);
 }
@@ -393,9 +403,18 @@ RenderWindow* ogre_root_create_render_window (Root* ogre_root, const char* name,
 
 // name: "detachRenderTarget"
 // type: "void"
+// args: (("RenderTarget*" . "pWin"))
+//
+void ogre_root_detach_render_target_rendertarget (Root* ogre_root, RenderTarget* pWin)
+{
+    ogre_root->detachRenderTarget(pWin);
+}
+
+// name: "detachRenderTarget"
+// type: "void"
 // args: (("const String&" . "name"))
 //
-void ogre_root_detach_render_target (Root* ogre_root, const char* name)
+void ogre_root_detach_render_target_string (Root* ogre_root, const char* name)
 {
     ogre_root->detachRenderTarget(name);
 }
@@ -443,6 +462,15 @@ void ogre_root_install_plugin (Root* ogre_root, Plugin* plugin)
 void ogre_root_uninstall_plugin (Root* ogre_root, Plugin* plugin)
 {
     ogre_root->uninstallPlugin(plugin);
+}
+
+// name: "getInstalledPlugins"
+// type: "const PluginInstanceList&"
+// args: "void"
+//
+const Root::PluginInstanceList& ogre_root_get_installed_plugins (Root* ogre_root)
+{
+    return ogre_root->getInstalledPlugins();
 }
 
 // name: "getTimer"
@@ -560,6 +588,15 @@ bool ogre_root_has_movable_object_factory (Root* ogre_root, const char* typeName
 MovableObjectFactory* ogre_root_get_movable_object_factory (Root* ogre_root, const char* typeName)
 {
     return ogre_root->getMovableObjectFactory(typeName);
+}
+
+// name: "getMovableObjectFactoryIterator"
+// type: "MovableObjectFactoryIterator"
+// args: "void"
+//
+Root::MovableObjectFactoryIterator ogre_root_get_movable_object_factory_iterator (Root* ogre_root)
+{
+    return ogre_root->getMovableObjectFactoryIterator();
 }
 
 

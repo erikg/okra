@@ -38,23 +38,36 @@
                                 (string-downcase (coerce result 'string)))))))
 
 
+;; XXX: this is to cut down on warnings during development
 (defparameter *c-type-mapping* nil)  ; redefined in cpp-config.lisp
 
-(defun c-type (type)
+(defun c-type (type &optional (key nil))
   (cond ;; mappings
         ((assoc type *c-type-mapping* :test 'equal)
-         (cdr (assoc type *c-type-mapping* :test 'equal)))
+         (funcall (cdr (assoc type *c-type-mapping* :test 'equal)) key))
         ;; pointers (that didn't need mapping)
-        ((and (> (length type) 1)
-              (or (equal (subseq type (- (length type) 1)) "&")
-                  (equal (subseq type (- (length type) 1)) "*")))
-         type)
+        ;((and (> (length type) 1)
+        ;      (or (equal (subseq type (- (length type) 1)) "&")
+        ;          (equal (subseq type (- (length type) 1)) "*")))
+        ; type)
         ;; enums
-        ((gethash type *enum-types*) type)
+        ((gethash type *enum-types*)
+         ;; add :overloaded-type as well?
+         (if (or (equal key :arg-type) (equal key :return-type))
+             type
+             nil))
         ;; typedefs
-        ((gethash type *typedefs*) (gethash type *typedefs*))
-        ;; unknown types
-        (t (error "[c-type] Unknown type: ~S~%" type))))
+        ((gethash type *typedefs*)
+         ;; add :overloaded-type as well?
+         (if (or (equal key :arg-type) (equal key :return-type))
+             (gethash type *typedefs*)
+             nil))
+        ;; simple argument and return types
+        ((or (equal key :arg-type) (equal key :return-type))
+         type)
+        ;; everything else
+        (t nil)))
+        ;(t (error "[c-type] Unknown type: ~S~%" type))))
 
 
 (defun chop-namespace (string &optional (namespace "Ogre::"))
@@ -68,6 +81,12 @@
 
 (defun first-match (regex string)
   (elt (nth-value 1 (cl-ppcre:scan-to-strings regex string)) 0))
+
+
+(defun initialise-templates ()
+  (loop for cons in *template-list*
+        do (setf (gethash (car cons) *templates*)
+                 (create-template-printer (cdr cons)))))
 
 
 (defun lisp-name (name)
@@ -91,27 +110,38 @@
         (finally (return (string-downcase (coerce result 'string))))))
 
 
+;; XXX: this is to cut down on warnings during development
 (defparameter *lisp-type-mapping* nil)  ; redefined in common-lisp-config.lisp
 
-(defun lisp-type (type)
+(defun lisp-type (type &optional (key nil))
   (cond ;; mappings
         ((assoc type *lisp-type-mapping* :test 'equal)
-         (cdr (assoc type *lisp-type-mapping* :test 'equal)))
+         (funcall (cdr (assoc type *lisp-type-mapping* :test 'equal)) key
+                  type))
         ;; pointers
         ((and (> (length type) 1)
               (or (equal (subseq type (- (length type) 1)) "&")
                   (equal (subseq type (- (length type) 1)) "*")))
-         ":pointer")
+         (cl-pointer key type))
         ;; enums
-        ((gethash type *enum-types*) (lisp-name type))
-        ;; typedefs
-        ((gethash type *typedefs*) (lisp-type (gethash type *typedefs*)))
+        ((gethash type *enum-types*)
+         ;; add :overloaded-type as well?
+         (cond ((or (equal key :arg-type) (equal key :return-type))
+                (lisp-name type))
+               ((equal key :overloaded-type)
+                "'keyword")  ; XXX: not as specific as I'd like
+               (t nil)))
+        ;; typedefs (potential infinite loop)
+        ((gethash type *typedefs*)
+         (lisp-type (gethash type *typedefs*) key))
         ;; everything else
         (t (error "[lisp-type] Unknown type: ~S~%" type))))
 
 
 (defun memberdef-args (md)
   (let ((params (node :|param| md)))
+    (unless params
+      (return-from memberdef-args "void"))
     (when (and (equal (length params) 1)
                (equal (values-of (first (children (first params)))) '("void")))
       (return-from memberdef-args "void"))
@@ -158,16 +188,9 @@
         (first (node '(:|compounddef| :|compoundname|) node))))))
 
 
-;; XXX: for development (horrible code duplication)
-(defun reload-templates ()
-  (setf *cl-asd-template* (create-template-printer #p"cl-asd.t"))
-  (setf *cl-enums-template* (create-template-printer #p"cl-enums.t"))
-  (setf *cl-file-template* (create-template-printer #p"cl-file.t"))
-  (setf *cl-package-template* (create-template-printer #p"cl-package.t"))
-  (setf *cl-typedefs-template* (create-template-printer #p"cl-typedefs.t"))
-  (setf *cpp-cmakelists-template*
-        (create-template-printer #p"cpp-cmakelists.t"))
-  (setf *cpp-file-template* (create-template-printer #p"cpp-file.t")))
+(defun overloaded (member)
+  (> (length (gethash (getf member :name) *members*))
+     1))
 
 
 (defun template-to-file (template/printer file values)
