@@ -4,7 +4,7 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 
-#include "../../../3rd-party/moc-1.0rc1/CollisionTools.h"
+#include "../../../3rd-party/moc/CollisionTools.h"
 #include "okra.h"
 
 
