@@ -16,15 +16,12 @@ add_definitions(-g -O0 -Wall)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-modules")
 
 find_package(OGRE REQUIRED)
-message("-- Found: ${OGRE_INCLUDE_DIR}")
 include_directories(${OGRE_INCLUDE_DIR})
+
 if (BUILD_CEGUI)
     find_package(CEGUI REQUIRED)
-    message("-- Found CEGUI: ${CEGUI_LIBRARY}")
-    message("-- Found: ${CEGUI_INCLUDE_DIR}")
-    include_directories(${CEGUI_INCLUDE_DIR})
-    # For the Win32 OgreSDK.
-    include_directories(${OGRE_INCLUDE_DIR}/../samples/include)
+    message("-- Found CEGUI")
+    include_directories(${CEGUI_INCLUDE_DIR} ${OGRE_CEGUIRenderer_INCLUDE_DIR})
 endif ()
 
 # Set some directories / variables.

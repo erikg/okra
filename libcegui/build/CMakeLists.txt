@@ -9,9 +9,9 @@ set(LIBCEGUI_SOURCE_FILES "../src/cegui.cpp")
 add_library(cegui ${LIBCEGUI_SOURCE_FILES})
 
 if (MINGW)
-    target_link_libraries(cegui ${CEGUI_LIBRARY}
-                           /c/Software/OgreSDK/bin/release/OgreGUIRenderer.dll)
+    target_link_libraries(cegui ${CEGUI_LIBRARY} ${OGRE_CEGUIRenderer_LIBRARY})
 else ()
-    target_link_libraries(cegui ${CEGUI_LIBRARY}
-                                /usr/local/lib/libCEGUIOgreRenderer.so)
+#    target_link_libraries(cegui ${CEGUI_LIBRARY}
+#                                /usr/local/lib/libCEGUIOgreRenderer.so)
+    target_link_libraries(cegui ${CEGUI_LIBRARY} ${OGRE_CEGUIRenderer_LIBRARY})
 endif ()
