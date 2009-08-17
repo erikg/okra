@@ -194,12 +194,10 @@ writing since I do not have regression tests yet.)
 * FAQ
 
 <verse>
-Q. Why are both LOOP and ITER (package ITERATE) are being used?
+Q. Why are both LOOP and ITER (package ITERATE) being used?
 
 A. When I started programming Common Lisp I preferred ITER, but lately
    I've come to appreciate LOOP, if only because it means less
    dependencies when writing libraries for public consumption.  Ofcourse,
    this argument isn't of much use when using both in a library.
 </verse>
-
-
