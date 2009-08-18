@@ -1,6 +1,6 @@
 ;;;; -*- Mode: LISP; Syntax: COMMON-LISP -*-
 ;;;;
-;;;; okra-buclet-and-clois.lisp
+;;;; physics-and-input.lisp
 ;;;;
 ;;;; author: Erik Winkels (aerique@xs4all.nl)
 ;;;;

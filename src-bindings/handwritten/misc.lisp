@@ -66,6 +66,8 @@
   (config :string)
   (log :string))
 
+(defgeneric root-constructor (this &key plugin config log))
+
 (defmethod root-constructor ((this root) &key (plugin "") (config "") (log ""))
   (if (pointer-to this)
       (pointer-to this)
