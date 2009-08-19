@@ -6,13 +6,8 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 
-;; for development
-;#+sbcl (setf *muffled-warnings* 'implicit-generic-function-warning)
-
-
 ;;; Packages
 
-(asdf :okra)
 (asdf :okra-cegui)
 (asdf :clois-lane-cegui)  ; after okra-cegui to surpress warnings
 

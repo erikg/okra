@@ -9,10 +9,6 @@
 ;;;; This is now partly implemented (up to "Free the physics"):
 ;;;; o http://gafferongames.com/game-physics/fix-your-timestep/
 
-;; for development
-;#+sbcl (setf *muffled-warnings* 'implicit-generic-function-warning)
-
-
 ;;; Packages
 
 (asdf :buclet)

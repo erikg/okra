@@ -9,10 +9,6 @@
 ;;;; This is a very simple example using both the tiny Lisp layer as well as
 ;;;; direct calls to the Ogre bindings.
 
-;; for development
-;#+sbcl (setf *muffled-warnings* 'implicit-generic-function-warning)
-
-
 ;;; Packages
 
 (asdf :okra)
