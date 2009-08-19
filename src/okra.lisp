@@ -143,6 +143,8 @@
   (let ((vp (make-instance 'viewport :pointer
                            (simple-add-viewport (pointer-to render-window)
                                                 (pointer-to camera)))))
+    (set-aspect-ratio camera (* 1.0 (/ (get-actual-width vp)
+                                       (get-actual-height vp))))
     (set-background-colour vp background-colour)
     vp))
 
