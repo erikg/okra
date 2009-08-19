@@ -16,8 +16,15 @@
   (:unix "libcegui.so")
   (t "libcegui"))
 
-(use-foreign-library libcegui)
-(format t "~&[okra-cegui] foreign library libcegui loaded~%")
+
+;; Bit of a change from LOAD-FOREIGN-LIBRARIES.  I have to think about how
+;; to do this in a nice, clean way.
+(defun load-libcegui ()
+  (use-foreign-library libcegui)
+  (format t "~&[okra-cegui] foreign library libcegui loaded~%"))
+
+
+(load-libcegui)
 
 
 ;;;# CEGUI Callbacks

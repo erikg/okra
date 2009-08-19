@@ -2,4 +2,4 @@
 
 LD_LIBRARY_PATH=/usr/local/lib/OGRE:../lib;
 
-sbcl --no-userinit --load create-executable;
+sbcl --no-userinit --load create-executable.lisp;

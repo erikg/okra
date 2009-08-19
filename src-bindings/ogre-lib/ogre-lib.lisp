@@ -16,8 +16,13 @@
   (:unix "libokra.so")
   (t "libokra"))
 
-(use-foreign-library libokra)
-(format t "~&[okra] foreign library libokra loaded~%")
+
+(defun load-foreign-libraries ()
+  (use-foreign-library libokra)
+  (format t "~&[okra] foreign library libokra loaded~%"))
+
+
+(load-foreign-libraries)
 
 
 ;;;# Variables

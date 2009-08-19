@@ -14,12 +14,12 @@
 
 ;;; ASDF
 
-(unless (find-package :asdf)
-  (require :asdf))
+#+sbcl (unless (find-package :asdf)
+         (require :asdf))
 
 
-(setf asdf::*central-registry*
-      (list "/usr/local/pub/ekwis/software/Lisp/00-Systems/"))
+#+sbcl (setf asdf::*central-registry*
+             (list "/usr/local/pub/ekwis/software/Lisp/00-Systems/"))
 
 
 ;;; ABL
@@ -43,4 +43,8 @@
 ;;;   see: http://www.sbcl.org/manual/Saving-a-Core-Image.html
 ;;; notes: *default-pathname-defaults*, sb-ext:*core-pathname*
 
-(save-lisp-and-die "okra" :executable t)
+#+(and ccl windows) (save-application "okra.exe"
+                                      :init-file "okra-init.lisp"
+                                      :prepend-kernel t)
+
+#+sbcl (save-lisp-and-die "okra" :executable t)
