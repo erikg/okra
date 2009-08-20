@@ -65,6 +65,11 @@
   (vector (- x2 x1) (- y2 y1) (- z2 z1)))
 
 
+(defun xyz2v (x1 y1 z1 x2 y2 z2)
+  "Calls VECTOR-FROM-COORDS."
+  (vector-from-coords x1 y1 z1 x2 y2 z2))
+
+
 (defun vector-length (v)
   "Returns the length of vector V."
   (loop for n across v
