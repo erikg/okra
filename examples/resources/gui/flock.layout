@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<GUILayout>
+  <Window Type="DefaultWindow" Name="root">
+    <Window Type="AquaLook/FrameWindow" Name="flockSettings">
+      <Property Name="Alpha" Value="0.667"/>
+      <Property Name="UnifiedPosition" Value="{{0.01,0},{0.01,0}}"/>
+      <Property Name="UnifiedSize" Value="{{0.25,0},{0.5,0}}"/>
+      <Property Name="Text" Value="Flock Settings"/>
+      <Window Type="AquaLook/Button" Name="quitButton">
+        <Property Name="UnifiedPosition" Value="{{0.4,0},{0.88,0}}"/>
+        <Property Name="UnifiedSize" Value="{{0.2,0},{0.1,0}}"/>
+        <Property Name="Text" Value="Quit"/>
+      </Window>
+    </Window>
+  </Window>
+</GUILayout>
