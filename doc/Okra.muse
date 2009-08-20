@@ -191,6 +191,12 @@ wrapper libraries and after that I run one of the examples.
 writing since I do not have regression tests yet.)
 
 
+* Optimisation
+
+  - Passing a vector (#(a b ...)) is *much* slower than passing the
+    values as seperate arguments.  (At least on SBCL 1.0.25.debian.)
+
+
 * FAQ
 
 <verse>
