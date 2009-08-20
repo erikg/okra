@@ -40,6 +40,8 @@
 
 
 ;; Allocates SIZE bytes on the C heap which have to be freed with HW-FREE.
+;;
+;; sigh.. idiot, you could just defcfun malloc straight away (also hw_free)
 (defcfun "hw_malloc"
     :pointer
   (size :unsigned-int))
