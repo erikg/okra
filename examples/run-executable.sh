@@ -1,6 +1,6 @@
 #! /bin/sh
 
-if [ $OS = "Windows_NT" ]; then
+if [ "$OS" = "Windows_NT" ]; then
     PATH=$PATH:../lib;
     ./okra.exe;
 else

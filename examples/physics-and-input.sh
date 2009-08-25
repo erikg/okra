@@ -1,6 +1,6 @@
 #! /bin/sh
 
-if [ $OS = "Windows_NT" ]; then
+if [ "$OS" = "Windows_NT" ]; then
     PATH=$PATH:../lib;
     wx86cl --load physics-and-input.lisp --eval "(in-package :okra)";
 else
