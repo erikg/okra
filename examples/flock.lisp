@@ -275,8 +275,15 @@
   (setf *render-window*
         (okra-window :render-system #-windows "OpenGL Rendering Subsystem"
                                     #+windows "Direct3D9 Rendering Subsystem"
-                     :resources '(("resources" "FileSystem" "General")
-                                  ("resources/gui" "FileSystem" "General"))))
+                     :resources
+                     '(("resources" "FileSystem" "General")
+                       ("resources/gui/configs" "FileSystem" "General")
+                       ("resources/gui/fonts" "FileSystem" "General")
+                       ("resources/gui/imagesets" "FileSystem" "General")
+                       ("resources/gui/layouts" "FileSystem" "General")
+                       ("resources/gui/looknfeel" "FileSystem" "General")
+                       ("resources/gui/lua_scripts" "FileSystem" "General")
+                       ("resources/gui/schemes" "FileSystem" "General"))))
   (setf *scene-manager* (make-scene-manager "OctreeSceneManager"))
   (setf *root-node* (root-node))
   (setf *timer* (make-timer))
@@ -332,19 +339,23 @@
 
   (okra-cegui::load-scheme "AquaLookSkin.scheme")
   (okra-cegui::set-default-mouse-cursor "AquaLook" "MouseArrow")
-  ;(okra-cegui::set-default-font "BlueHighway-12")
   (okra-cegui::mouse-cursor-set-image (okra-cegui::get-default-mouse-cursor))
+  (okra-cegui::set-default-font "BlueHighway-12")
 
   (okra-cegui::inject-mouse-position (/ (get-actual-width *viewport*) 2.0)
                                      (/ (get-actual-height *viewport*) 2.0))
 
-  (setf *cegui-sheet* (okra-cegui::load-window-layout "flock.layout"))
-  (okra-cegui::set-gui-sheet *cegui-sheet*)
-
-  ;; see: http://www.cegui.org.uk/wiki/index.php/EventLookup
-  (okra-cegui::subscribe-event (okra-cegui::get-window "quitButton") "Clicked")
-  (okra-cegui::subscribe-event (okra-cegui::get-window "flockSettings")
-                               "CloseClicked")
+  ;; XXX: CEGUI is giving me problems on Linux, someone figure this out please.
+  (handler-case
+      (progn
+        (setf *cegui-sheet* (okra-cegui::load-window-layout "flock.layout"))
+        (okra-cegui::set-gui-sheet *cegui-sheet*)
+        ;; see: http://www.cegui.org.uk/wiki/index.php/EventLookup
+        (okra-cegui::subscribe-event (okra-cegui::get-window "quitButton")
+                                     "Clicked")
+        (okra-cegui::subscribe-event (okra-cegui::get-window "flockSettings")
+                                     "CloseClicked"))
+    (t (e) (format t "[flock] CEGUI layout not loaded: ~S~%" e)))
 
   ;;; clois-lane
 
@@ -361,18 +372,25 @@
   (clois-lane:set-actions *actions*)
   (setf *running* t)
   (loop with previous-time = (get-microseconds *timer*)
+        with fps-time = 0
         with time = 0
         while *running*
         for current-time = (get-microseconds *timer*)
         for delta-time = (/ (- current-time previous-time) 1000000.0)
         for fps = (/ 1.0 delta-time)
+        initially (format t "fps: ~5,2F" fps)
         do (setf previous-time current-time)
            (incf time delta-time)
            (clois-lane:set-window-extents (get-actual-width *viewport*)
                                           (get-actual-height *viewport*))
            (clois-lane:capture)
            (do-movement)
-           (format t "fps: ~A~%" fps)
+           ;; XXX: This is until the Linux CEGUI has been resolved.
+           (when (> (- time fps-time) 1.0)
+             (loop repeat 10 do (princ #\Backspace))
+             (format t "fps: ~5,2F" fps)
+             (force-output)
+             (setf fps-time time))
            (update-water-surface *water-mo* 0.0 0.0 0.0 200.0
                                  :grid-size *water-grid-size*)
            (new-frame)))
