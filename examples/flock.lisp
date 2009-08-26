@@ -5,6 +5,10 @@
 ;;;; author: Erik Winkels (aerique@xs4all.nl)
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
+;;;;
+;;;; note-to-self:
+;;;;     - http://www.ogre3d.org/wiki/index.php/CodeSnippets#Shaders
+;;;;     - http://artis.imag.fr/~Xavier.Decoret/resources/ogre/tutorial4.html
 
 ;;; Packages
 
@@ -16,10 +20,14 @@
 
 ;;; Parameters
 
+(defparameter *bird-speed* 10.0)
+(defparameter *bird-turn-speed* 10.0)
 (defparameter *water-grid-size* 10.0)
 (defparameter *water-position* 0.0)
-(defparameter *water-speed* 0.005)
+(defparameter *water-size* 300.0)
+(defparameter *water-speed* 0.025)
 
+(defparameter *birds* nil)
 (defparameter *camera* nil)
 (defparameter *cube* nil)
 (defparameter *light* nil)
@@ -29,12 +37,14 @@
 (defparameter *viewport* nil)
 (defparameter *water-mo* nil)  ; manual object
 (defparameter *water-node* nil)
+(defparameter *triangle-count* 0)
 
 ;; for CEGUI
 (defvar *cegui-actions*
   '((("quitButton" . "Clicked") . cegui-stop-running)
     (:default . echo-self)))
 
+(defparameter *cegui-loaded* nil)  ; tmp: for the Linux CEGUI problems
 (defparameter *cegui-sheet* nil)
 (defparameter *cegui-system* nil)
 (defparameter *cegui-renderer* nil)
@@ -199,10 +209,53 @@
                  (setf pm-mode :pm-solid))))))
 
 
-;;; Functions
+;;; Bird Functions
+
+(defun create-bird-model ()
+  (let* ((mo (make-manual-object)))
+    (begin mo "Bird" :ot-triangle-list)
+
+    ;; top
+    (position mo 0.0 0.0 1.0)
+    (colour mo 0.0 0.0 0.0 1.0)
+    (normal mo 0.0 1.0 0.0)
+    (position mo 1.0 0.0 -2.0)
+    (colour mo 1.0 1.0 1.0 1.0)
+    (normal mo 0.0 1.0 0.0)
+    (position mo -1.0 0.0 -2.0)
+    (colour mo 1.0 1.0 1.0 1.0)
+    (normal mo 0.0 1.0 0.0)
+
+    ;; bottom
+    (position mo 0.0 0.0 1.0)
+    (colour mo 1.0 0.0 0.0 1.0)
+    (normal mo 0.0 -1.0 0.0)
+    (position mo -1.0 0.0 -2.0)
+    (colour mo 0.0 0.0 1.0 1.0)
+    (normal mo 0.0 -1.0 0.0)
+    (position mo 1.0 0.0 -2.0)
+    (colour mo 0.0 0.0 1.0 1.0)
+    (normal mo 0.0 -1.0 0.0)
+
+    (end mo)
+    mo))
+
+
+(defun update-bird-positions-in-world (&optional (birds *birds*))
+  (loop for bird in birds
+        for node = (elt bird 0)
+        for or = (elt bird 2)
+        for pos = (elt bird 1)
+        do (set-orientation node (elt or 0) (elt or 1) (elt or 2) (elt or 3))
+           (set-position node (elt pos 0) (elt pos 1) (elt pos 2))))
+
+
+;;; Water Functions
 
 (defun dy (x y z width)
-  (* 25.0 (perlin-noise (/ x width) (+ y *water-position*) (/ z width))))
+  (* 20.0 (+ y (* (sin (+ (/ x 12.0) *water-position*))
+                  (sin (+ (/ z (+ (/ width .75) (/ *water-position* 4.0)))
+                          (perlin-noise (/ x width) 0.0 (/ z width))))))))
 
 
 (defun water-surface-loop (manual-object x y z width grid-size)
@@ -210,6 +263,7 @@
                                      :initial-element nil)
         with mo = manual-object
         with w/2 = (/ width 2.0)
+        with w/x = (/ width 8.0)
         with x-max = (+ x w/2)
         with x-min = (- x w/2)
         with z-max = (+ z w/2)
@@ -237,17 +291,23 @@
                     (position mo x dyxz z)
                     ;(normal mo fn1)  ; passing a vector is slow as shit!
                     (normal mo (elt fn1 0) (elt fn1 1) (elt fn1 2))
+                    (texture-coord mo (/ (- x x-min) w/x) (/ (- z z-min) w/x))
                     (position mo x+ dyx+z+ z+)
                     (normal mo (elt fn1 0) (elt fn1 1) (elt fn1 2))
+                    (texture-coord mo (/ (- x+ x-min) w/x) (/ (- z+ z-min) w/x))
                     (position mo x+ dyx+z z)
                     (normal mo (elt fn1 0) (elt fn1 1) (elt fn1 2))
+                    (texture-coord mo (/ (- x+ x-min) w/x) (/ (- z z-min) w/x))
                     ;; 2nd grid triangle
                     (position mo x dyxz z)
                     (normal mo (elt fn2 0) (elt fn2 1) (elt fn2 2))
+                    (texture-coord mo (/ (- x x-min) w/x) (/ (- z z-min) w/x))
                     (position mo x dyxz+ z+)
                     (normal mo (elt fn2 0) (elt fn2 1) (elt fn2 2))
+                    (texture-coord mo (/ (- x x-min) w/x) (/ (- z+ z-min) w/x))
                     (position mo x+ dyx+z+ z+)
                     (normal mo (elt fn2 0) (elt fn2 1) (elt fn2 2))
+                    (texture-coord mo (/ (- x+ x-min) w/x) (/ (- z+ z-min) w/x))
                  finally (setf (aref prev-dyxz (+ i 1)) dyx+z+))))
 
 
@@ -259,45 +319,36 @@
     (water-surface-loop mo x y z width grid-size)
     (end mo)
     (incf *water-position* *water-speed*)
+    (incf *triangle-count* (/ (* width width) grid-size))
     mo))
 
 
 (defun update-water-surface (manual-object x y z width &key (grid-size 4.0))
   (begin-update manual-object 0)
   (water-surface-loop manual-object x y z width grid-size)
-  (end manual-object)
-  (incf *water-position* *water-speed*))
+  (end manual-object))
 
 
 ;;; Initialisation
 
 (defun initialise-application ()
   (setf *render-window*
-        (okra-window :render-system #-windows "OpenGL Rendering Subsystem"
+        (okra-window :width 1024 :height 768
+                     :render-system #-windows "OpenGL Rendering Subsystem"
                                     #+windows "Direct3D9 Rendering Subsystem"
-                     :resources
-                     '(("resources" "FileSystem" "General")
-                       ("resources/gui/configs" "FileSystem" "General")
-                       ("resources/gui/fonts" "FileSystem" "General")
-                       ("resources/gui/imagesets" "FileSystem" "General")
-                       ("resources/gui/layouts" "FileSystem" "General")
-                       ("resources/gui/looknfeel" "FileSystem" "General")
-                       ("resources/gui/lua_scripts" "FileSystem" "General")
-                       ("resources/gui/schemes" "FileSystem" "General"))))
+                     :resources '(("resources" "FileSystem" "General")
+                                  ("resources/gui" "FileSystem" "General"))))
   (setf *scene-manager* (make-scene-manager "OctreeSceneManager"))
   (setf *root-node* (root-node))
   (setf *timer* (make-timer))
 
-  ;; camera
-  (setf *camera* (make-camera :position #(115.0 50.0 115.0)
-                              :look-at #(-10.0 0.0 -10.0)
+  (setf *camera* (make-camera :position #(150.0 30.0 150.0)
+                              :look-at #(-10.0 10.0 -10.0)
                               :near-clip-distance 1.0))
 
-  ;; viewport
   (setf *viewport* (make-viewport *camera*
                                   :background-colour '(0.0 0.0 0.0 1.0)))
 
-  ;; light
   (setf *light* (make-light :diffuse-colour #(0.9 0.9 0.9 1.0)
                             ;; I don't think this makes a difference.
                             ;:direction (vector-normalise #(-1.0 -0.5 -0.1))
@@ -310,20 +361,33 @@
   (set-ambient-light *scene-manager* #(0.2 0.2 0.2 1.0))
   (set-shadow-technique *scene-manager* :shadowtype-none)
 
+  ;; bird model
+  (loop repeat 50
+        for mo = (create-bird-model)
+        for node = (make-child-scene-node)
+        for or = (vector-normalise (vector 0.0 (random 1.0) (random 1.0)
+                                           (random 1.0)))
+        for pos = (list (random 50.0) (+ 10 (random 50.0)) (random 50.0))
+        do (attach-object node (pointer-to mo))
+           (set-orientation node (elt or 0) (elt or 1) (elt or 2) (elt or 3))
+           (set-position node (elt pos 0) (elt pos 1) (elt pos 2))
+           (push (list node pos or) *birds*))
+
   ;; water surface
-  (let ((mo (create-water-surface 0.0 0.0 0.0 200.0 :material "Test/Blue80"
-                                  :grid-size *water-grid-size*)))
+  (let ((mo (create-water-surface 0.0 0.0 0.0 *water-size*
+                                  :grid-size *water-grid-size*
+                                  :material "Ocean/Calm")))
     (setf *water-mo* mo)
     (setf *water-node* (make-child-scene-node))
     (attach-object *water-node* (pointer-to mo)))
 
   ;; sphere
-  (let ((entity (make-entity :name "sphere" :prefab-type :pt-sphere)))
-    (set-material-name entity "Test/Red")
-    (setf *sphere* (make-child-scene-node))
-    (attach-object *sphere* (pointer-to entity)))
-  (set-scale *sphere* #(0.4 0.4 0.4))
-  (set-position *sphere* #(0.0 25.0 0.0))
+  ;(let ((entity (make-entity :name "sphere" :prefab-type :pt-sphere)))
+  ;  (set-material-name entity "Test/Red")
+  ;  (setf *sphere* (make-child-scene-node))
+  ;  (attach-object *sphere* (pointer-to entity)))
+  ;(set-scale *sphere* #(0.4 0.4 0.4))
+  ;(set-position *sphere* #(0.0 25.0 0.0))
 
   ;; display
   (new-frame)
@@ -339,8 +403,8 @@
 
   (okra-cegui::load-scheme "AquaLookSkin.scheme")
   (okra-cegui::set-default-mouse-cursor "AquaLook" "MouseArrow")
+  ;(okra-cegui::set-default-font "BlueHighway-12")
   (okra-cegui::mouse-cursor-set-image (okra-cegui::get-default-mouse-cursor))
-  (okra-cegui::set-default-font "BlueHighway-12")
 
   (okra-cegui::inject-mouse-position (/ (get-actual-width *viewport*) 2.0)
                                      (/ (get-actual-height *viewport*) 2.0))
@@ -354,7 +418,8 @@
         (okra-cegui::subscribe-event (okra-cegui::get-window "quitButton")
                                      "Clicked")
         (okra-cegui::subscribe-event (okra-cegui::get-window "flockSettings")
-                                     "CloseClicked"))
+                                     "CloseClicked")
+        (setf *cegui-loaded* t))
     (t (e) (format t "[flock] CEGUI layout not loaded: ~S~%" e)))
 
   ;;; clois-lane
@@ -368,31 +433,46 @@
 
 ;;; Main Loop
 
+;; see: http://www.titanium.hr/Irrlicht/Tutorials/GameLoop/Tutorial.htm
 (defun main-loop ()
   (clois-lane:set-actions *actions*)
   (setf *running* t)
-  (loop with previous-time = (get-microseconds *timer*)
-        with fps-time = 0
-        with time = 0
+  (loop with fps-time = 0
+        with step = 0.02
+        with then = (get-microseconds *timer*)
         while *running*
-        for current-time = (get-microseconds *timer*)
-        for delta-time = (/ (- current-time previous-time) 1000000.0)
-        for fps = (/ 1.0 delta-time)
-        initially (format t "fps: ~5,2F" fps)
-        do (setf previous-time current-time)
-           (incf time delta-time)
+        for now = (get-microseconds *timer*)
+        for delta = (/ (- now then) 1000000.0)
+        for accumulator = delta
+        initially (format t "fps:  0.00")  ; XXX: Linux CEGUI probs
+        do (setf then now)
+           (when (> accumulator 0.25)
+             (setf accumulator 0.25))
+           (loop while (>= accumulator step)
+                 do (incf *water-position* *water-speed*)
+                    (decf accumulator step))
+           (when (> accumulator 0)
+             (incf *water-position* (* *water-speed* (/ accumulator step))))
+           ;; XXX: This is until the Linux CEGUI has been resolved.
+           (if *cegui-loaded*
+               (progn
+                 ;; I haven't check set-text in yet from my other machine :-|
+                 (okra-cegui::set-text (okra-cegui::get-window "FPS")
+                                       (format nil "~,2F" (/ 1.0 delta)))
+                 (okra-cegui::set-text (okra-cegui::get-window "Triangles")
+                                       (format nil "~D" *triangle-count*)))
+               (when (> (- (/ now 1000000.0) fps-time) 1.0)
+                 (loop repeat 10 do (princ #\Backspace))
+                 (format t "fps: ~5,2F" (/ 1.0 delta))
+                 (force-output)
+                 (setf fps-time (/ now 1000000.0))))
+           (update-bird-positions-in-world)
+           (update-water-surface *water-mo* 0.0 0.0 0.0 *water-size*
+                                 :grid-size *water-grid-size*)
            (clois-lane:set-window-extents (get-actual-width *viewport*)
                                           (get-actual-height *viewport*))
            (clois-lane:capture)
            (do-movement)
-           ;; XXX: This is until the Linux CEGUI has been resolved.
-           (when (> (- time fps-time) 1.0)
-             (loop repeat 10 do (princ #\Backspace))
-             (format t "fps: ~5,2F" fps)
-             (force-output)
-             (setf fps-time time))
-           (update-water-surface *water-mo* 0.0 0.0 0.0 200.0
-                                 :grid-size *water-grid-size*)
            (new-frame)))
 
 

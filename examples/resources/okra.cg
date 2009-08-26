@@ -1,0 +1,20 @@
+// okra.cg
+//
+// see: http://www.ogre3d.org/wiki/index.php/Getting_Started_With_Ogre_CG_Materials
+
+void main_plain_texture_vp (float4 position  : POSITION,
+                            float2 texCoord0 : TEXCOORD0,
+                            out float4 oPosition : POSITION,
+                            out float2 uv0       : TEXCOORD0,
+                            uniform float4x4 worldViewProj)
+{
+    oPosition = mul(worldViewProj, position);
+    uv0 = texCoord0;
+}
+
+void main_plain_texture_fp (float2 uv0 : TEXCOORD0,
+                            out float4 color : COLOR,
+                            uniform sampler2D texture)
+{
+    color = tex2D(texture, uv0);
+}

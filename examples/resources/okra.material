@@ -1,206 +1,84 @@
-material Example/RedCube
+vertex_program PlainTexture_VS cg
 {
-    receive_shadows off
+    source okra.cg
+    entry_point main_plain_texture_vp
+    //profiles vs_1_1
+
+    default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+    }
+}
+
+
+fragment_program PlainTexture_PS cg
+{
+    source okra.cg
+    entry_point main_plain_texture_fp
+    //profiles ps_1_1
+}
+
+
+material Bird
+{
+    technique
+    {
+        pass
+        {
+            ambient 0.1 0.1 0.1
+            diffuse vertexcolour
+        }
+    }
+}
+
+
+material Ocean/Calm
+{
+    technique
+    {
+        pass
+        {
+            vertex_program_ref PlainTexture_VS
+            {
+            }
+
+            fragment_program_ref PlainTexture_PS
+            {
+            }
+
+            texture_unit
+            {
+                texture water512.jpg
+            }
+        }
+    }
 
     technique
     {
         pass
         {
             ambient 0.1 0.1 0.1
-            diffuse 1.0 0.2 0.2
+            //depth_write off
+            diffuse 0.8 0.8 1.0
+            //scene_blend alpha_blend
+            shading phong
+
+            texture_unit
+            {
+                //alpha_op_ex source1 src_manual src_current 0.5
+                //texture 940-diffuse.jpg
+                texture water512.jpg
+            }
+        }
+    }
+
+    technique
+    {
+        pass
+        {
+            ambient 0.1 0.1 0.1
+            diffuse 0.8 0.8 1.0
             shading flat
-        }
-    }
-}
-
-
-material Plants/Grasses
-{
-    technique
-    {
-        pass
-        {
-            texture_unit
-            {
-                colour_op_ex source1 src_manual src_current 0 1 0
-            }
-        }
-    }
-}
-
-
-material Plants/Shrubs
-{
-    technique
-    {
-        pass
-        {
-            texture_unit
-            {
-                colour_op_ex source1 src_manual src_current 1 1 0
-            }
-        }
-    }
-}
-
-
-material Plants/Trees
-{
-    technique
-    {
-        pass
-        {
-            texture_unit
-            {
-                colour_op_ex source1 src_manual src_current 1 0.8 0.6
-            }
-        }
-    }
-}
-
-
-material Colour/Blue80
-{
-    technique
-    {
-        pass
-        {
-            shading flat
-
-            texture_unit
-            {
-                colour_op_ex source1 src_manual src_current 0.8 0.8 1.0
-            }
-        }
-    }
-}
-
-
-material Colour/Blue90
-{
-    technique
-    {
-        pass
-        {
-            shading flat
-
-            texture_unit
-            {
-                colour_op_ex source1 src_manual src_current 0.9 0.9 1
-            }
-        }
-    }
-}
-
-
-material Colour/Red
-{
-    technique
-    {
-        pass
-        {
-            texture_unit
-            {
-                colour_op_ex source1 src_manual src_current 1 0 0
-            }
-        }
-    }
-}
-
-
-material Colour/Red50
-{
-    technique
-    {
-        pass
-        {
-            texture_unit
-            {
-                colour_op_ex source1 src_manual src_current 1 0 0
-                alpha_op_ex source1 src_manual src_current 0.5
-            }
-        }
-    }
-}
-
-
-material Colour/White
-{
-    technique
-    {
-        pass
-        {
-            texture_unit
-            {
-                colour_op_ex source1 src_manual src_current 1 1 1
-            }
-        }
-    }
-}
-
-
-material Examples/Grass
-{
-    //receive_shadows on
-
-    technique
-    {
-        pass
-        {
-            texture_unit
-            {
-                texture grass_1024.jpg
-            }
-        }
-    }
-}
-
-
-material Examples/Robot
-{
-    // Software blending technique
-    technique
-    {
-        pass
-        {
-            texture_unit
-            {
-                texture r2skin.jpg
-            }
-        }
-    }
-}
-
-
-material Examples/Rockwall
-{
-    technique
-    {
-        pass
-        {
-            texture_unit
-            {
-                texture rockwall.tga
-            }
-        }
-    }
-}
-
-
-material Examples/SpaceSkyBox
-{
-    technique
-    {
-        pass
-        {
-            lighting off
-            depth_write off
-
-            texture_unit
-            {
-                cubic_texture spacesky.jpg separateUV
-                tex_address_mode clamp
-            }
         }
     }
 }
@@ -220,20 +98,6 @@ material Test/Blue80
 }
 
 
-material Test/Blue90
-{
-    technique
-    {
-        pass
-        {
-            ambient 0.1 0.1 0.1
-            diffuse 0.9 0.9 1.0
-            shading flat
-        }
-    }
-}
-
-
 material Test/Red
 {
     technique
@@ -243,42 +107,6 @@ material Test/Red
             ambient 0.1 0.1 0.1
             diffuse 1.0 0.2 0.2
             shading flat
-        }
-    }
-}
-
-
-material Test/RollingTerrain
-{
-    technique
-    {
-        pass
-        {
-            ambient 0.2 0.2 0.2
-            diffuse 1.0 1.0 1.0
-            shading phong
-
-            texture_unit
-            {
-                texture grass_1024.jpg
-            }
-        }
-    }
-}
-
-
-material Test/White
-{
-    technique
-    {
-        pass
-        {
-            ambient  0.1 0.1 0.1
-            //cull_hardware none
-            //cull_software none
-            diffuse  0.95 0.95 0.95
-            //specular 1.0 1.0 1.0 1000
-            shading phong
         }
     }
 }

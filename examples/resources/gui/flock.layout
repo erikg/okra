@@ -4,11 +4,55 @@
     <Window Type="AquaLook/FrameWindow" Name="flockSettings">
       <Property Name="Alpha" Value="0.667"/>
       <Property Name="UnifiedPosition" Value="{{0.01,0},{0.01,0}}"/>
-      <Property Name="UnifiedSize" Value="{{0.25,0},{0.5,0}}"/>
-      <Property Name="Text" Value="Flock Settings"/>
+      <Property Name="UnifiedSize" Value="{{0.25,0},{0.25,0}}"/>
+      <Property Name="Text" Value="Flock"/>
+      <Window Type="AquaLook/StaticText" Name="labelFPS" >
+        <Property Name="BackgroundEnabled" Value="false"/>
+        <Property Name="FrameEnabled" Value="false"/>
+        <Property Name="UnifiedAreaRect"
+                  Value="{{0,35},{0,26},{0,127},{0,50}}"/>
+        <Property Name="UnifiedMaxSize" Value="{{0.25,0},{0.8,0}}"/>
+        <Property Name="UnifiedPosition" Value="{{0.05,0},{0.15,0}}"/>
+        <Property Name="Text" Value="fps:"/>
+        <Property Name="TextColours"
+                  Value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000"/>
+      </Window>
+      <Window Type="AquaLook/StaticText" Name="FPS" >
+        <Property Name="BackgroundEnabled" Value="false"/>
+        <Property Name="FrameEnabled" Value="false"/>
+        <Property Name="UnifiedAreaRect"
+                  Value="{{0,35},{0,26},{0,127},{0,50}}"/>
+        <Property Name="UnifiedMaxSize" Value="{{0.25,0},{0.8,0}}"/>
+        <Property Name="UnifiedPosition" Value="{{0.33,0},{0.15,0}}"/>
+        <Property Name="Text" Value="0.0"/>
+        <Property Name="TextColours"
+                  Value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000"/>
+      </Window>
+      <Window Type="AquaLook/StaticText" Name="labelTriangles" >
+        <Property Name="BackgroundEnabled" Value="false"/>
+        <Property Name="FrameEnabled" Value="false"/>
+        <Property Name="UnifiedAreaRect"
+                  Value="{{0,35},{0,26},{0,127},{0,50}}"/>
+        <Property Name="UnifiedMaxSize" Value="{{0.25,0},{0.8,0}}"/>
+        <Property Name="UnifiedPosition" Value="{{0.05,0},{0.25,0}}"/>
+        <Property Name="Text" Value="triangles:"/>
+        <Property Name="TextColours"
+                  Value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000"/>
+      </Window>
+      <Window Type="AquaLook/StaticText" Name="Triangles" >
+        <Property Name="BackgroundEnabled" Value="false"/>
+        <Property Name="FrameEnabled" Value="false"/>
+        <Property Name="UnifiedAreaRect"
+                  Value="{{0,35},{0,26},{0,127},{0,50}}"/>
+        <Property Name="UnifiedMaxSize" Value="{{0.25,0},{0.8,0}}"/>
+        <Property Name="UnifiedPosition" Value="{{0.33,0},{0.25,0}}"/>
+        <Property Name="Text" Value="0.0"/>
+        <Property Name="TextColours"
+                  Value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000"/>
+      </Window>
       <Window Type="AquaLook/Button" Name="quitButton">
-        <Property Name="UnifiedPosition" Value="{{0.4,0},{0.88,0}}"/>
-        <Property Name="UnifiedSize" Value="{{0.2,0},{0.1,0}}"/>
+        <Property Name="UnifiedPosition" Value="{{0.4,0},{0.8,0}}"/>
+        <Property Name="UnifiedSize" Value="{{0.2,0},{0.15,0}}"/>
         <Property Name="Text" Value="Quit"/>
       </Window>
     </Window>
