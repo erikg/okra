@@ -2,7 +2,7 @@ vertex_program PlainTexture_VS cg
 {
     source okra.cg
     entry_point main_plain_texture_vp
-    //profiles vs_1_1
+    profiles vs_1_1
 
     default_params
     {
@@ -15,7 +15,7 @@ fragment_program PlainTexture_PS cg
 {
     source okra.cg
     entry_point main_plain_texture_fp
-    //profiles ps_1_1
+    profiles ps_1_1
 }
 
 
@@ -48,7 +48,7 @@ material Ocean/Calm
 
             texture_unit
             {
-                texture water512.jpg
+                texture 940.jpg
             }
         }
     }

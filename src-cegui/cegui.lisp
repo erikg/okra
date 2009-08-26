@@ -106,6 +106,12 @@
   (sheet :pointer))
 
 
+(defcfun ("cegui_set_text" set-text)
+    :void
+  (window :pointer)
+  (text :string))
+
+
 ;; see: http://www.cegui.org.uk/wiki/index.php/EventLookup for event names
 (defcfun ("cegui_subscribe_event" subscribe-event)
     :void

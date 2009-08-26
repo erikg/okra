@@ -214,7 +214,6 @@
 (defun create-bird-model ()
   (let* ((mo (make-manual-object)))
     (begin mo "Bird" :ot-triangle-list)
-
     ;; top
     (position mo 0.0 0.0 1.0)
     (colour mo 0.0 0.0 0.0 1.0)
@@ -225,7 +224,6 @@
     (position mo -1.0 0.0 -2.0)
     (colour mo 1.0 1.0 1.0 1.0)
     (normal mo 0.0 1.0 0.0)
-
     ;; bottom
     (position mo 0.0 0.0 1.0)
     (colour mo 1.0 0.0 0.0 1.0)
@@ -236,7 +234,6 @@
     (position mo 1.0 0.0 -2.0)
     (colour mo 0.0 0.0 1.0 1.0)
     (normal mo 0.0 -1.0 0.0)
-
     (end mo)
     mo))
 
@@ -253,9 +250,11 @@
 ;;; Water Functions
 
 (defun dy (x y z width)
-  (* 20.0 (+ y (* (sin (+ (/ x 12.0) *water-position*))
-                  (sin (+ (/ z (+ (/ width .75) (/ *water-position* 4.0)))
-                          (perlin-noise (/ x width) 0.0 (/ z width))))))))
+  ;; XXX: sin doesn't work anymore :-(  why?  it works in a clean ccl...
+  #-ccl(* 20.0 (+ y (* (sin (+ (/ x 12.0) *water-position*))
+                       (sin (+ (/ z (+ (/ width .75) (/ *water-position* 4.0)))
+                               (perlin-noise (/ x width) 0.0 (/ z width)))))))
+  #+ccl y)
 
 
 (defun water-surface-loop (manual-object x y z width grid-size)

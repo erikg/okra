@@ -1,6 +1,7 @@
 // okra.cg
 //
 // see: http://www.ogre3d.org/wiki/index.php/Getting_Started_With_Ogre_CG_Materials
+// see: http://www.blacksmith-studios.dk/projects/downloads/bumpmapping_using_cg.php
 
 void main_plain_texture_vp (float4 position  : POSITION,
                             float2 texCoord0 : TEXCOORD0,

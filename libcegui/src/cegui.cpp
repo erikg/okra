@@ -61,6 +61,7 @@ extern "C"
     void cegui_set_default_font (const char*);
     void cegui_set_default_mouse_cursor (const char*, const char*);
     void cegui_set_gui_sheet (Window*);
+    void cegui_set_text (Window*, const char*);
     void cegui_subscribe_event (Window*, const char* event);
 }
 
@@ -180,6 +181,12 @@ void cegui_set_default_mouse_cursor (const char* look, const char* arrow)
 void cegui_set_gui_sheet (Window* sheet)
 {
     System::getSingleton().setGUISheet(sheet);
+}
+
+
+void cegui_set_text (Window* window, const char* text)
+{
+    window->setText(text);
 }
 
 
