@@ -87,7 +87,6 @@
     ("StringVector" . cl-pointer)
     ("StringVectorPtr" . cl-pointer)
     ("TemplateIterator" . cl-pointer)
-    ("TransformSpace" . cl-pointer)
     ("UTFString" . cl-string)
     ("Vector2" . cl-array2)
     ("Vector3" . cl-array3)

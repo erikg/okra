@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-08-07 15:52:09.
+;;;; This file was generated on: 2009-08-27 14:39:10.
 
 (in-package :okra-bindings)
 
@@ -498,7 +498,7 @@
     :void
   (ogre-node :pointer)
   (d okra-array3)
-  (relative-to :pointer))
+  (relative-to transform-space))
 
 
 ;; name: "translate"
@@ -511,7 +511,7 @@
   (x okra-real)
   (y okra-real)
   (z okra-real)
-  (relative-to :pointer))
+  (relative-to transform-space))
 
 
 ;; name: "translate"
@@ -523,7 +523,7 @@
   (ogre-node :pointer)
   (axes okra-array9)
   (move okra-array3)
-  (relative-to :pointer))
+  (relative-to transform-space))
 
 
 ;; name: "translate"
@@ -537,7 +537,7 @@
   (x okra-real)
   (y okra-real)
   (z okra-real)
-  (relative-to :pointer))
+  (relative-to transform-space))
 
 
 ;; name: "roll"
@@ -548,7 +548,7 @@
     :void
   (ogre-node :pointer)
   (angle okra-real)
-  (relative-to :pointer))
+  (relative-to transform-space))
 
 
 ;; name: "pitch"
@@ -559,7 +559,7 @@
     :void
   (ogre-node :pointer)
   (angle okra-real)
-  (relative-to :pointer))
+  (relative-to transform-space))
 
 
 ;; name: "yaw"
@@ -570,7 +570,7 @@
     :void
   (ogre-node :pointer)
   (angle okra-real)
-  (relative-to :pointer))
+  (relative-to transform-space))
 
 
 ;; name: "rotate"
@@ -582,7 +582,7 @@
   (ogre-node :pointer)
   (axis okra-array3)
   (angle okra-real)
-  (relative-to :pointer))
+  (relative-to transform-space))
 
 
 ;; name: "rotate"
@@ -593,7 +593,7 @@
     :void
   (ogre-node :pointer)
   (q okra-array4)
-  (relative-to :pointer))
+  (relative-to transform-space))
 
 
 ;; name: "createChild"
@@ -682,30 +682,30 @@
 
 (defmethod roll ((this node) &optional (arg0 nil) (arg1 nil))
   (cond
-    ((and (typep arg0 'real) (typep arg1 'cffi:foreign-pointer))
+    ((and (typep arg0 'real) (typep arg1 'keyword))
      (ogre-node-roll-radian-transformspace (pointer-to this) arg0 arg1))
     (t (error "Overloaded method not defined for this class."))))
 
 
 (defmethod yaw ((this node) &optional (arg0 nil) (arg1 nil))
   (cond
-    ((and (typep arg0 'real) (typep arg1 'cffi:foreign-pointer))
+    ((and (typep arg0 'real) (typep arg1 'keyword))
      (ogre-node-yaw-radian-transformspace (pointer-to this) arg0 arg1))
     (t (error "Overloaded method not defined for this class."))))
 
 
 (defmethod pitch ((this node) &optional (arg0 nil) (arg1 nil))
   (cond
-    ((and (typep arg0 'real) (typep arg1 'cffi:foreign-pointer))
+    ((and (typep arg0 'real) (typep arg1 'keyword))
      (ogre-node-pitch-radian-transformspace (pointer-to this) arg0 arg1))
     (t (error "Overloaded method not defined for this class."))))
 
 
 (defmethod rotate ((this node) &optional (arg0 nil) (arg1 nil) (arg2 nil))
   (cond
-    ((and (typep arg0 '(simple-vector 3)) (typep arg1 'real) (typep arg2 'cffi:foreign-pointer))
+    ((and (typep arg0 '(simple-vector 3)) (typep arg1 'real) (typep arg2 'keyword))
      (ogre-node-rotate-vector3-radian-transformspace (pointer-to this) arg0 arg1 arg2))
-    ((and (typep arg0 '(simple-vector 4)) (typep arg1 'cffi:foreign-pointer))
+    ((and (typep arg0 '(simple-vector 4)) (typep arg1 'keyword))
      (ogre-node-rotate-quaternion-transformspace (pointer-to this) arg0 arg1))
     (t (error "Overloaded method not defined for this class."))))
 
@@ -739,13 +739,13 @@
 
 (defmethod translate ((this node) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil) (arg4 nil))
   (cond
-    ((and (typep arg0 '(simple-vector 9)) (typep arg1 'real) (typep arg2 'real) (typep arg3 'real) (typep arg4 'cffi:foreign-pointer))
+    ((and (typep arg0 '(simple-vector 9)) (typep arg1 'real) (typep arg2 'real) (typep arg3 'real) (typep arg4 'keyword))
      (ogre-node-translate-matrix3-real-real-real-transformspace (pointer-to this) arg0 arg1 arg2 arg3 arg4))
-    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real) (typep arg3 'cffi:foreign-pointer))
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real) (typep arg3 'keyword))
      (ogre-node-translate-real-real-real-transformspace (pointer-to this) arg0 arg1 arg2 arg3))
-    ((and (typep arg0 '(simple-vector 9)) (typep arg1 '(simple-vector 3)) (typep arg2 'cffi:foreign-pointer))
+    ((and (typep arg0 '(simple-vector 9)) (typep arg1 '(simple-vector 3)) (typep arg2 'keyword))
      (ogre-node-translate-matrix3-vector3-transformspace (pointer-to this) arg0 arg1 arg2))
-    ((and (typep arg0 '(simple-vector 3)) (typep arg1 'cffi:foreign-pointer))
+    ((and (typep arg0 '(simple-vector 3)) (typep arg1 'keyword))
      (ogre-node-translate-vector3-transformspace (pointer-to this) arg0 arg1))
     (t (error "Overloaded method not defined for this class."))))
 

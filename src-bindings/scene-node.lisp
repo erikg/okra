@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-08-07 15:52:10.
+;;;; This file was generated on: 2009-08-27 14:39:11.
 
 (in-package :okra-bindings)
 
@@ -332,7 +332,7 @@
     :void
   (ogre-scene-node :pointer)
   (angle okra-real)
-  (relative-to :pointer))
+  (relative-to transform-space))
 
 
 ;; name: "setDirection"
@@ -345,7 +345,7 @@
   (x okra-real)
   (y okra-real)
   (z okra-real)
-  (relative-to :pointer)
+  (relative-to transform-space)
   (local-direction-vector okra-array3))
 
 
@@ -357,7 +357,7 @@
     :void
   (ogre-scene-node :pointer)
   (vec okra-array3)
-  (relative-to :pointer)
+  (relative-to transform-space)
   (local-direction-vector okra-array3))
 
 
@@ -369,7 +369,7 @@
     :void
   (ogre-scene-node :pointer)
   (target-point okra-array3)
-  (relative-to :pointer)
+  (relative-to transform-space)
   (local-direction-vector okra-array3))
 
 
@@ -412,23 +412,23 @@
 
 (defmethod set-direction ((this scene-node) &optional (arg0 nil) (arg1 nil) (arg2 nil) (arg3 nil) (arg4 nil))
   (cond
-    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real) (typep arg3 'cffi:foreign-pointer) (typep arg4 '(simple-vector 3)))
+    ((and (typep arg0 'real) (typep arg1 'real) (typep arg2 'real) (typep arg3 'keyword) (typep arg4 '(simple-vector 3)))
      (ogre-scene-node-set-direction-real-real-real-transformspace-vector3 (pointer-to this) arg0 arg1 arg2 arg3 arg4))
-    ((and (typep arg0 '(simple-vector 3)) (typep arg1 'cffi:foreign-pointer) (typep arg2 '(simple-vector 3)))
+    ((and (typep arg0 '(simple-vector 3)) (typep arg1 'keyword) (typep arg2 '(simple-vector 3)))
      (ogre-scene-node-set-direction-vector3-transformspace-vector3 (pointer-to this) arg0 arg1 arg2))
     (t (error "Overloaded method not defined for this class."))))
 
 
 (defmethod look-at ((this scene-node) &optional (arg0 nil) (arg1 nil) (arg2 nil))
   (cond
-    ((and (typep arg0 '(simple-vector 3)) (typep arg1 'cffi:foreign-pointer) (typep arg2 '(simple-vector 3)))
+    ((and (typep arg0 '(simple-vector 3)) (typep arg1 'keyword) (typep arg2 '(simple-vector 3)))
      (ogre-scene-node-look-at-vector3-transformspace-vector3 (pointer-to this) arg0 arg1 arg2))
     (t (error "Overloaded method not defined for this class."))))
 
 
 (defmethod yaw ((this scene-node) &optional (arg0 nil) (arg1 nil))
   (cond
-    ((and (typep arg0 'real) (typep arg1 'cffi:foreign-pointer))
+    ((and (typep arg0 'real) (typep arg1 'keyword))
      (ogre-scene-node-yaw-radian-transformspace (pointer-to this) arg0 arg1))
     (t (error "Overloaded method not defined for this class."))))
 
