@@ -18,10 +18,44 @@
 (in-package :okra)
 
 
+;;; Classes
+
+(defclass bird ()
+  ((direction :accessor direction-of :initarg :direction)
+   (fly-speed :accessor fly-speed-of :initform 10.0)
+   (manual-object :accessor manual-object-of :initarg :manual-object)
+   (node :accessor node-of :initarg :node)
+   (orientation :accessor orientation-of :initarg :orientation)
+   (position :accessor position-of :initarg :position)
+   (turn-speed :accessor turn-speed-of :initform 0.1)))
+
+
+(defclass scene ()
+  ((cameras :accessor cameras-of :initarg :cameras)
+   (light :accessor lights-of :initarg :lights)
+   (manager :accessor manager-of :initarg :manager)
+   (root :accessor root-of :initarg :root)))
+
+
+(defclass flock-scene (scene)
+  ((birds :accessor birds-of :initarg :birds)
+   (water :accessor water-of :initarg :water)))
+
+
+(defclass water ()
+  ((grid :accessor grid-of :initarg :grid :initform 10.0)
+   (manual-object :reader manual-object-of :initarg :manual-object
+                  :initform (error "must supply :manual-object"))
+   (material :reader material-of :initarg material-of
+             :initform "BaseWhiteNoLighting")
+   (node :reader node-of :initarg :node :initform (error "must supply :node"))
+   (position :accessor position-of :initarg :position :initform #(0.0 0.0 0.0))
+   (size :accessor size-of :initarg :size :initform 100.0)
+   (speed :accessor speed-of :initarg :speed :initform 0.025)))
+
+
 ;;; Parameters
 
-(defparameter *bird-speed* 10.0)
-(defparameter *bird-turn-speed* 10.0)
 (defparameter *water-grid-size* 10.0)
 (defparameter *water-position* 0.0)
 (defparameter *water-size* 300.0)
@@ -211,43 +245,166 @@
 
 ;;; Bird Functions
 
-(defun create-bird-model ()
+(defun create-bird-modelX ()
   (let* ((mo (make-manual-object)))
     (begin mo "Bird" :ot-triangle-list)
     ;; top
-    (position mo 0.0 0.0 1.0)
+    (position mo 1.0 0.0 0.0)
     (colour mo 0.0 0.0 0.0 1.0)
     (normal mo 0.0 1.0 0.0)
-    (position mo 1.0 0.0 -2.0)
+    (position mo -2.0 0.0 -1.0)
     (colour mo 1.0 1.0 1.0 1.0)
     (normal mo 0.0 1.0 0.0)
-    (position mo -1.0 0.0 -2.0)
+    (position mo -2.0 0.0 1.0)
     (colour mo 1.0 1.0 1.0 1.0)
     (normal mo 0.0 1.0 0.0)
     ;; bottom
-    (position mo 0.0 0.0 1.0)
+    (position mo 1.0 0.0 0.0)
     (colour mo 1.0 0.0 0.0 1.0)
     (normal mo 0.0 -1.0 0.0)
-    (position mo -1.0 0.0 -2.0)
+    (position mo -2.0 0.0 1.0)
     (colour mo 0.0 0.0 1.0 1.0)
     (normal mo 0.0 -1.0 0.0)
-    (position mo 1.0 0.0 -2.0)
+    (position mo -2.0 0.0 -1.0)
     (colour mo 0.0 0.0 1.0 1.0)
     (normal mo 0.0 -1.0 0.0)
     (end mo)
     mo))
 
+(defun create-bird-model ()
+  (let ((mo (make-manual-object))
+        (black 0.0)
+        (white 1.0))
+    (begin mo "Bird" :ot-triangle-list)
+    ;; bottom
+    (let* ((vn (vnormal (vsub #(-2.0 -0.5  1.0) #(1.0 0.0 0.0))
+                        (vsub #(-2.0 -0.5 -1.0) #(1.0 0.0 0.0))))
+           (vnx (elt vn 0))
+           (vny (elt vn 1))
+           (vnz (elt vn 2)))
+      (position mo 1.0 0.0 0.0)
+      (colour mo black black black 1.0)
+      (normal mo vnx vny vnz)
+      (position mo -2.0 -0.5 1.0)
+      (colour mo white white white 1.0)
+      (normal mo vnx vny vnz)
+      (position mo -2.0 -0.5 -1.0)
+      (colour mo white white white 1.0)
+      (normal mo vnx vny vnz))
+    ;; top right
+    (let* ((vn (vnormal (vsub #(-2.0  0.5 0.0) #(1.0 0.0 0.0))
+                        (vsub #(-2.0 -0.5 1.0) #(1.0 0.0 0.0))))
+           (vnx (elt vn 0))
+           (vny (elt vn 1))
+           (vnz (elt vn 2)))
+      (position mo 1.0 0.0 0.0)
+      (colour mo black black black 1.0)
+      (normal mo vnx vny vnz)
+      (position mo -2.0 0.5 0.0)
+      (colour mo white white white 1.0)
+      (normal mo vnx vny vnz)
+      (position mo -2.0 -0.5 1.0)
+      (colour mo white white white 1.0)
+      (normal mo vnx vny vnz))
+    ;; top left
+    (let* ((vn (vnormal (vsub #(-2.0 -0.5 -1.0) #(1.0 0.0 0.0))
+                        (vsub #(-2.0  0.5 0.0) #(1.0 0.0 0.0))))
+           (vnx (elt vn 0))
+           (vny (elt vn 1))
+           (vnz (elt vn 2)))
+      (position mo 1.0 0.0 0.0)
+      (colour mo black black black 1.0)
+      (normal mo vnx vny vnz)
+      (position mo -2.0 -0.5 -1.0)
+      (colour mo white white white 1.0)
+      (normal mo vnx vny vnz)
+      (position mo -2.0 0.5 0.0)
+      (colour mo white white white 1.0)
+      (normal mo vnx vny vnz))
+    ;; back
+    (let* ((vn (vnormal (vsub #(-2.0 -0.5 -1.0) #(-2.0 0.5 0.0))
+                        (vsub #(-2.0 -0.5  1.0) #(-2.0 0.5 0.0))))
+           (vnx (elt vn 0))
+           (vny (elt vn 1))
+           (vnz (elt vn 2)))
+      (position mo -2.0 0.5 0.0)
+      (colour mo white white white 1.0)
+      (normal mo vnx vny vnz)
+      (position mo -2.0 -0.5 -1.0)
+      (colour mo white white white 1.0)
+      (normal mo vnx vny vnz)
+      (position mo -2.0 -0.5 1.0)
+      (colour mo white white white 1.0)
+      (normal mo vnx vny vnz))
+    (end mo)
+    mo))
+
+
+(defun flock-birds (&optional (birds *birds*))
+  (loop for bird in birds
+        for i from 0
+        for centre = #(0.0 20.0 0.0)
+        for dir = (elt bird 2)
+        for node = (elt bird 0)
+        for pos = (elt bird 1)
+        for distance-from-centre = (vlength (vsub pos centre))
+        for vp+d = (vector (+ (elt pos 0) (elt dir 0))
+                           (+ (elt pos 1) (elt dir 1))
+                           (+ (elt pos 2) (elt dir 2)))
+        for neighbours = (loop for other in birds
+                               for opos = (elt other 1)
+                               for dist = (vlength (vsub opos pos))
+                               unless (or (equal other bird)
+                                          (> dist 15.0))
+                                 collect other)
+        unless neighbours do
+           (setf neighbours (list (elt birds (random (- (length birds) 1)))))
+        do (if (> distance-from-centre 100.0)  ; keep them on the screen
+               (progn
+                 ;(setf (elt bird 2) (vnormalise (vsub pos centre)))
+                 ;(setf (elt bird 1) (vadd pos (elt bird 2))))
+                 (setf (elt bird 2) #(1.0 0.0 0.0))
+                 (setf (elt bird 1) #(0.0 2.0 0.0)))
+               (progn
+                 (setf (elt bird 1) vp+d)
+                 (setf (elt bird 2)
+                       (loop with vd = (elt (first neighbours) 1)
+                             for n from 1
+                             for neighbour in (rest neighbours)
+                             do (setf vd (vadd vd (elt neighbour 1)))
+                             finally (return
+                                       (vnormalise
+                                         (vadd dir (vscale (vscale vd (/ 1 n))
+                                                           0.1))))))))))
+
+
+(defun make-bird (&key direction position (orientation #(1.0 0.0 0.0 0.0)))
+  (let ((mo (create-bird-model))
+        (node (make-child-scene-node)))
+    (attach-object node (pointer-to mo))
+    (set-position node (elt position 0) (elt position 1) (elt position 2))
+    (make-instance 'bird :direction direction :manual-object mo :node node
+                   :orientation orientation :position position)))
+
+
+;(defun update-bird-positions-in-world (&optional (birds *birds*))
+;  (loop for bird in birds
+;        for node = (elt bird 0)
+;        for pos = (elt bird 1)
+;        do (set-position node (elt pos 0) (elt pos 1) (elt pos 2))))
 
 (defun update-bird-positions-in-world (&optional (birds *birds*))
   (loop for bird in birds
-        for node = (elt bird 0)
-        for or = (elt bird 2)
-        for pos = (elt bird 1)
-        do (set-orientation node (elt or 0) (elt or 1) (elt or 2) (elt or 3))
-           (set-position node (elt pos 0) (elt pos 1) (elt pos 2))))
+        for node = (node-of bird)
+        for pos = (position-of bird)
+        do (set-position node (elt pos 0) (elt pos 1) (elt pos 2))))
 
 
 ;;; Water Functions
+
+;(defun make-water (&key (grid 10.0) (material "Ocean/Calm")
+;                   (position #(0.0 0.0 0.0)) (size 100.0) (speed 0.025))
+;  (let ((mo (create-water-surface position size
 
 (defun dy (x y z width)
   ;; XXX: sin doesn't work anymore :-(  why?  it works in a clean ccl...
@@ -362,15 +519,13 @@
 
   ;; bird model
   (loop repeat 50
-        for mo = (create-bird-model)
-        for node = (make-child-scene-node)
-        for or = (vector-normalise (vector 0.0 (random 1.0) (random 1.0)
-                                           (random 1.0)))
-        for pos = (list (random 50.0) (+ 10 (random 50.0)) (random 50.0))
-        do (attach-object node (pointer-to mo))
-           (set-orientation node (elt or 0) (elt or 1) (elt or 2) (elt or 3))
-           (set-position node (elt pos 0) (elt pos 1) (elt pos 2))
-           (push (list node pos or) *birds*))
+        ;for dir = (vnormalise (vector (- (random 2.0) 1) (- (random 2.0) 1)
+        ;                              (- (random 2.0) 1)))
+        for dir = (vnormalise #(1.0 0.0 0.0))
+        for pos = (vector (- (random 50.0) 25) (+ 10 (random 25.0))
+                          (- (random 50.0) 25))
+        for bird = (make-bird :direction dir :position pos)
+        do (push bird *birds*))
 
   ;; water surface
   (let ((mo (create-water-surface 0.0 0.0 0.0 *water-size*
@@ -380,13 +535,8 @@
     (setf *water-node* (make-child-scene-node))
     (attach-object *water-node* (pointer-to mo)))
 
-  ;; sphere
-  ;(let ((entity (make-entity :name "sphere" :prefab-type :pt-sphere)))
-  ;  (set-material-name entity "Test/Red")
-  ;  (setf *sphere* (make-child-scene-node))
-  ;  (attach-object *sphere* (pointer-to entity)))
-  ;(set-scale *sphere* #(0.4 0.4 0.4))
-  ;(set-position *sphere* #(0.0 25.0 0.0))
+  ;(make-water :grid 10.0 :material "Ocean/Calm" :position #(0.0 0.0 0.0)
+  ;            :size 300.0)
 
   ;; display
   (new-frame)
@@ -449,6 +599,7 @@
              (setf accumulator 0.25))
            (loop while (>= accumulator step)
                  do (incf *water-position* *water-speed*)
+                    ;(flock-birds)
                     (decf accumulator step))
            (when (> accumulator 0)
              (incf *water-position* (* *water-speed* (/ accumulator step))))
