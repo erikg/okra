@@ -16,9 +16,29 @@
   (* degrees *pi/180*))
 
 
+(defun qw2rad (qw)
+  "Returns QW (quaternion w-component) converted to radians."
+  (* 2 (acos qw)))
+
+
 (defun rad2deg (radians)
   "Returns RADIANS converted to degrees."
   (/ radians *pi/180*))
+
+
+(defun rad2qw (radians)
+  "Returns RADIANS converted to a quaternion w-component."
+  (cos (/ radians 2)))
+
+
+(defun deg2qw (degrees)
+  "Returns DEGREES converted to a quaternion w-component."
+  (cos (/ (deg2rad degrees) 2)))
+
+
+(defun qw2deg (qw)
+  "Returns QW (quaternion w-component) converted to degrees."
+  (rad2deg (* 2 (acos qw))))
 
 
 (defun vector-add (&rest vectors)
@@ -28,6 +48,10 @@
         do (loop for i from 0 below (length v1)
                  do (incf (elt v1 i) (elt v i)))
         finally (return v1)))
+
+(defun vadd (&rest vectors)
+  "Calls VECTOR-ADD."
+  (apply #'vector-add vectors))
 
 
 (defun vector-cross-product (v1 v2)
@@ -41,6 +65,10 @@
             (- (* z1 x2) (* x1 z2))
             (- (* x1 y2) (* y1 x2)))))
 
+(defun vcross (v1 v2)
+  "Calls VECTOR-CROSS-PRODUCT."
+  (vector-cross-product v1 v2))
+
 
 (defun vector-division (&rest vectors)
   "Returns the scalar division of VECTORS."
@@ -49,6 +77,10 @@
         do (loop for i from 0 below (length v1)
                  do (setf (elt v1 i) (/ (elt v1 i) (elt v i))))
         finally (return v1)))
+
+(defun vdiv (&rest vectors)
+  "Calls VECTOR-DIVISION."
+  (apply #'vector-division vectors))
 
 
 (defun vector-dot-product (&rest vectors)
@@ -59,11 +91,14 @@
                  do (setf (elt v1 i) (* (elt v1 i) (elt v i))))
         finally (return (reduce #'+ v1))))
 
+(defun vdot (&rest vectors)
+  "Calls VECTOR-DOT-PRODUCT."
+  (apply #'vector-dot-product vectors))
+
 
 (defun vector-from-coords (x1 y1 z1 x2 y2 z2)
   "Returns the vector between point (X1,Y1,Z1) to (X2,Y2,Z2)."
   (vector (- x2 x1) (- y2 y1) (- z2 z1)))
-
 
 (defun xyz2v (x1 y1 z1 x2 y2 z2)
   "Calls VECTOR-FROM-COORDS."
@@ -76,6 +111,10 @@
         sum (* n n) into m
         finally (return (sqrt m))))
 
+(defun vlength (v)
+  "Calls VECTOR-LENGTH."
+  (vector-length v))
+
 
 (defun vector-multiply (&rest vectors)
   "Returns the scalar product of VECTORS."
@@ -85,6 +124,10 @@
                  do (setf (elt v1 i) (* (elt v1 i) (elt v i))))
         finally (return v1)))
 
+(defun vmult (&rest vectors)
+  "Calls VECTOR-MULTIPLY."
+  (apply #'vector-multiply vectors))
+
 
 (defun vector-normalise (v)
   "Returns the normalised vector V."
@@ -93,22 +136,37 @@
           collect (/ n length) into m
           finally (return (coerce m 'vector)))))
 
-
 (defun vector-normalize (v)
   "Calls VECTOR-NORMALISE."
   (vector-normalise v))
 
+(defun vnormalise (v)
+  "Calls VECTOR-NORMALISE."
+  (vector-normalise v))
 
-(defun vector-scale (v scaling-factor)
-  "Scales every element of V by SCALING-FACTOR."
+(defun vnormalize (v)
+  "Calls VECTOR-NORMALISE."
+  (vector-normalise v))
+
+
+(defun vector-scale (v scalar)
+  "Scales every element of V by SCALAR."
   (loop for n across v
-        collect (* n scaling-factor) into m
+        collect (* n scalar) into m
         finally (return (coerce m 'vector))))
+
+(defun vscale (v scalar)
+  "Calls VECTOR-SCALE."
+  (vector-scale v scalar))
 
 
 (defun vector-scalar-triple-product (v1 v2 v3)
   "Returns the scalar triple product of V1, V2 and V3."
   (vector-dot-product (vector-cross-product v1 v2) v3))
+
+(defun vstp (v1 v2 v3)
+  "Calls VECTOR-SCALAR-TRIPLE-PRODUCT."
+  (vector-scalar-triple-product v1 v2 v3))
 
 
 (defun vector-substract (&rest vectors)
@@ -119,14 +177,27 @@
                  do (decf (elt v1 i) (elt v i)))
         finally (return v1)))
 
+(defun vsub (&rest vectors)
+  "Calls VECTOR-SUBSTRACT."
+  (apply #'vector-substract vectors))
+
 
 (defun vector-angle (v1 v2)
   "Returns the smallest angle from vector V1 to V2."
   (acos (vector-dot-product (vector-normalise v1) (vector-normalise v2))))
 
+(defun vangle (v1 v2)
+  "Calls VECTOR-ANGLE."
+  (vector-angle v1 v2))
+
 
 (defun vector-normal (v1 v2)
+  "Returns the normalised cross product of V1 and V2."
   (vector-normalise (vector-cross-product v1 v2)))
+
+(defun vnormal (v1 v2)
+  "Calls VECTOR-NORMAL."
+  (vector-normal v1 v2))
 
 
 ;; see: http://www.lighthouse3d.com/opengl/terrain/index.php3?normals
@@ -151,3 +222,19 @@
 (defun vector-normalized-sum (&rest vectors)
   "Calls VECTORS-NORMALISED-SUM."
   (vector-normalised-sum vectors))
+
+
+;;; XXX: this is most certainly bull
+
+;; from: http://web.archive.org/web/20041029003853/http://www.j3d.org/matrix_faq/matrfaq_latest.html#Q47
+(defun direction-to-quaternion (v3 &optional (radians 0))
+  "Converts a direction vector V3 with an optional rotation RADIANS to a
+  quaternion (format: #(w x y z))."
+  (let ((sin-a (/ radians 2.0))
+        (vn (vector-normalise v3)))
+    (vector-normalise (vector (cos (/ radians 2.0)) (* (elt vn 0) sin-a)
+                              (* (elt vn 1) sin-a) (* (elt vn 2) sin-a)))))
+
+(defun d2q (v3 &optional (radians 0))
+  "Calls DIRECTION-TO-QUATERNION."
+  (direction-to-quaternion v3 radians))
