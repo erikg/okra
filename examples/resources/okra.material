@@ -1,3 +1,71 @@
+// okra.material
+//
+// see: http://www.ogre3d.org/wiki/index.php/Normal_AO_Specular_Mapping_Shader
+
+vertex_program diffuse_vs cg
+{
+    source okra.cg
+    profiles vs_1_1 arbvp1
+    entry_point diffuse_vs
+
+    default_params
+    {
+        param_named_auto wMat world_matrix
+        param_named_auto wvpMat worldviewproj_matrix
+        param_named_auto tvpMat texture_viewproj_matrix 0
+        param_named_auto spotlightDir light_direction_object_space 0
+    }
+}
+
+vertex_program ambient_vs cg
+{
+    source okra.cg
+    profiles vs_1_1 arbvp1
+    entry_point ambient_vs
+
+    default_params
+    {
+        param_named_auto wvpMat worldviewproj_matrix
+    }
+}
+
+
+fragment_program ambient_ps cg
+{
+    source okra.cg
+    profiles ps_2_0 arbfp1
+    entry_point ambient_ps
+
+    default_params
+    {
+        param_named_auto ambient ambient_light_colour
+        param_named_auto matDif surface_diffuse_colour
+    }
+}
+
+
+fragment_program diffuse_ps cg
+{
+    source okra.cg
+    profiles ps_2_x arbfp1
+    entry_point diffuse_ps
+
+    default_params
+    {
+        param_named_auto lightDif0 light_diffuse_colour 0
+        param_named_auto lightSpec0 light_specular_colour 0
+        param_named_auto camPos camera_position
+        param_named_auto matShininess surface_shininess
+        param_named_auto matDif surface_diffuse_colour
+        param_named_auto matSpec surface_specular_colour
+        param_named_auto lightPos0 light_position 0
+        param_named_auto lightAtt0 light_attenuation 0
+        param_named_auto iTWMat inverse_transpose_world_matrix
+        param_named_auto spotlightParams spotlight_params 0
+    }
+}
+
+
 vertex_program PlainTexture_VS cg
 {
     source okra.cg
@@ -34,21 +102,72 @@ material Bird
 
 material Ocean/Calm
 {
+    set $diffuseCol "1 1 1 1"
+    set $specularCol "1 1 1"
+    set $shininess "32"
+
     technique
     {
         pass
         {
-            vertex_program_ref PlainTexture_VS
+            illumination_stage ambient
+
+            ambient 1 1 1 1
+            diffuse $diffuseCol
+            specular 0 0 0 0
+            emissive 0 0 0 0
+
+            vertex_program_ref ambient_vs
             {
             }
 
-            fragment_program_ref PlainTexture_PS
+            fragment_program_ref ambient_ps
             {
             }
 
-            texture_unit
+            texture_unit diffuseMap
             {
-                texture 940.jpg
+                texture water512.jpg
+            }
+
+            texture_unit aoMap
+            {
+                texture water512.jpg
+            }
+        }
+
+        pass
+        {
+           illumination_stage per_light
+
+            scene_blend add
+            iteration once_per_light
+
+            vertex_program_ref diffuse_vs
+            {
+            }
+
+            fragment_program_ref diffuse_ps
+            {
+            }
+
+            diffuse $diffuseCol
+            specular $specularCol $shininess
+            ambient 0 0 0 0
+
+            texture_unit diffuseMap
+            {
+                texture water-512.jpg
+            }
+
+            texture_unit specMap
+            {
+                texture water512.jpg
+            }
+
+            texture_unit normalMap
+            {
+                texture water512-normal.jpg
             }
         }
     }
@@ -67,6 +186,35 @@ material Ocean/Calm
             {
                 //alpha_op_ex source1 src_manual src_current 0.5
                 //texture 940-diffuse.jpg
+                texture water512.jpg
+            }
+        }
+    }
+
+    technique
+    {
+        pass
+        {
+            ambient 0.1 0.1 0.1
+            diffuse 0.8 0.8 1.0
+            shading flat
+        }
+    }
+}
+
+
+material Ocean/Calm/NoShader
+{
+    technique
+    {
+        pass
+        {
+            ambient 0.1 0.1 0.1
+            diffuse 0.8 0.8 1.0
+            shading phong
+
+            texture_unit
+            {
                 texture water512.jpg
             }
         }

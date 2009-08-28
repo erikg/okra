@@ -56,6 +56,8 @@
 
 ;;; Parameters
 
+(defparameter *tex-inc* 0.0)
+
 (defparameter *water-grid-size* 10.0)
 (defparameter *water-position* 0.0)
 (defparameter *water-size* 300.0)
@@ -406,12 +408,16 @@
 ;                   (position #(0.0 0.0 0.0)) (size 100.0) (speed 0.025))
 ;  (let ((mo (create-water-surface position size
 
+;(defun dy (x y z width)
+;  ;; XXX: sin doesn't work anymore :-(  why?  it works in a clean ccl...
+;  #-ccl(* 20.0 (+ y (* (sin (+ (/ x 12.0) *water-position*))
+;                       (sin (+ (/ z (+ (/ width .75) (/ *water-position* 4.0)))
+;                               (perlin-noise (/ x width) 0.0 (/ z width)))))))
+;  #+ccl y)
 (defun dy (x y z width)
-  ;; XXX: sin doesn't work anymore :-(  why?  it works in a clean ccl...
-  #-ccl(* 20.0 (+ y (* (sin (+ (/ x 12.0) *water-position*))
-                       (sin (+ (/ z (+ (/ width .75) (/ *water-position* 4.0)))
-                               (perlin-noise (/ x width) 0.0 (/ z width)))))))
-  #+ccl y)
+  (* 20.0 (+ y (* (sin (+ (/ x 12.0) *water-position*))
+                  (sin (+ (/ z (+ (/ width .75) (/ *water-position* 4.0)))
+                          (perlin-noise (/ x width) 0.0 (/ z width))))))))
 
 
 (defun water-surface-loop (manual-object x y z width grid-size)
@@ -447,23 +453,29 @@
                     (position mo x dyxz z)
                     ;(normal mo fn1)  ; passing a vector is slow as shit!
                     (normal mo (elt fn1 0) (elt fn1 1) (elt fn1 2))
-                    (texture-coord mo (/ (- x x-min) w/x) (/ (- z z-min) w/x))
+                    (texture-coord mo (/ (- x x-min) w/x)
+                                      (+ *tex-inc* (/ (- z z-min) w/x)))
                     (position mo x+ dyx+z+ z+)
                     (normal mo (elt fn1 0) (elt fn1 1) (elt fn1 2))
-                    (texture-coord mo (/ (- x+ x-min) w/x) (/ (- z+ z-min) w/x))
+                    (texture-coord mo (/ (- x+ x-min) w/x)
+                                      (+ *tex-inc* (/ (- z+ z-min) w/x)))
                     (position mo x+ dyx+z z)
                     (normal mo (elt fn1 0) (elt fn1 1) (elt fn1 2))
-                    (texture-coord mo (/ (- x+ x-min) w/x) (/ (- z z-min) w/x))
+                    (texture-coord mo (/ (- x+ x-min) w/x)
+                                      (+ *tex-inc* (/ (- z z-min) w/x)))
                     ;; 2nd grid triangle
                     (position mo x dyxz z)
                     (normal mo (elt fn2 0) (elt fn2 1) (elt fn2 2))
-                    (texture-coord mo (/ (- x x-min) w/x) (/ (- z z-min) w/x))
+                    (texture-coord mo (/ (- x x-min) w/x)
+                                      (+ *tex-inc* (/ (- z z-min) w/x)))
                     (position mo x dyxz+ z+)
                     (normal mo (elt fn2 0) (elt fn2 1) (elt fn2 2))
-                    (texture-coord mo (/ (- x x-min) w/x) (/ (- z+ z-min) w/x))
+                    (texture-coord mo (/ (- x x-min) w/x)
+                                      (+ *tex-inc* (/ (- z+ z-min) w/x)))
                     (position mo x+ dyx+z+ z+)
                     (normal mo (elt fn2 0) (elt fn2 1) (elt fn2 2))
-                    (texture-coord mo (/ (- x+ x-min) w/x) (/ (- z+ z-min) w/x))
+                    (texture-coord mo (/ (- x+ x-min) w/x)
+                                      (+ *tex-inc* (/ (- z+ z-min) w/x)))
                  finally (setf (aref prev-dyxz (+ i 1)) dyx+z+))))
 
 
@@ -482,6 +494,7 @@
 (defun update-water-surface (manual-object x y z width &key (grid-size 4.0))
   (begin-update manual-object 0)
   (water-surface-loop manual-object x y z width grid-size)
+  (incf *tex-inc* 0.005)
   (end manual-object))
 
 
@@ -593,7 +606,8 @@
         for now = (get-microseconds *timer*)
         for delta = (/ (- now then) 1000000.0)
         for accumulator = delta
-        initially (format t "fps:  0.00")  ; XXX: Linux CEGUI probs
+        initially (unless *cegui-loaded*  ; XXX: Linux CEGUI probs
+                    (format t "fps:  0.00"))
         do (setf then now)
            (when (> accumulator 0.25)
              (setf accumulator 0.25))
