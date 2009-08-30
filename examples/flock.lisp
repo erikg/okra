@@ -408,12 +408,6 @@
 ;                   (position #(0.0 0.0 0.0)) (size 100.0) (speed 0.025))
 ;  (let ((mo (create-water-surface position size
 
-;(defun dy (x y z width)
-;  ;; XXX: sin doesn't work anymore :-(  why?  it works in a clean ccl...
-;  #-ccl(* 20.0 (+ y (* (sin (+ (/ x 12.0) *water-position*))
-;                       (sin (+ (/ z (+ (/ width .75) (/ *water-position* 4.0)))
-;                               (perlin-noise (/ x width) 0.0 (/ z width)))))))
-;  #+ccl y)
 (defun dy (x y z width)
   (* 20.0 (+ y (* (sin (+ (/ x 12.0) *water-position*))
                   (sin (+ (/ z (+ (/ width .75) (/ *water-position* 4.0)))
