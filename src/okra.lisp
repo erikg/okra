@@ -9,6 +9,19 @@
 (in-package :okra)
 
 
+;;;# Classes
+
+(defclass okra-scene ()
+  ((cameras :accessor cameras-of :initarg :cameras :initform nil)
+   (lights :accessor lights-of :initarg :lights :initform nil)
+   (manager :accessor manager-of :initarg :manager)
+   (window :accessor window-of :initarg :window)  ; XXX: windowS ?
+   (root :accessor root-of :initarg :root)
+   (timer :accessor timer-of :initarg :timer)
+   ;; XXX: belongs in camera class?
+   (viewports :accessor viewports-of :initarg :viewports :initform nil)))
+
+
 ;;;# Variables
 
 (defvar *pi* 3.14159265358979323846)
@@ -120,6 +133,13 @@
 (defun make-resource-group-manager ()
   (make-instance 'resource-group-manager
                  :pointer (get-resource-group-manager-singleton-ptr)))
+
+
+(defun make-scene (&key (class 'okra-scene) (manager "OctreeSceneManager")
+                   (window (okra-window)))
+  (let ((manager (make-scene-manager manager)))
+    (make-instance class :manager manager :root (root-node manager)
+                   :timer (make-timer) :window window)))
 
 
 (defun make-scene-manager (type &optional (name nil))

@@ -9,6 +9,10 @@
 ;;;; note-to-self:
 ;;;;     - http://www.ogre3d.org/wiki/index.php/CodeSnippets#Shaders
 ;;;;     - http://artis.imag.fr/~Xavier.Decoret/resources/ogre/tutorial4.html
+;;;;
+;;;; For your own project you would split up this file into seperate files
+;;;; containing f.e. classes, actions, package definition, methods, etc.
+;;;; but I want to keep the examples in one self-contained file.
 
 ;;; Packages
 
@@ -22,7 +26,7 @@
 
 (defclass bird ()
   ((direction :accessor direction-of :initarg :direction)
-   (fly-speed :accessor fly-speed-of :initform 10.0)
+   (fly-speed :accessor fly-speed-of :initform 0.33)
    (manual-object :accessor manual-object-of :initarg :manual-object)
    (node :accessor node-of :initarg :node)
    (orientation :accessor orientation-of :initarg :orientation)
@@ -30,50 +34,38 @@
    (turn-speed :accessor turn-speed-of :initform 0.1)))
 
 
-(defclass scene ()
-  ((cameras :accessor cameras-of :initarg :cameras)
-   (light :accessor lights-of :initarg :lights)
-   (manager :accessor manager-of :initarg :manager)
-   (root :accessor root-of :initarg :root)))
-
-
-(defclass flock-scene (scene)
-  ((birds :accessor birds-of :initarg :birds)
-   (water :accessor water-of :initarg :water)))
+(defclass flock-scene (okra-scene)
+  ((birds :accessor birds-of :initarg :birds :initform nil)
+   (input-system :accessor input-system-of :initarg :input-system)
+   (triangles :accessor triangles-in :initarg :triangles :initform 0)
+   (water :accessor water-of :initarg :water :initform nil)))
 
 
 (defclass water ()
   ((grid :accessor grid-of :initarg :grid :initform 10.0)
    (manual-object :reader manual-object-of :initarg :manual-object
                   :initform (error "must supply :manual-object"))
-   (material :reader material-of :initarg material-of
+   (material :reader material-of :initarg :material
              :initform "BaseWhiteNoLighting")
    (node :reader node-of :initarg :node :initform (error "must supply :node"))
    (position :accessor position-of :initarg :position :initform #(0.0 0.0 0.0))
-   (size :accessor size-of :initarg :size :initform 100.0)
-   (speed :accessor speed-of :initarg :speed :initform 0.025)))
+   (size :accessor size-of :initarg :size :initform 300.0)
+   (ripple-x-position :accessor ripple-x-position-of
+                      :initarg :ripple-x-position :initform 0.0)
+   (ripple-x-speed :accessor ripple-x-speed-of :initarg :ripple-x-speed
+                   :initform 0.0008)
+   (ripple-z-position :accessor ripple-z-position-of
+                      :initarg :ripple-z-position :initform 0.0)
+   (ripple-z-speed :accessor ripple-z-speed-of :initarg :ripple-z-speed
+                   :initform 0.002)
+   (wave-position :accessor wave-position-of :initarg :wave-position
+                  :initform 0.0)
+   (wave-speed :accessor wave-speed-of :initarg :wave-speed :initform 0.025)))
 
 
 ;;; Parameters
 
-(defparameter *tex-inc* 0.0)
-
-(defparameter *water-grid-size* 10.0)
-(defparameter *water-position* 0.0)
-(defparameter *water-size* 300.0)
-(defparameter *water-speed* 0.025)
-
-(defparameter *birds* nil)
-(defparameter *camera* nil)
-(defparameter *cube* nil)
-(defparameter *light* nil)
-(defparameter *plane* nil)
-(defparameter *sphere* nil)
-(defparameter *timer* nil)
-(defparameter *viewport* nil)
-(defparameter *water-mo* nil)  ; manual object
-(defparameter *water-node* nil)
-(defparameter *triangle-count* 0)
+(defparameter *scene* nil)  ; this should be the only global parameter
 
 ;; for CEGUI
 (defvar *cegui-actions*
@@ -125,7 +117,7 @@
     (declare (ignore axis abs-x))
     (when *mouse-look*
       ;; this smooths the mouse movement a little
-      (yaw *camera* (* (/ (+ rel-x last-x) 2.0) -0.01))
+      (yaw (first (cameras-of *scene*)) (* (/ (+ rel-x last-x) 2.0) -0.01))
       (setf last-x rel-x))))
 
 
@@ -134,17 +126,18 @@
     (declare (ignore axis abs-y))
     (when *mouse-look*
       ;; this smooths the mouse movement a little
-      (pitch *camera* (* (/ (+ rel-y last-y) 2.0) 0.01))
+      (pitch (first (cameras-of *scene*)) (* (/ (+ rel-y last-y) 2.0) 0.01))
       (setf last-y rel-y))))
 
 
 ;; "(and *move-dir* (not *move-opposite*))" is for when both keys are pressed
 (defun do-movement ()
-  (let ((cd (get-derived-direction *camera*))
-        (cp (get-derived-position *camera*))
-        (cr (get-derived-right *camera*))
-        (moved nil)
-        (new-position (vector 0.0 0.0 0.0)))
+  (let* ((cam (first (cameras-of *scene*)))
+         (cd (get-derived-direction cam))
+         (cp (get-derived-position cam))
+         (cr (get-derived-right cam))
+         (moved nil)
+         (new-position (vector 0.0 0.0 0.0)))
     ;; I need to add a vector multiply function to src/vectors.lisp.
     (setf (svref cd 0) (* (svref cd 0) 1.5))
     (setf (svref cd 1) (* (svref cd 1) 1.5))
@@ -171,7 +164,7 @@
       (setf new-position (vector-add new-position #(0 1 0)))
       (setf moved t))
     (when moved
-      (set-position *camera* (vector-add cp new-position)))))
+      (set-position cam (vector-add cp new-position)))))
 
 
 ;; for debugging, mainly
@@ -239,42 +232,16 @@
     (declare (ignore key text))
     (when (equal state :released)
       (if (equal pm-mode :pm-solid)
-          (progn (set-polygon-mode *camera* :pm-wireframe)
+          (progn (set-polygon-mode (first (cameras-of *scene*)) :pm-wireframe)
                  (setf pm-mode :pm-wireframe))
-          (progn (set-polygon-mode *camera* :pm-solid)
+          (progn (set-polygon-mode (first (cameras-of *scene*)) :pm-solid)
                  (setf pm-mode :pm-solid))))))
 
 
 ;;; Bird Functions
 
-(defun create-bird-modelX ()
-  (let* ((mo (make-manual-object)))
-    (begin mo "Bird" :ot-triangle-list)
-    ;; top
-    (position mo 1.0 0.0 0.0)
-    (colour mo 0.0 0.0 0.0 1.0)
-    (normal mo 0.0 1.0 0.0)
-    (position mo -2.0 0.0 -1.0)
-    (colour mo 1.0 1.0 1.0 1.0)
-    (normal mo 0.0 1.0 0.0)
-    (position mo -2.0 0.0 1.0)
-    (colour mo 1.0 1.0 1.0 1.0)
-    (normal mo 0.0 1.0 0.0)
-    ;; bottom
-    (position mo 1.0 0.0 0.0)
-    (colour mo 1.0 0.0 0.0 1.0)
-    (normal mo 0.0 -1.0 0.0)
-    (position mo -2.0 0.0 1.0)
-    (colour mo 0.0 0.0 1.0 1.0)
-    (normal mo 0.0 -1.0 0.0)
-    (position mo -2.0 0.0 -1.0)
-    (colour mo 0.0 0.0 1.0 1.0)
-    (normal mo 0.0 -1.0 0.0)
-    (end mo)
-    mo))
-
 (defun create-bird-model ()
-  (let ((mo (make-manual-object))
+  (let ((mo (make-manual-object :scene-manager (manager-of *scene*)))
         (black 0.0)
         (white 1.0))
     (begin mo "Bird" :ot-triangle-list)
@@ -342,19 +309,18 @@
     mo))
 
 
-(defun flock-birds (&optional (birds *birds*))
+(defun flock-birdsX (&optional (birds (birds-of *scene*)))
   (loop for bird in birds
-        for i from 0
         for centre = #(0.0 20.0 0.0)
-        for dir = (elt bird 2)
-        for node = (elt bird 0)
-        for pos = (elt bird 1)
+        for dir = (direction-of bird)
+        for node = (node-of bird)
+        for pos = (position-of bird)
         for distance-from-centre = (vlength (vsub pos centre))
         for vp+d = (vector (+ (elt pos 0) (elt dir 0))
                            (+ (elt pos 1) (elt dir 1))
                            (+ (elt pos 2) (elt dir 2)))
         for neighbours = (loop for other in birds
-                               for opos = (elt other 1)
+                               for opos = (position-of other)
                                for dist = (vlength (vsub opos pos))
                                unless (or (equal other bird)
                                           (> dist 15.0))
@@ -365,37 +331,51 @@
                (progn
                  ;(setf (elt bird 2) (vnormalise (vsub pos centre)))
                  ;(setf (elt bird 1) (vadd pos (elt bird 2))))
-                 (setf (elt bird 2) #(1.0 0.0 0.0))
-                 (setf (elt bird 1) #(0.0 2.0 0.0)))
+                 (setf (direction-of bird) #(1.0 0.0 0.0))
+                 (setf (position-of bird) #(0.0 2.0 0.0)))
                (progn
-                 (setf (elt bird 1) vp+d)
-                 (setf (elt bird 2)
-                       (loop with vd = (elt (first neighbours) 1)
+                 (setf (position-of bird) vp+d)
+                 (setf (direction-of bird)
+                       (loop with vd = (position-of (first neighbours))
                              for n from 1
                              for neighbour in (rest neighbours)
-                             do (setf vd (vadd vd (elt neighbour 1)))
+                             do (setf vd (vadd vd (position-of neighbour)))
                              finally (return
                                        (vnormalise
                                          (vadd dir (vscale (vscale vd (/ 1 n))
                                                            0.1))))))))))
 
+(defun flock-birds (&optional (birds (birds-of *scene*)))
+  (loop for bird in birds
+        for dir = (direction-of bird)
+        for node = (node-of bird)
+        for pos = (position-of bird)
+        for neighbours = (loop with list = (list nil nil nil)
+                               for other in birds
+                               for opos = (position-of other)
+                               for dist = (vlength (vsub opos pos))
+                               do (dolist (item list)
+                                    (if (null item)
+                                        (setf item (cons other dist))
+                                        (when (< dist (cdr item))
+                                          (setf item (cons other dist)))))
+                               finally (return list))
+        do ;(format t "---~%~S~%" neighbours)
+           (setf (position-of bird)
+                 (vadd pos (vscale dir (fly-speed-of bird))))
+           ))
+
 
 (defun make-bird (&key direction position (orientation #(1.0 0.0 0.0 0.0)))
   (let ((mo (create-bird-model))
-        (node (make-child-scene-node)))
+        (node (make-child-scene-node :node (root-of *scene*))))
     (attach-object node (pointer-to mo))
     (set-position node (elt position 0) (elt position 1) (elt position 2))
     (make-instance 'bird :direction direction :manual-object mo :node node
                    :orientation orientation :position position)))
 
 
-;(defun update-bird-positions-in-world (&optional (birds *birds*))
-;  (loop for bird in birds
-;        for node = (elt bird 0)
-;        for pos = (elt bird 1)
-;        do (set-position node (elt pos 0) (elt pos 1) (elt pos 2))))
-
-(defun update-bird-positions-in-world (&optional (birds *birds*))
+(defun update-bird-positions-in-world (&optional (birds (birds-of *scene*)))
   (loop for bird in birds
         for node = (node-of bird)
         for pos = (position-of bird)
@@ -404,39 +384,43 @@
 
 ;;; Water Functions
 
-;(defun make-water (&key (grid 10.0) (material "Ocean/Calm")
-;                   (position #(0.0 0.0 0.0)) (size 100.0) (speed 0.025))
-;  (let ((mo (create-water-surface position size
-
 (defun dy (x y z width)
-  (* 20.0 (+ y (* (sin (+ (/ x 12.0) *water-position*))
-                  (sin (+ (/ z (+ (/ width .75) (/ *water-position* 4.0)))
-                          (perlin-noise (/ x width) 0.0 (/ z width))))))))
+  (let ((pos (if (water-of *scene*)
+                 (wave-position-of (water-of *scene*))
+                 0.0)))
+    (* 20.0 (+ y (* (sin (+ (/ x 12.0) pos))
+                    (sin (+ (/ z (+ (/ width .75) (/ pos 4.0)))
+                            (perlin-noise (/ x width) 0.0 (/ z width)))))))))
 
 
-(defun water-surface-loop (manual-object x y z width grid-size)
-  (loop with prev-dyxz = (make-array (+ 1 (ceiling (/ width grid-size)))
+(defun water-surface-loop (water)
+  (loop with grid = (grid-of water)
+        with size = (size-of water)
+        with prev-dyxz = (make-array (+ 1 (ceiling (/ size grid)))
                                      :initial-element nil)
-        with mo = manual-object
-        with w/2 = (/ width 2.0)
-        with w/x = (/ width 8.0)
-        with x-max = (+ x w/2)
-        with x-min = (- x w/2)
-        with z-max = (+ z w/2)
-        with z-min = (- z w/2)
-        for z from z-min below z-max by grid-size
-        for z+ = (+ z grid-size)
-        do (loop for x from x-min below x-max by grid-size
+        with mo = (manual-object-of water)
+        with ripple-x = (ripple-x-position-of water)
+        with ripple-z = (ripple-z-position-of water)
+        with w/2 = (/ size 2.0)
+        with w/x = (/ size 8.0)
+        with x-max = (+ (elt (position-of water) 0) w/2)
+        with x-min = (- (elt (position-of water) 0) w/2)
+        with y = (elt (position-of water) 1)
+        with z-max = (+ (elt (position-of water) 2) w/2)
+        with z-min = (- (elt (position-of water) 2) w/2)
+        for z from z-min below z-max by grid
+        for z+ = (+ z grid)
+        do (loop for x from x-min below x-max by grid
                  for i from 0
-                 for x+ = (+ x grid-size)
+                 for x+ = (+ x grid)
                  for dyxz = (if (aref prev-dyxz i)
                                 (aref prev-dyxz i)
-                                (dy x y z width))
+                                (dy x y z size))
                  for dyx+z = (if (aref prev-dyxz (+ i 1))
                                  (aref prev-dyxz (+ i 1))
-                                 (dy x+ y z width))
-                 for dyxz+ = (dy x y z+ width)
-                 for dyx+z+ = (dy x+ y z+ width)
+                                 (dy x+ y z size))
+                 for dyxz+ = (dy x y z+ size)
+                 for dyx+z+ = (dy x+ y z+ size)
                  ;; fvn = face normal
                  for fn1 = (vector-normal (xyz2v x dyxz z x+ dyx+z+ z+)
                                           (xyz2v x dyxz z x+ dyx+z z))
@@ -447,82 +431,130 @@
                     (position mo x dyxz z)
                     ;(normal mo fn1)  ; passing a vector is slow as shit!
                     (normal mo (elt fn1 0) (elt fn1 1) (elt fn1 2))
-                    (texture-coord mo (/ (- x x-min) w/x)
-                                      (+ *tex-inc* (/ (- z z-min) w/x)))
+                    (texture-coord mo (+ ripple-x (/ (- x x-min) w/x))
+                                      (+ ripple-z (/ (- z z-min) w/x)))
                     (position mo x+ dyx+z+ z+)
                     (normal mo (elt fn1 0) (elt fn1 1) (elt fn1 2))
-                    (texture-coord mo (/ (- x+ x-min) w/x)
-                                      (+ *tex-inc* (/ (- z+ z-min) w/x)))
+                    (texture-coord mo (+ ripple-x (/ (- x+ x-min) w/x))
+                                      (+ ripple-z (/ (- z+ z-min) w/x)))
                     (position mo x+ dyx+z z)
                     (normal mo (elt fn1 0) (elt fn1 1) (elt fn1 2))
-                    (texture-coord mo (/ (- x+ x-min) w/x)
-                                      (+ *tex-inc* (/ (- z z-min) w/x)))
+                    (texture-coord mo (+ ripple-x (/ (- x+ x-min) w/x))
+                                      (+ ripple-z (/ (- z z-min) w/x)))
                     ;; 2nd grid triangle
                     (position mo x dyxz z)
                     (normal mo (elt fn2 0) (elt fn2 1) (elt fn2 2))
-                    (texture-coord mo (/ (- x x-min) w/x)
-                                      (+ *tex-inc* (/ (- z z-min) w/x)))
+                    (texture-coord mo (+ ripple-x (/ (- x x-min) w/x))
+                                      (+ ripple-z (/ (- z z-min) w/x)))
                     (position mo x dyxz+ z+)
                     (normal mo (elt fn2 0) (elt fn2 1) (elt fn2 2))
-                    (texture-coord mo (/ (- x x-min) w/x)
-                                      (+ *tex-inc* (/ (- z+ z-min) w/x)))
+                    (texture-coord mo (+ ripple-x (/ (- x x-min) w/x))
+                                      (+ ripple-z (/ (- z+ z-min) w/x)))
                     (position mo x+ dyx+z+ z+)
                     (normal mo (elt fn2 0) (elt fn2 1) (elt fn2 2))
-                    (texture-coord mo (/ (- x+ x-min) w/x)
-                                      (+ *tex-inc* (/ (- z+ z-min) w/x)))
+                    (texture-coord mo (+ ripple-x (/ (- x+ x-min) w/x))
+                                      (+ ripple-z (/ (- z+ z-min) w/x)))
                  finally (setf (aref prev-dyxz (+ i 1)) dyx+z+))))
 
 
-(defun create-water-surface (x y z width &key (grid-size 4.0)
+;; We construct a minimal surface that can be updated later.
+;; Unfortunately we can't get away with constructing an empty surface.
+(defun create-water-surface (position size &key (grid 4.0)
                              (material "BaseWhiteNoLighting"))
-  (let* ((mo (make-manual-object)))
+  (let* ((mo (make-manual-object :scene-manager (manager-of *scene*)))
+         (x (elt position 0))
+         (y (elt position 1))
+         (z (elt position 2)))
     (set-dynamic mo t)
     (begin mo material :ot-triangle-list)
-    (water-surface-loop mo x y z width grid-size)
+    (loop with w/2 = (/ size 2.0)
+          with x-max = (+ x w/2)
+          with x-min = (- x w/2)
+          with z-max = (+ z w/2)
+          with z-min = (- z w/2)
+          for z from z-min below z-max by grid
+          do (loop for x from x-min below x-max by grid
+                   do (loop repeat 6
+                            do (position mo x y z)
+                               (normal mo 0.0 1.0 0.0)
+                               (texture-coord mo 0.0 0.0))))
     (end mo)
-    (incf *water-position* *water-speed*)
-    (incf *triangle-count* (/ (* width width) grid-size))
+    (incf (triangles-in *scene*) (/ (* size size) grid))
     mo))
 
 
-(defun update-water-surface (manual-object x y z width &key (grid-size 4.0))
-  (begin-update manual-object 0)
-  (water-surface-loop manual-object x y z width grid-size)
-  (incf *tex-inc* 0.005)
-  (end manual-object))
+(defun make-water (&key (grid 10.0) (material "Ocean/Calm")
+                   (position #(0.0 0.0 0.0)) (ripple-x-speed 0.0008)
+                   (ripple-z-speed 0.002) (size 300.0) (wave-speed 0.025))
+  (let ((mo (create-water-surface position size :grid grid :material material))
+        (node (make-child-scene-node :node (root-of *scene*))))
+    (attach-object node (pointer-to mo))
+    (make-instance 'water :grid grid :manual-object mo :material material
+                   :node node :position position :ripple-x-speed ripple-x-speed
+                   :ripple-z-speed ripple-z-speed :size size
+                   :wave-speed wave-speed)))
+
+
+(defun update-water-surface (water)
+  (let* ((mo (manual-object-of water)))
+    (begin-update mo 0)
+    (water-surface-loop water)
+    (end mo)))
+
+
+;;; Functions
+
+(defun update-physics (&optional (step 1.0))
+  (let* ((water (water-of *scene*))
+         (drx (* (ripple-x-speed-of water) step))
+         (drz (* (ripple-z-speed-of water) step)))
+    (incf (wave-position-of water) (* (wave-speed-of water) step))
+    (if (>= (ripple-x-position-of water) 1.0)
+        (decf (ripple-x-position-of water) (- 1.0 drx))
+        (incf (ripple-x-position-of water) drx))
+    (if (>= (ripple-z-position-of water) 1.0)
+        (decf (ripple-z-position-of water) (- 1.0 drz))
+        (incf (ripple-z-position-of water) drz))
+    (flock-birds)))
 
 
 ;;; Initialisation
 
 (defun initialise-application ()
-  (setf *render-window*
-        (okra-window :width 1024 :height 768
-                     :render-system #-windows "OpenGL Rendering Subsystem"
-                                    #+windows "Direct3D9 Rendering Subsystem"
-                     :resources '(("resources" "FileSystem" "General")
-                                  ("resources/gui" "FileSystem" "General"))))
-  (setf *scene-manager* (make-scene-manager "OctreeSceneManager"))
-  (setf *root-node* (root-node))
-  (setf *timer* (make-timer))
+  (let ((window (okra-window
+                 :width 1024 :height 768
+                 :render-system #+windows "Direct3D9 Rendering Subsystem"
+                                #-windows "OpenGL Rendering Subsystem"
+                 :resources '(("resources" "FileSystem" "General")
+                              ("resources/gui" "FileSystem" "General")))))
+    (setf *scene* (make-scene :class 'flock-scene
+                              :manager "OctreeSceneManager"
+                              :window window)))
 
-  (setf *camera* (make-camera :position #(150.0 30.0 150.0)
-                              :look-at #(-10.0 10.0 -10.0)
-                              :near-clip-distance 1.0))
+  (push (make-camera :position #(150.0 30.0 150.0)
+                     :look-at #(-10.0 10.0 -10.0)
+                     :near-clip-distance 1.0
+                     :scene-manager (manager-of *scene*))
+        (cameras-of *scene*))
 
-  (setf *viewport* (make-viewport *camera*
-                                  :background-colour '(0.0 0.0 0.0 1.0)))
+  (push (make-viewport (first (cameras-of *scene*))
+                       :background-colour '(0.0 0.0 0.0 1.0)
+                       :render-window (window-of *scene*))
+        (viewports-of *scene*))
 
-  (setf *light* (make-light :diffuse-colour #(0.9 0.9 0.9 1.0)
-                            ;; I don't think this makes a difference.
-                            ;:direction (vector-normalise #(-1.0 -0.5 -0.1))
-                            :direction  #(-1.0 -0.5 -0.1)
-                            :position #(0.0 10.0 0.0)
-                            :specular-colour #(0.9 0.9 0.9 1.0)
-                            :type :lt-directional))
+  (push (make-light :diffuse-colour #(0.9 0.9 0.9 1.0)
+                    ;; I don't think this makes a difference.
+                    ;:direction (vector-normalise #(-1.0 -0.5 -0.1))
+                    :direction  #(-1.0 -0.5 -0.1)
+                    :position #(0.0 10.0 0.0)
+                    :scene-manager (manager-of *scene*)
+                    :specular-colour #(0.9 0.9 0.9 1.0)
+                    :type :lt-directional)
+        (lights-of *scene*))
 
   ;; misc
-  (set-ambient-light *scene-manager* #(0.2 0.2 0.2 1.0))
-  (set-shadow-technique *scene-manager* :shadowtype-none)
+  (set-ambient-light (manager-of *scene*) #(0.2 0.2 0.2 1.0))
+  (set-shadow-technique (manager-of *scene*) :shadowtype-none)
 
   ;; bird model
   (loop repeat 50
@@ -532,29 +564,20 @@
         for pos = (vector (- (random 50.0) 25) (+ 10 (random 25.0))
                           (- (random 50.0) 25))
         for bird = (make-bird :direction dir :position pos)
-        do (push bird *birds*))
+        do (push bird (birds-of *scene*)))
 
   ;; water surface
-  (let ((mo (create-water-surface 0.0 0.0 0.0 *water-size*
-                                  :grid-size *water-grid-size*
-                                  :material "Ocean/Calm")))
-    (setf *water-mo* mo)
-    (setf *water-node* (make-child-scene-node))
-    (attach-object *water-node* (pointer-to mo)))
-
-  ;(make-water :grid 10.0 :material "Ocean/Calm" :position #(0.0 0.0 0.0)
-  ;            :size 300.0)
-
-  ;; display
-  (new-frame)
+  (setf (water-of *scene*)
+        (make-water :material "Ocean/Calm/NoShader" :ripple-x-speed 0.0008
+                    :ripple-z-speed 0.002))
 
   ;;; CEGUI
 
   (setf okra-bindings::*cegui-actions* *cegui-actions*)
 
   (setf *cegui-renderer*
-        (okra-cegui::create-renderer (pointer-to *render-window*)
-                                     (pointer-to *scene-manager*)))
+        (okra-cegui::create-renderer (pointer-to (window-of *scene*))
+                                     (pointer-to (manager-of *scene*))))
   (setf *cegui-system* (okra-cegui::create-system *cegui-renderer*))
 
   (okra-cegui::load-scheme "AquaLookSkin.scheme")
@@ -562,8 +585,9 @@
   ;(okra-cegui::set-default-font "BlueHighway-12")
   (okra-cegui::mouse-cursor-set-image (okra-cegui::get-default-mouse-cursor))
 
-  (okra-cegui::inject-mouse-position (/ (get-actual-width *viewport*) 2.0)
-                                     (/ (get-actual-height *viewport*) 2.0))
+  (let ((vp (first (viewports-of *scene*))))
+    (okra-cegui::inject-mouse-position (/ (get-actual-width vp) 2.0)
+                                       (/ (get-actual-height vp) 2.0)))
 
   ;; XXX: CEGUI is giving me problems on Linux, someone figure this out please.
   (handler-case
@@ -580,9 +604,9 @@
 
   ;;; clois-lane
 
-  (let ((wh (get-window-handler (pointer-to *render-window*))))
-    (setf *input-system* (clois-lane:create-input-system (mkstr wh)
-                                                         :hide-mouse t)))
+  (let ((wh (get-window-handler (pointer-to (window-of *scene*)))))
+    (setf (input-system-of *scene*)
+          (clois-lane:create-input-system (mkstr wh) :hide-mouse t)))
   (clois-lane:set-actions *actions*)
   (setf *running* t))
 
@@ -595,9 +619,10 @@
   (setf *running* t)
   (loop with fps-time = 0
         with step = 0.02
-        with then = (get-microseconds *timer*)
+        with then = (get-microseconds (timer-of *scene*))
+        with water = (water-of *scene*)
         while *running*
-        for now = (get-microseconds *timer*)
+        for now = (get-microseconds (timer-of *scene*))
         for delta = (/ (- now then) 1000000.0)
         for accumulator = delta
         initially (unless *cegui-loaded*  ; XXX: Linux CEGUI probs
@@ -606,29 +631,27 @@
            (when (> accumulator 0.25)
              (setf accumulator 0.25))
            (loop while (>= accumulator step)
-                 do (incf *water-position* *water-speed*)
-                    ;(flock-birds)
+                 do (update-physics)
                     (decf accumulator step))
            (when (> accumulator 0)
-             (incf *water-position* (* *water-speed* (/ accumulator step))))
+             (update-physics (/ accumulator step)))
            ;; XXX: This is until the Linux CEGUI has been resolved.
            (if *cegui-loaded*
                (progn
-                 ;; I haven't check set-text in yet from my other machine :-|
                  (okra-cegui::set-text (okra-cegui::get-window "FPS")
                                        (format nil "~,2F" (/ 1.0 delta)))
                  (okra-cegui::set-text (okra-cegui::get-window "Triangles")
-                                       (format nil "~D" *triangle-count*)))
+                                     (format nil "~D" (triangles-in *scene*))))
                (when (> (- (/ now 1000000.0) fps-time) 1.0)
                  (loop repeat 10 do (princ #\Backspace))
                  (format t "fps: ~5,2F" (/ 1.0 delta))
                  (force-output)
                  (setf fps-time (/ now 1000000.0))))
            (update-bird-positions-in-world)
-           (update-water-surface *water-mo* 0.0 0.0 0.0 *water-size*
-                                 :grid-size *water-grid-size*)
-           (clois-lane:set-window-extents (get-actual-width *viewport*)
-                                          (get-actual-height *viewport*))
+           (update-water-surface water)
+           (clois-lane:set-window-extents
+             (get-actual-width (first (viewports-of *scene*)))
+             (get-actual-height (first (viewports-of *scene*))))
            (clois-lane:capture)
            (do-movement)
            (new-frame)))
