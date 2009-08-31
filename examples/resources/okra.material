@@ -157,7 +157,7 @@ material Ocean/Calm
 
             texture_unit diffuseMap
             {
-                texture water-512.jpg
+                texture water512.jpg
             }
 
             texture_unit specMap
