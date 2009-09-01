@@ -13,6 +13,12 @@
 ;;;; For your own project you would split up this file into seperate files
 ;;;; containing f.e. classes, actions, package definition, methods, etc.
 ;;;; but I want to keep the examples in one self-contained file.
+;;;;
+;;;; There's more wrong with this example that will probably never be fixed:
+;;;; 1) There's no LOD, the waves consist of the same amount of triangles
+;;;;    whether they're close-by or distant.
+;;;; 2) The wave y-displacement (which is costly) is also calculated for
+;;;;    waves that are not on the screen.
 
 ;;; Packages
 
@@ -29,10 +35,9 @@
    (fly-speed :accessor fly-speed-of :initform 0.67)
    (manual-object :accessor manual-object-of :initarg :manual-object)
    (node :accessor node-of :initarg :node)
-   (orientation :accessor orientation-of :initarg :orientation)
    (position :accessor position-of :initarg :position)
-   (target-direction :accessor target-direction-of :initarg :target-direction)
-   (turn-speed :accessor turn-speed-of :initform 0.1)))
+   (target-direction :accessor target-direction-of 
+                     :initarg :target-direction)))
 
 
 (defclass flock-scene (okra-scene)
@@ -295,6 +300,7 @@
       (colour mo white white white 1.0)
       (normal mo vnx vny vnz))
     (end mo)
+    (incf (triangles-in *scene*) 2)
     mo))
 
 
@@ -378,15 +384,13 @@
                                step)))))
 
 
-(defun make-bird (&key direction position
-                  (orientation (vector 1.0 0.0 0.0 0.0)))
+(defun make-bird (&key direction position)
   (let ((mo (create-bird-model))
         (node (make-child-scene-node :node (root-of *scene*))))
     (attach-object node (pointer-to mo))
     (set-position node (elt position 0) (elt position 1) (elt position 2))
     (make-instance 'bird :direction direction :manual-object mo :node node
-                   :orientation orientation :position position
-                   :target-direction direction)))
+                   :position position :target-direction direction)))
 
 
 (defun update-bird-positions-in-world (&optional (birds (birds-of *scene*)))
@@ -493,7 +497,7 @@
                                (normal mo 0.0 1.0 0.0)
                                (texture-coord mo 0.0 0.0))))
     (end mo)
-    (incf (triangles-in *scene*) (/ (* size size) grid))
+    (incf (triangles-in *scene*) (ceiling (/ (* size size) grid)))
     mo))
 
 
@@ -579,7 +583,7 @@
 
   ;; water surface
   (setf (water-of *scene*)
-        (make-water :material "Ocean/Calm/NoShader" :ripple-x-speed 0.0008
+        (make-water :material "Ocean/Calm" :ripple-x-speed 0.0008 
                     :ripple-z-speed 0.002))
 
   ;;; CEGUI
@@ -593,7 +597,7 @@
 
   (okra-cegui::load-scheme "AquaLookSkin.scheme")
   (okra-cegui::set-default-mouse-cursor "AquaLook" "MouseArrow")
-  ;(okra-cegui::set-default-font "BlueHighway-12")
+  (okra-cegui::set-default-font "DejaVuSansMono-6")
   (okra-cegui::mouse-cursor-set-image (okra-cegui::get-default-mouse-cursor))
 
   (let ((vp (first (viewports-of *scene*))))
@@ -649,6 +653,8 @@
            ;; XXX: This is until the Linux CEGUI has been resolved.
            (if *cegui-loaded*
                (progn
+                 (okra-cegui::set-text (okra-cegui::get-window "Birds")
+                                 (format nil "~D" (length (birds-of *scene*))))
                  (okra-cegui::set-text (okra-cegui::get-window "FPS")
                                        (format nil "~,2F" (/ 1.0 delta)))
                  (okra-cegui::set-text (okra-cegui::get-window "Triangles")

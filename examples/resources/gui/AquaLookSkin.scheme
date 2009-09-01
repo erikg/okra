@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <GUIScheme Name="AquaLook">
 	<Imageset Name="AquaLook" Filename="AquaLook.imageset" />
-    <Font Name="BlueHighway-12" Filename="bluehighway-12.font" />
-    <Font Name="BlueHighway-10" Filename="bluehighway-10.font" />
-    <Font Name="BlueHighway-8" Filename="bluehighway-8.font" />
+	<Font Name="DejaVuSansMono-6" Filename="DejaVuSansMono-6.font" />
+	<Font Name="DejaVuSansMono-8" Filename="DejaVuSansMono-8.font" />
+	<Font Name="DejaVuSansMono-10" Filename="DejaVuSansMono-10.font" />
 	<LookNFeel Filename="AquaLook.looknfeel" />
 	<WindowRendererSet Filename="CEGUIFalagardWRBase" />
 	<FalagardMapping WindowType="AquaLook/Button"      TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="AquaLook/Button" />
