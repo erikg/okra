@@ -26,11 +26,12 @@
 
 (defclass bird ()
   ((direction :accessor direction-of :initarg :direction)
-   (fly-speed :accessor fly-speed-of :initform 0.33)
+   (fly-speed :accessor fly-speed-of :initform 0.67)
    (manual-object :accessor manual-object-of :initarg :manual-object)
    (node :accessor node-of :initarg :node)
    (orientation :accessor orientation-of :initarg :orientation)
    (position :accessor position-of :initarg :position)
+   (target-direction :accessor target-direction-of :initarg :target-direction)
    (turn-speed :accessor turn-speed-of :initform 0.1)))
 
 
@@ -240,11 +241,44 @@
 
 ;;; Bird Functions
 
+(defun average-heading (neighbours)
+  (loop with average-heading = (vector 0.0 0.0 0.0)
+        for neighbour in neighbours
+        for heading = (direction-of (car neighbour))
+        do (setf average-heading (vadd average-heading heading))
+        finally (return (vnormalise average-heading))))
+
+
+(defun average-position (neighbours)
+  (loop with average-position = (vector 0.0 0.0 0.0)
+        with divisor = (length neighbours)
+        for neighbour in neighbours
+        for position = (position-of (car neighbour))
+        do (setf average-position (vadd average-position position))
+        finally (return (vdiv average-position
+                              (vector divisor divisor divisor)))))
+
+
 (defun create-bird-model ()
   (let ((mo (make-manual-object :scene-manager (manager-of *scene*)))
         (black 0.0)
         (white 1.0))
     (begin mo "Bird" :ot-triangle-list)
+    ;; top
+    (let* ((vn (vnormal (vsub #(-2.0 -0.5 -1.0) #(1.0 0.0 0.0))
+                        (vsub #(-2.0 -0.5  1.0) #(1.0 0.0 0.0))))
+           (vnx (elt vn 0))
+           (vny (elt vn 1))
+           (vnz (elt vn 2)))
+      (position mo 1.0 0.0 0.0)
+      (colour mo black black black 1.0)
+      (normal mo vnx vny vnz)
+      (position mo -2.0 -0.5 -1.0)
+      (colour mo white white white 1.0)
+      (normal mo vnx vny vnz)
+      (position mo -2.0 -0.5 1.0)
+      (colour mo white white white 1.0)
+      (normal mo vnx vny vnz))
     ;; bottom
     (let* ((vn (vnormal (vsub #(-2.0 -0.5  1.0) #(1.0 0.0 0.0))
                         (vsub #(-2.0 -0.5 -1.0) #(1.0 0.0 0.0))))
@@ -260,137 +294,117 @@
       (position mo -2.0 -0.5 -1.0)
       (colour mo white white white 1.0)
       (normal mo vnx vny vnz))
-    ;; top right
-    (let* ((vn (vnormal (vsub #(-2.0  0.5 0.0) #(1.0 0.0 0.0))
-                        (vsub #(-2.0 -0.5 1.0) #(1.0 0.0 0.0))))
-           (vnx (elt vn 0))
-           (vny (elt vn 1))
-           (vnz (elt vn 2)))
-      (position mo 1.0 0.0 0.0)
-      (colour mo black black black 1.0)
-      (normal mo vnx vny vnz)
-      (position mo -2.0 0.5 0.0)
-      (colour mo white white white 1.0)
-      (normal mo vnx vny vnz)
-      (position mo -2.0 -0.5 1.0)
-      (colour mo white white white 1.0)
-      (normal mo vnx vny vnz))
-    ;; top left
-    (let* ((vn (vnormal (vsub #(-2.0 -0.5 -1.0) #(1.0 0.0 0.0))
-                        (vsub #(-2.0  0.5 0.0) #(1.0 0.0 0.0))))
-           (vnx (elt vn 0))
-           (vny (elt vn 1))
-           (vnz (elt vn 2)))
-      (position mo 1.0 0.0 0.0)
-      (colour mo black black black 1.0)
-      (normal mo vnx vny vnz)
-      (position mo -2.0 -0.5 -1.0)
-      (colour mo white white white 1.0)
-      (normal mo vnx vny vnz)
-      (position mo -2.0 0.5 0.0)
-      (colour mo white white white 1.0)
-      (normal mo vnx vny vnz))
-    ;; back
-    (let* ((vn (vnormal (vsub #(-2.0 -0.5 -1.0) #(-2.0 0.5 0.0))
-                        (vsub #(-2.0 -0.5  1.0) #(-2.0 0.5 0.0))))
-           (vnx (elt vn 0))
-           (vny (elt vn 1))
-           (vnz (elt vn 2)))
-      (position mo -2.0 0.5 0.0)
-      (colour mo white white white 1.0)
-      (normal mo vnx vny vnz)
-      (position mo -2.0 -0.5 -1.0)
-      (colour mo white white white 1.0)
-      (normal mo vnx vny vnz)
-      (position mo -2.0 -0.5 1.0)
-      (colour mo white white white 1.0)
-      (normal mo vnx vny vnz))
     (end mo)
     mo))
 
 
-(defun flock-birdsX (&optional (birds (birds-of *scene*)))
-  (loop for bird in birds
-        for centre = #(0.0 20.0 0.0)
-        for dir = (direction-of bird)
-        for node = (node-of bird)
+(defun neighbouring-birds (birds bird)
+  (loop with neighbours = (list nil nil nil nil nil)
+        for other in birds
+        for opos = (position-of other)
         for pos = (position-of bird)
-        for distance-from-centre = (vlength (vsub pos centre))
-        for vp+d = (vector (+ (elt pos 0) (elt dir 0))
-                           (+ (elt pos 1) (elt dir 1))
-                           (+ (elt pos 2) (elt dir 2)))
-        for neighbours = (loop for other in birds
-                               for opos = (position-of other)
-                               for dist = (vlength (vsub opos pos))
-                               unless (or (equal other bird)
-                                          (> dist 15.0))
-                                 collect other)
-        unless neighbours do
-           (setf neighbours (list (elt birds (random (- (length birds) 1)))))
-        do (if (> distance-from-centre 100.0)  ; keep them on the screen
-               (progn
-                 ;(setf (elt bird 2) (vnormalise (vsub pos centre)))
-                 ;(setf (elt bird 1) (vadd pos (elt bird 2))))
-                 (setf (direction-of bird) #(1.0 0.0 0.0))
-                 (setf (position-of bird) #(0.0 2.0 0.0)))
-               (progn
-                 (setf (position-of bird) vp+d)
-                 (setf (direction-of bird)
-                       (loop with vd = (position-of (first neighbours))
-                             for n from 1
-                             for neighbour in (rest neighbours)
-                             do (setf vd (vadd vd (position-of neighbour)))
-                             finally (return
-                                       (vnormalise
-                                         (vadd dir (vscale (vscale vd (/ 1 n))
-                                                           0.1))))))))))
+        for dist = (vlength (vsub opos pos))
+        do (loop for i from 0 below (length neighbours)
+                 do (if (and (not (equal other bird))
+                             (null (elt neighbours i)))
+                        (setf (elt neighbours i) (cons other dist))
+                        (when (and (not (equal other bird))
+                                   (< dist (cdr (elt neighbours i))))
+                          (setf (elt neighbours i) (cons other dist))
+                          (return))))
+        finally (return neighbours)))
 
-(defun flock-birds (&optional (birds (birds-of *scene*)))
+
+(defun not-too-close (bird neighbours)
+  (let* ((sorted (sort neighbours #'< :key (lambda (list) (cdr list))))
+         (closest (car (first sorted)))
+         (distance (cdr (first sorted)))
+         (direction-changed nil))
+    (when (<= distance 2.5)
+      (setf (target-direction-of bird)
+            (vnormalise (vscale (vsub (position-of closest) (position-of bird))
+                                -1.0)))
+      (setf direction-changed t))
+    direction-changed))
+
+
+(defun not-too-far (bird)
+  (let* ((centre #(0.0 25.0 0.0))
+         (distance (vlength (vsub (position-of bird) centre)))
+         (height (elt (position-of bird) 1)))
+    (when (>= distance 75.0)
+      (setf (target-direction-of bird)
+            (vnormalise (vsub centre (position-of bird)))))
+    (cond ((<= height 12.5)
+           (setf (target-direction-of bird)
+                 (vnormalise (vector (elt (target-direction-of bird) 0)
+                                     0.25
+                                     (elt (target-direction-of bird) 2)))))
+          ((>= height 75.0)
+           (setf (target-direction-of bird)
+                 (vnormalise (vector (elt (target-direction-of bird) 0)
+                                     -0.25
+                                     (elt (target-direction-of bird) 2))))))))
+
+
+(defun flock-birds (step &optional (birds (birds-of *scene*)))
   (loop for bird in birds
         for dir = (direction-of bird)
         for node = (node-of bird)
         for pos = (position-of bird)
-        for neighbours = (loop with list = (list nil nil nil)
-                               for other in birds
-                               for opos = (position-of other)
-                               for dist = (vlength (vsub opos pos))
-                               do (dolist (item list)
-                                    (if (null item)
-                                        (setf item (cons other dist))
-                                        (when (< dist (cdr item))
-                                          (setf item (cons other dist)))))
-                               finally (return list))
-        do ;(format t "---~%~S~%" neighbours)
+        for neighbours = (neighbouring-birds birds bird)
+        for too-close = nil
+        for too-far = nil
+        do ;; 1) stay at least x units away from closest neighbour
+           (setf too-close (not-too-close bird neighbours))
+           ;; 2) don't stray too far from the centre of the scene
+           (unless too-close
+             (setf too-far (not-too-far bird)))
+           (unless (or too-close too-far)
+             ;; 3) align to average heading of neighbours
+             (setf (target-direction-of bird) (average-heading neighbours))
+             ;; 4) move to average position of neighbours
+             (setf (target-direction-of bird)
+                   (vnormalise
+                     (vadd (vnormalise (vsub (average-position neighbours)
+                                             (position-of bird)))
+                           (target-direction-of bird)))))
+           (setf (direction-of bird)
+                 (vnormalise (vadd (direction-of bird)
+                                   (vscale (target-direction-of bird) 0.2))))
            (setf (position-of bird)
-                 (vadd pos (vscale dir (fly-speed-of bird))))
-           ))
+                 (vadd (position-of bird)
+                       (vscale (vscale (direction-of bird) (fly-speed-of bird))
+                               step)))))
 
 
-(defun make-bird (&key direction position (orientation #(1.0 0.0 0.0 0.0)))
+(defun make-bird (&key direction position
+                  (orientation (vector 1.0 0.0 0.0 0.0)))
   (let ((mo (create-bird-model))
         (node (make-child-scene-node :node (root-of *scene*))))
     (attach-object node (pointer-to mo))
     (set-position node (elt position 0) (elt position 1) (elt position 2))
     (make-instance 'bird :direction direction :manual-object mo :node node
-                   :orientation orientation :position position)))
+                   :orientation orientation :position position
+                   :target-direction direction)))
 
 
 (defun update-bird-positions-in-world (&optional (birds (birds-of *scene*)))
   (loop for bird in birds
+        for dir = (direction-of bird)
         for node = (node-of bird)
         for pos = (position-of bird)
-        do (set-position node (elt pos 0) (elt pos 1) (elt pos 2))))
+        do (set-direction node (elt dir 0) (elt dir 1) (elt dir 2)
+                          :ts-world #(1.0 0.0 0.0))
+           (set-position node (elt pos 0) (elt pos 1) (elt pos 2))))
 
 
 ;;; Water Functions
 
 (defun dy (x y z width)
-  (let ((pos (if (water-of *scene*)
-                 (wave-position-of (water-of *scene*))
-                 0.0)))
-    (* 20.0 (+ y (* (sin (+ (/ x 12.0) pos))
-                    (sin (+ (/ z (+ (/ width .75) (/ pos 4.0)))
-                            (perlin-noise (/ x width) 0.0 (/ z width)))))))))
+  (* 20.0 (+ y (* (sin (+ (/ x 16.0) (wave-position-of (water-of *scene*))))
+                  (sin (+ (/ z 400.0)
+                          (perlin-noise (/ x width) 0.0 (/ z width))))))))
 
 
 (defun water-surface-loop (water)
@@ -496,10 +510,9 @@
 
 
 (defun update-water-surface (water)
-  (let* ((mo (manual-object-of water)))
-    (begin-update mo 0)
-    (water-surface-loop water)
-    (end mo)))
+  (begin-update (manual-object-of water) 0)
+  (water-surface-loop water)
+  (end (manual-object-of water)))
 
 
 ;;; Functions
@@ -515,7 +528,7 @@
     (if (>= (ripple-z-position-of water) 1.0)
         (decf (ripple-z-position-of water) (- 1.0 drz))
         (incf (ripple-z-position-of water) drz))
-    (flock-birds)))
+    (flock-birds step)))
 
 
 ;;; Initialisation
@@ -557,10 +570,8 @@
   (set-shadow-technique (manager-of *scene*) :shadowtype-none)
 
   ;; bird model
-  (loop repeat 50
-        ;for dir = (vnormalise (vector (- (random 2.0) 1) (- (random 2.0) 1)
-        ;                              (- (random 2.0) 1)))
-        for dir = (vnormalise #(1.0 0.0 0.0))
+  (loop repeat 40
+        for dir = (vnormalise (vector 1.0 0.0 0.0))
         for pos = (vector (- (random 50.0) 25) (+ 10 (random 25.0))
                           (- (random 50.0) 25))
         for bird = (make-bird :direction dir :position pos)
