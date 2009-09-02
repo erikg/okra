@@ -95,6 +95,7 @@
     (:kc-down   . move-backward)  (:kc-d . move-backward)
     (:kc-left   . move-left)      (:kc-s . move-left)
     (:kc-right  . move-right)     (:kc-f . move-right)
+    (:kc-a      . add-bird)
     (:mouse-x   . camera-x-look)  (:mouse-y . camera-y-look)
     (:mouse-button-1 . toggle-mouse-look)))
 
@@ -117,6 +118,16 @@
 
 
 ;;; Key Actions
+
+(defun make-bird (&key direction position)
+  (declare (ignore direction position)))
+
+(defun add-bird (key text state)
+  (declare (ignore key text))
+  (when (equal state :released)
+    (push (make-bird :direction #(1.0 0.0 0.0) :position #(0.0 25.0 0.0))
+          (birds-of *scene*))))
+
 
 (let ((last-x 0))
   (defun camera-x-look (axis rel-x abs-x)
@@ -305,7 +316,13 @@
 
 
 (defun neighbouring-birds (birds bird)
-  (loop with neighbours = (list nil nil nil nil nil)
+  ;; The length of the list determines how many neighbours will be checked for
+  ;; the flocking behaviour.  The fewer neighbours the more birds will go out
+  ;; on their own and thus the more neighbours the more cohesive the group
+  ;; will be.
+  ;(loop with neighbours = (list nil nil nil nil nil)
+  ;; This makes it a little more chaotic.
+  (loop with neighbours = (loop repeat (+ 2 (random 5)) collect nil)
         for other in birds
         for opos = (position-of other)
         for pos = (position-of bird)
@@ -335,7 +352,8 @@
 
 
 (defun not-too-far (bird)
-  (let* ((centre #(0.0 25.0 0.0))
+  (let* (;(centre #(0.0 25.0 0.0))
+         (centre #(25.0 25.0 25.0))  ; a bit more action nearer to the camera
          (distance (vlength (vsub (position-of bird) centre)))
          (height (elt (position-of bird) 1)))
     (when (>= distance 75.0)
@@ -473,7 +491,7 @@
 
 
 ;; We construct a minimal surface that can be updated later.
-;; Unfortunately we can't get away with constructing an empty surface.
+;; Unfortunately Ogre won't let us get away with constructing an empty surface.
 (defun create-water-surface (position size &key (grid 4.0)
                              (material "BaseWhiteNoLighting"))
   (let* ((mo (make-manual-object :scene-manager (manager-of *scene*)))
@@ -481,6 +499,7 @@
          (y (elt position 1))
          (z (elt position 2)))
     (set-dynamic mo t)
+    (set-cast-shadows mo nil)
     (begin mo material :ot-triangle-list)
     (loop with w/2 = (/ size 2.0)
           with x-max = (+ x w/2)
@@ -545,7 +564,7 @@
                               :manager "OctreeSceneManager"
                               :window window)))
 
-  (push (make-camera :position #(150.0 30.0 150.0)
+  (push (make-camera :position #(160.0 30.0 160.0)
                      :look-at #(-10.0 10.0 -10.0)
                      :near-clip-distance 1.0
                      :scene-manager (manager-of *scene*))
@@ -557,10 +576,9 @@
         (viewports-of *scene*))
 
   (push (make-light :diffuse-colour #(0.9 0.9 0.9 1.0)
-                    ;; I don't think this makes a difference.
-                    ;:direction (vector-normalise #(-1.0 -0.5 -0.1))
-                    :direction  #(-1.0 -0.5 -0.1)
-                    :position #(0.0 10.0 0.0)
+                    ;; vnormalise doesn't seem to make a difference
+                    :direction (vnormalise #(-1.0 -0.5 -1.0))
+                    ;:position #(0.0 10.0 0.0)  ; not needed for directional
                     :scene-manager (manager-of *scene*)
                     :specular-colour #(0.9 0.9 0.9 1.0)
                     :type :lt-directional)
@@ -568,10 +586,11 @@
 
   ;; misc
   (set-ambient-light (manager-of *scene*) #(0.2 0.2 0.2 1.0))
-  (set-shadow-technique (manager-of *scene*) :shadowtype-none)
+  ;(set-shadow-technique (manager-of *scene*) :shadowtype-none)
+  (set-shadow-technique (manager-of *scene*) :shadowtype-texture-modulative)
 
   ;; bird model
-  (loop repeat 40
+  (loop repeat 20
         for dir = (vnormalise (vector 1.0 0.0 0.0))
         for pos = (vector (- (random 50.0) 25) (+ 10 (random 25.0))
                           (- (random 50.0) 25))
@@ -580,7 +599,7 @@
 
   ;; water surface
   (setf (water-of *scene*)
-        (make-water :material "Ocean/Calm" :ripple-x-speed 0.0008 
+        (make-water :grid 15.0 :material "Ocean/Calm" :ripple-x-speed 0.0008 
                     :ripple-z-speed 0.002))
 
   ;;; CEGUI
@@ -675,8 +694,8 @@
 
 (defun run-flock ()
   ;; if we don't reinit the callbacks the executable will crash when using them
-  (clois-lane::initialise-callbacks)
   (okra-bindings::initialise-cegui-callbacks)
+  (clois-lane::initialise-callbacks)
   (initialise-application)
   (main-loop)
   (quit))

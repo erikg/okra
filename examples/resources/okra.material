@@ -89,6 +89,8 @@ fragment_program PlainTexture_PS cg
 
 material Bird
 {
+    receive_shadows off
+
     technique
     {
         pass
