@@ -29,7 +29,7 @@ h3 { margin-bottom: 0px; }
 <h2>Definitions</h2>
 
 <p class="first">Whenever I refer to directories, file names or commands issued on the
-computer they will be written in <code>monospace and verbatim</code>.</p>
+computer they will be written in <code>mono-space and verbatim</code>.</p>
 
 
 
@@ -43,8 +43,8 @@ for Ogre.</p>
 <p>Ogre is a 3D graphics library written in C++.  This means that we'll
 have to generate code for CFFI (my chosen FFI) in CL and we'll have to
 generate C wrapper code for Ogre's C++ classes and methods since
-talking directly to C++ is riddled with problems (which not be further
-discussed in this document).</p>
+talking directly to C++ is riddled with problems (which will not be
+further discussed in this document).</p>
 
 <p><em>Both the generated C++ code as well as the CL code should be human
 readable and produce as little warnings as possible when compiling!
@@ -69,7 +69,7 @@ slowly grow.</em></p>
 
 <h4>General</h4>
 
-<p class="first">The startup scripts (the <code>*.sh</code> and <code>*.bat</code> files) expect to be run from
+<p class="first">The start-up scripts (the <code>*.sh</code> and <code>*.bat</code> files) expect to be run from
 the <code>examples</code> directory.</p>
 
 
@@ -85,7 +85,7 @@ more information on the whole process:
 <a href="http://www.ogre3d.org/wiki/index.php/Building_From_Source#Linux">http://www.ogre3d.org/wiki/index.php/Building_From_Source#Linux</a></p>
 
 
-<p>The Linux startup scripts are written and tested using SBCL
+<p>The Linux start-up scripts are written and tested using SBCL
 (1.0.25.debian at the time of writing) and expect to find <code>sbcl</code> in the
 path.</p>
 
@@ -107,7 +107,7 @@ for Code::Blocks + MinGW C++ Toolbox&quot;).</p>
 <code>Plugin_CgProgramManager.dll</code>, <code>Plugin_OctreeSceneManager.dll</code>,
 <code>RenderSystem_Direct3D9.dll</code> and <code>RenderSystem_GL.dll</code>.</p>
 
-<p>The Windows startup scripts are written and tested using Clozure CL
+<p>The Windows start-up scripts are written and tested using Clozure CL
 and expect to find <code>wx86cl</code> in the path.</p>
 
 <p>All libraries are expected to be found in the <code>lib</code> directory of the
@@ -148,7 +148,80 @@ directory.</p>
 
 <p>If you don't want to copy over library files for the above examples
 you'll need to make sure the OS can find them.  (By adapting the
-example startup scripts for example.)</p>
+example start-up scripts for example.)</p>
+
+
+
+
+
+<h2>Executables</h2>
+
+<p class="first">There are a couple of things to keep in mind when generating an
+executable using Okra from your CL implementation.</p>
+
+<h3>Foreign Callbacks</h3>
+
+<p class="first">On all the implementations I have tested the callbacks from C to CL
+had to be reloaded.  The (unexported) <code>initialise-callbacks</code> functions
+take care of this.</p>
+
+
+
+<h3>Foreign Libraries</h3>
+
+<p class="first">For some CL implementations you need make sure the foreign libraries
+are reloaded.  Of the implementations I have tested this needed to be
+done for CCL on Windows.  This is done using an init script which is
+supplied when saving the image.</p>
+
+<p>In the libraries (unexported) <code>load-foreign-libraries</code> functions are
+provided for this.  (And also <code>load-libcegui</code> in the <code>okra-bindings</code>
+package, I have to clean that up.)</p>
+
+
+
+
+<h2>Okra Bindings Generator</h2>
+
+<h3>Generating and testing new bindings</h3>
+
+<p class="first">My modus operandi when working on the bindings generator is from
+within Emacs.  I start up Slime with <code>M-x slime</code> and change the
+current directory to that of the bindings generator with <code>M-x slime-cd</code>.</p>
+
+<p>Once I made some changes to the source I do a <code>(asdf:oos 'asdf:load-op
+:okra-bindings-generator)</code> in Slime and place the files in the Okra
+root directory with <code>bin/rsync-generated-bindings.sh</code> (this is from
+within the <code>bindings-generator</code> directory).</p>
+
+<p>I use rsync because it will only replace the files that have been
+changed so that <code>make</code> and the CL implementation only have to recompile
+those changed files which saves a lot of time.  Sometimes this leads
+to problems however and I do <code>bin/install-generated-bindings.sh</code> which
+replaces all the bindings files.  (It also deletes the <code>.fasl</code> files
+which shouldn't be really necessary.)</p>
+
+<p>Then I issue a <code>make</code> from the Okra root directory to create the new C
+wrapper libraries and after that I run one of the examples.
+(<code>./physics-and-input.sh</code> from the <code>examples</code> directory at the time of
+writing since I do not have regression tests yet.)</p>
+
+
+
+
+<h2>Optimisations</h2>
+
+<h3>Code</h3>
+
+<p class="first">Passing a vector (#(a b ...)) is <em>much</em> slower than passing the values
+as seperate arguments.  (At least on SBCL 1.0.25.debian.)</p>
+
+
+<h3>Implementations</h3>
+
+<p class="first">SBCL is quite a bit faster than CCL for me on Windows.  At the time of
+writing (2009-09-02) this was with SBCL 1.0.22 and a recent SVN
+checkout of CCL.</p>
 
 
 <h2><a name="windows-mingw" id="windows-mingw"></a>Windows (MinGW)</h2>
@@ -207,38 +280,10 @@ point to the correct locations (the two lines below &quot;if (MINGW)&quot;).</p>
 
 
 
-<h2>Okra Bindings Generator</h2>
-
-<h3>Generating and testing new bindings</h3>
-
-<p class="first">My modus operandi when working on the bindings generator is from
-within Emacs.  I start up Slime with <code>M-x slime</code> and change the
-current directory to that of the bindings generator with <code>M-x slime-cd</code>.</p>
-
-<p>Once I made some changes to the source I do a <code>(asdf:oos 'asdf:load-op
-:okra-bindings-generator)</code> in Slime and place the files in the Okra
-root directory with <code>bin/rsync-generated-bindings.sh</code> (this is from
-within the <code>bindings-generator</code> directory).</p>
-
-<p>I use rsync because it will only replace the files that have been
-changed so that <code>make</code> and the CL implementation only have to recompile
-those changed files which saves a lot of time.  Sometimes this leads
-to problems however and I do <code>bin/install-generated-bindings.sh</code> which
-replaces all the bindings files.  (It also deletes the <code>.fasl</code> files
-which shouldn't be really necessary.)</p>
-
-<p>Then I issue a <code>make</code> from the Okra root directory to create the new C
-wrapper libraries and after that I run one of the examples.
-(<code>./physics-and-input.sh</code> from the <code>examples</code> directory at the time of
-writing since I do not have regression tests yet.)</p>
-
-
-
-
 <h2>FAQ</h2>
 
 <p class="verse">
-Q. Why are both LOOP and ITER (package ITERATE) are being used?<br>
+Q. Why are both LOOP and ITER (package ITERATE) being used?<br>
 <br>
 A. When I started programming Common Lisp I preferred ITER, but lately<br>
 &nbsp;&nbsp;&nbsp;&nbsp;I've come to appreciate LOOP, if only because it means less<br>

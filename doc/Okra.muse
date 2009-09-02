@@ -1,7 +1,7 @@
 * Definitions
 
 Whenever I refer to directories, file names or commands issued on the
-computer they will be written in =monospace and verbatim=.
+computer they will be written in =mono-space and verbatim=.
 
 
 * Introduction
@@ -14,8 +14,8 @@ for Ogre.
 Ogre is a 3D graphics library written in C++.  This means that we'll
 have to generate code for CFFI (my chosen FFI) in CL and we'll have to
 generate C wrapper code for Ogre's C++ classes and methods since
-talking directly to C++ is riddled with problems (which not be further
-discussed in this document).
+talking directly to C++ is riddled with problems (which will not be
+further discussed in this document).
 
 *Both the generated C++ code as well as the CL code should be human
 readable and produce as little warnings as possible when compiling!
@@ -39,7 +39,7 @@ What you need and should know to get the examples running.
 
 *** General
 
-The startup scripts (the =*.sh= and =*.bat= files) expect to be run from
+The start-up scripts (the =*.sh= and =*.bat= files) expect to be run from
 the =examples= directory.
 
 *** Linux
@@ -54,7 +54,7 @@ more information on the whole process:
 http://www.ogre3d.org/wiki/index.php/Building_From_Source#Linux
 
 
-The Linux startup scripts are written and tested using SBCL
+The Linux start-up scripts are written and tested using SBCL
 (1.0.25.debian at the time of writing) and expect to find =sbcl= in the
 path.
 
@@ -75,7 +75,7 @@ Copy the following libraries from =<ogre-sdk>/bin/Release= to the Okra
 =Plugin_CgProgramManager.dll=, =Plugin_OctreeSceneManager.dll=,
 =RenderSystem_Direct3D9.dll= and =RenderSystem_GL.dll=.
 
-The Windows startup scripts are written and tested using Clozure CL
+The Windows start-up scripts are written and tested using Clozure CL
 and expect to find =wx86cl= in the path.
 
 All libraries are expected to be found in the =lib= directory of the
@@ -112,7 +112,71 @@ directory.
 
 If you don't want to copy over library files for the above examples
 you'll need to make sure the OS can find them.  (By adapting the
-example startup scripts for example.)
+example start-up scripts for example.)
+
+
+* Executables
+
+There are a couple of things to keep in mind when generating an
+executable using Okra from your CL implementation.
+
+** Foreign Callbacks
+
+On all the implementations I have tested the callbacks from C to CL
+had to be reloaded.  The (unexported) =initialise-callbacks= functions
+take care of this.
+
+
+** Foreign Libraries
+
+For some CL implementations you need make sure the foreign libraries
+are reloaded.  Of the implementations I have tested this needed to be
+done for CCL on Windows.  This is done using an init script which is
+supplied when saving the image.
+
+In the libraries (unexported) =load-foreign-libraries= functions are
+provided for this.  (And also =load-libcegui= in the =okra-bindings=
+package, I have to clean that up.)
+
+
+* Okra Bindings Generator
+
+** Generating and testing new bindings
+
+My modus operandi when working on the bindings generator is from
+within Emacs.  I start up Slime with =M-x slime= and change the
+current directory to that of the bindings generator with =M-x slime-cd=.
+
+Once I made some changes to the source I do a =(asdf:oos 'asdf:load-op
+:okra-bindings-generator)= in Slime and place the files in the Okra
+root directory with =bin/rsync-generated-bindings.sh= (this is from
+within the =bindings-generator= directory).
+
+I use rsync because it will only replace the files that have been
+changed so that =make= and the CL implementation only have to recompile
+those changed files which saves a lot of time.  Sometimes this leads
+to problems however and I do =bin/install-generated-bindings.sh= which
+replaces all the bindings files.  (It also deletes the =.fasl= files
+which shouldn't be really necessary.)
+
+Then I issue a =make= from the Okra root directory to create the new C
+wrapper libraries and after that I run one of the examples.
+(=./physics-and-input.sh= from the =examples= directory at the time of
+writing since I do not have regression tests yet.)
+
+
+* Optimisations
+
+** Code
+
+Passing a vector (#(a b ...)) is *much* slower than passing the values
+as seperate arguments.  (At least on SBCL 1.0.25.debian.)
+
+** Implementations
+
+SBCL is quite a bit faster than CCL for me on Windows.  At the time of
+writing (2009-09-02) this was with SBCL 1.0.22 and a recent SVN
+checkout of CCL.
 
 
 #windows-mingw
@@ -163,38 +227,6 @@ And then: =make=.
 
 And if everything goes right (probably not) it should end up in the
 =lib= directory.
-
-
-* Okra Bindings Generator
-
-** Generating and testing new bindings
-
-My modus operandi when working on the bindings generator is from
-within Emacs.  I start up Slime with =M-x slime= and change the
-current directory to that of the bindings generator with =M-x slime-cd=.
-
-Once I made some changes to the source I do a =(asdf:oos 'asdf:load-op
-:okra-bindings-generator)= in Slime and place the files in the Okra
-root directory with =bin/rsync-generated-bindings.sh= (this is from
-within the =bindings-generator= directory).
-
-I use rsync because it will only replace the files that have been
-changed so that =make= and the CL implementation only have to recompile
-those changed files which saves a lot of time.  Sometimes this leads
-to problems however and I do =bin/install-generated-bindings.sh= which
-replaces all the bindings files.  (It also deletes the =.fasl= files
-which shouldn't be really necessary.)
-
-Then I issue a =make= from the Okra root directory to create the new C
-wrapper libraries and after that I run one of the examples.
-(=./physics-and-input.sh= from the =examples= directory at the time of
-writing since I do not have regression tests yet.)
-
-
-* Optimisation
-
-  - Passing a vector (#(a b ...)) is *much* slower than passing the
-    values as seperate arguments.  (At least on SBCL 1.0.25.debian.)
 
 
 * FAQ
