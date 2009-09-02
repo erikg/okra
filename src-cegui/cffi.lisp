@@ -46,4 +46,8 @@
 
 (defcvar "clfun_cegui_on_event" :pointer)
 
-(setf *clfun-cegui-on-event* (get-callback 'on-event))
+
+(defun initialise-cegui-callbacks ()
+  (setf *clfun-cegui-on-event* (get-callback 'on-event)))
+
+(initialise-cegui-callbacks)

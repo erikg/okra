@@ -1,6 +1,6 @@
 ;;;; -*- Mode: LISP; Syntax: COMMON-LISP -*-
 ;;;;
-;;;; create-executable.lisp
+;;;; create-flock-executable.lisp
 ;;;;
 ;;;; author: Erik Winkels (aerique@xs4all.nl)
 ;;;;
@@ -18,8 +18,9 @@
          (require :asdf))
 
 
-#+sbcl (setf asdf::*central-registry*
-             (list "/usr/local/pub/ekwis/software/Lisp/00-Systems/"))
+#+(and sbcl unix) 
+  (setf asdf::*central-registry* 
+        (list "/usr/local/pub/ekwis/software/Lisp/00-Systems/"))
 
 
 ;;; ABL
@@ -31,20 +32,19 @@
   (asdf:oos 'asdf:load-op :asdf-binary-locations))
 
 
-;;; Packages
+;;; Flock (make sure to comment out the call to RUN-FLOCK at the toplevel)
 
-(asdf:oos 'asdf:load-op :buclet)
-(asdf:oos 'asdf:load-op :clois-lane)
-(asdf:oos 'asdf:load-op :okra)
+(load "flock.lisp")
 
 
-;;; From http://sbcl.org/
-;;;
-;;;   see: http://www.sbcl.org/manual/Saving-a-Core-Image.html
-;;; notes: *default-pathname-defaults*, sb-ext:*core-pathname*
+;;; Saving Executables
 
-#+(and ccl windows) (save-application "okra.exe"
-                                      :init-file "okra-init.lisp"
-                                      :prepend-kernel t)
+(defparameter name #+unix "flock" #+windows "flock.exe")
 
-#+sbcl (save-lisp-and-die "okra" :executable t)
+#+ccl (save-application name :init-file "flock-init.lisp" :prepend-kernel t)
+
+;; From http://sbcl.org/
+;;
+;;   see: http://www.sbcl.org/manual/Saving-a-Core-Image.html
+;; notes: *default-pathname-defaults*, sb-ext:*core-pathname*
+#+sbcl (save-lisp-and-die name :executable t :toplevel #'okra::run-flock)

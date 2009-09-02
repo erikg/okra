@@ -355,9 +355,6 @@
 
 (defun flock-birds (step &optional (birds (birds-of *scene*)))
   (loop for bird in birds
-        for dir = (direction-of bird)
-        for node = (node-of bird)
-        for pos = (position-of bird)
         for neighbours = (neighbouring-birds birds bird)
         for too-close = nil
         for too-far = nil
@@ -674,8 +671,17 @@
            (new-frame)))
 
 
-;;; for development so i have to type less
+;;; Main Function
 
-(initialise-application)
-(main-loop)
-(quit)
+(defun run-flock ()
+  ;; if we don't reinit the callbacks the executable will crash when using them
+  (clois-lane::initialise-callbacks)
+  (okra-bindings::initialise-cegui-callbacks)
+  (initialise-application)
+  (main-loop)
+  (quit))
+
+
+;;; for development so i have to type less :)
+
+(run-flock)
