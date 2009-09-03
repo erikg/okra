@@ -76,7 +76,7 @@
   (scheme :string))
 
 
-(defcfun ("cegui_load_window_layout" load-window-layout)
+(defcfun ("cegui_load_window_layout" cegui-load-window-layout)
     :pointer
   (layout :string))
 
@@ -117,3 +117,16 @@
     :void
   (window :pointer)
   (event :string))
+
+
+;;; Wrappers
+
+;; Thanks to for pkhoung for solving this problem.
+(defun load-window-layout (layout)
+  (let* ((fpm #+(and sbcl linux) (sb-int:get-floating-point-modes)
+              #-(and sbcl linux) nil)
+         (traps (remove :divide-by-zero (remove :invalid (getf fpm :traps)))))
+    #+(and sbcl linux) (sb-int:set-floating-point-modes :traps traps)
+    (let ((window (cegui-load-window-layout layout)))
+      #+(and sbcl linux) (apply #'sb-int:set-floating-point-modes fpm)
+      window)))

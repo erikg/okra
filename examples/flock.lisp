@@ -36,7 +36,7 @@
    (manual-object :accessor manual-object-of :initarg :manual-object)
    (node :accessor node-of :initarg :node)
    (position :accessor position-of :initarg :position)
-   (target-direction :accessor target-direction-of 
+   (target-direction :accessor target-direction-of
                      :initarg :target-direction)))
 
 
@@ -78,28 +78,22 @@
   '((("quitButton" . "Clicked") . cegui-stop-running)
     (:default . echo-self)))
 
-(defparameter *cegui-loaded* nil)  ; tmp: for the Linux CEGUI problems
 (defparameter *cegui-sheet* nil)
 (defparameter *cegui-system* nil)
 (defparameter *cegui-renderer* nil)
 
 ;; for clois-lane
 (defvar *actions*
-  '(;(:key-default . echo-self)
-    ;(:mouse-button-default . echo-self)
-    ;(:mouse-move-default . echo-self)
-    (:kc-escape . stop-running)   (:kc-w . toggle-wireframe)
+  '((:kc-escape . stop-running)   (:kc-w . toggle-wireframe)
     (:kc-pgdown . move-down)      (:kc-v . move-down)
     (:kc-pgup   . move-up)        (:kc-r . move-up)
     (:kc-up     . move-forward)   (:kc-e . move-forward)
     (:kc-down   . move-backward)  (:kc-d . move-backward)
     (:kc-left   . move-left)      (:kc-s . move-left)
     (:kc-right  . move-right)     (:kc-f . move-right)
-    (:kc-a      . add-bird)
-    (:mouse-x   . camera-x-look)  (:mouse-y . camera-y-look)
-    (:mouse-button-1 . toggle-mouse-look)))
+    (:kc-a      . add-bird) (:mouse-button-1 . toggle-mouse-look)
+    (:mouse-x   . camera-x-look)  (:mouse-y . camera-y-look)))
 
-(defparameter *input-system* nil)
 (defparameter *mouse-look* nil)
 (defparameter *move-backward* nil)
 (defparameter *move-forward* nil)
@@ -352,8 +346,7 @@
 
 
 (defun not-too-far (bird)
-  (let* (;(centre #(0.0 25.0 0.0))
-         (centre #(25.0 25.0 25.0))  ; a bit more action nearer to the camera
+  (let* ((centre #(25.0 25.0 25.0))  ; a bit more action nearer to the camera
          (distance (vlength (vsub (position-of bird) centre)))
          (height (elt (position-of bird) 1)))
     (when (>= distance 75.0)
@@ -537,6 +530,14 @@
 
 ;;; Functions
 
+(defun update-gui (&key (fps 0.0))
+  (okra-cegui::set-text (okra-cegui::get-window "Birds")
+                        (format nil "~D" (length (birds-of *scene*))))
+  (okra-cegui::set-text (okra-cegui::get-window "FPS") (format nil "~,2F" fps))
+  (okra-cegui::set-text (okra-cegui::get-window "Triangles")
+                        (format nil "~D" (triangles-in *scene*))))
+
+
 (defun update-physics (&optional (step 1.0))
   (let* ((water (water-of *scene*))
          (drx (* (ripple-x-speed-of water) step))
@@ -618,18 +619,12 @@
     (okra-cegui::inject-mouse-position (/ (get-actual-width vp) 2.0)
                                        (/ (get-actual-height vp) 2.0)))
 
-  ;; XXX: CEGUI is giving me problems on Linux, someone figure this out please.
-  (handler-case
-      (progn
-        (setf *cegui-sheet* (okra-cegui::load-window-layout "flock.layout"))
-        (okra-cegui::set-gui-sheet *cegui-sheet*)
-        ;; see: http://www.cegui.org.uk/wiki/index.php/EventLookup
-        (okra-cegui::subscribe-event (okra-cegui::get-window "quitButton")
-                                     "Clicked")
-        (okra-cegui::subscribe-event (okra-cegui::get-window "flockSettings")
-                                     "CloseClicked")
-        (setf *cegui-loaded* t))
-    (t (e) (format t "[flock] CEGUI layout not loaded: ~S~%" e)))
+  (setf *cegui-sheet* (okra-cegui::load-window-layout "flock.layout"))
+  (okra-cegui::set-gui-sheet *cegui-sheet*)
+  ;; see: http://www.cegui.org.uk/wiki/index.php/EventLookup
+  (okra-cegui::subscribe-event (okra-cegui::get-window "quitButton") "Clicked")
+  (okra-cegui::subscribe-event (okra-cegui::get-window "flockSettings")
+                               "CloseClicked")
 
   ;;; clois-lane
 
@@ -646,16 +641,13 @@
 (defun main-loop ()
   (clois-lane:set-actions *actions*)
   (setf *running* t)
-  (loop with fps-time = 0
-        with step = 0.02
+  (loop with step = 0.02
         with then = (get-microseconds (timer-of *scene*))
         with water = (water-of *scene*)
         while *running*
         for now = (get-microseconds (timer-of *scene*))
         for delta = (/ (- now then) 1000000.0)
         for accumulator = delta
-        initially (unless *cegui-loaded*  ; XXX: Linux CEGUI probs
-                    (format t "fps:  0.00"))
         do (setf then now)
            (when (> accumulator 0.25)
              (setf accumulator 0.25))
@@ -664,20 +656,7 @@
                     (decf accumulator step))
            (when (> accumulator 0)
              (update-physics (/ accumulator step)))
-           ;; XXX: This is until the Linux CEGUI has been resolved.
-           (if *cegui-loaded*
-               (progn
-                 (okra-cegui::set-text (okra-cegui::get-window "Birds")
-                                 (format nil "~D" (length (birds-of *scene*))))
-                 (okra-cegui::set-text (okra-cegui::get-window "FPS")
-                                       (format nil "~,2F" (/ 1.0 delta)))
-                 (okra-cegui::set-text (okra-cegui::get-window "Triangles")
-                                     (format nil "~D" (triangles-in *scene*))))
-               (when (> (- (/ now 1000000.0) fps-time) 1.0)
-                 (loop repeat 10 do (princ #\Backspace))
-                 (format t "fps: ~5,2F" (/ 1.0 delta))
-                 (force-output)
-                 (setf fps-time (/ now 1000000.0))))
+           (update-gui :fps (/ 1.0 delta))
            (update-bird-positions-in-world)
            (update-water-surface water)
            (clois-lane:set-window-extents
