@@ -330,7 +330,7 @@
 (defun setup-cubes ()
   (loop for x from 40.0 to 68.0 by 7.0
         do (loop for y from 40.0 to 64.0 by 8.0
-                 for cube = (create-cube 5.0 "Example/RedCube")
+                 for cube = (create-cube 5.0 "Test/Red")
                  for frb = (buclet:create-rigid-body 1.0 *fall-shape*)
                  for node = (make-child-scene-node)
                  for z = (+ (- 105.0 x) (random 2.5))
@@ -535,7 +535,7 @@
 (defun shoot-cube (key char state)
   (declare (ignore key char))
   (when (equal state :released)
-    (let ((cube (create-cube 5.0 "Example/RedCube"))
+    (let ((cube (create-cube 5.0 "Test/Red"))
           (frb (buclet:create-rigid-body 1.0 *fall-shape*))
           (node (make-child-scene-node)))
       (buclet:set-orientation frb (list 0.4 0.5 0.6 (random 1.0)))
