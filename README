@@ -1,3 +1,5 @@
 See doc/Okra.html or doc/Okra.pdf for documentation.
 
-Also, reminder to self, check out: http://github.com/Ramarren/cl-geometry/
+Notes to self:
+o check out: http://github.com/Ramarren/cl-geometry/
+o linux to win cross-compiling: http://www.vtk.org/Wiki/CmakeMingw
