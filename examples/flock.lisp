@@ -564,6 +564,9 @@
                               :manager "OctreeSceneManager"
                               :window window)))
 
+  (set-ambient-light (manager-of *scene*) #(0.2 0.2 0.2 1.0))
+  (set-shadow-technique (manager-of *scene*) :shadowtype-texture-modulative)
+
   (push (make-camera :position #(160.0 30.0 160.0)
                      :look-at #(-10.0 10.0 -10.0)
                      :near-clip-distance 1.0
@@ -584,12 +587,7 @@
                     :type :lt-directional)
         (lights-of *scene*))
 
-  ;; misc
-  (set-ambient-light (manager-of *scene*) #(0.2 0.2 0.2 1.0))
-  ;(set-shadow-technique (manager-of *scene*) :shadowtype-none)
-  (set-shadow-technique (manager-of *scene*) :shadowtype-texture-modulative)
-
-  ;; bird model
+  ;; birds
   (loop repeat 20
         for dir = (vnormalise (vector 1.0 0.0 0.0))
         for pos = (vector (- (random 50.0) 25) (+ 10 (random 25.0))
@@ -597,9 +595,9 @@
         for bird = (make-bird :direction dir :position pos)
         do (push bird (birds-of *scene*)))
 
-  ;; water surface
+  ;; water
   (setf (water-of *scene*)
-        (make-water :grid 15.0 :material "Ocean/Calm" :ripple-x-speed 0.0008 
+        (make-water :grid 15.0 :material "Ocean/Calm" :ripple-x-speed 0.0008
                     :ripple-z-speed 0.002))
 
   ;;; CEGUI

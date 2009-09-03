@@ -205,6 +205,8 @@ material Ocean/Calm
 }
 
 
+// This is for my Linux testing machine with an onboard i910, which crashes
+// with the above material.
 material Ocean/Calm/NoShader
 {
     technique
