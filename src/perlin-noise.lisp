@@ -70,7 +70,7 @@
 
 
 (defun perlin-noise (x y z)
-  "X, Y and Z need to be numbers within -1.0 and 1.0."
+  "X, Y and Z should be floats for the best results."
   (let* ((xc (logand (floor x) 255))
          (yc (logand (floor y) 255))
          (zc (logand (floor z) 255))
@@ -125,7 +125,7 @@
 
 
 (defun perlin-noise-single-float (x y z)
-  "X, Y and Z need to be SINGLE-FLOATS within -1.0 and 1.0."
+  "X, Y and Z need to be SINGLE-FLOATS."
   (declare (inline fade-sf grad-sf lerp-sf)
            (optimize (compilation-speed 0) (debug 0) (safety 0) (space 0)
                      (speed 3))
@@ -133,9 +133,6 @@
   (let* ((xc (logand (the fixnum (floor x)) 255))
          (yc (logand (the fixnum (floor y)) 255))
          (zc (logand (the fixnum (floor z)) 255))
-         ;(x (- x (floor x)))
-         ;(y (- y (floor y)))
-         ;(z (- z (floor z)))
          (x (mod x 1))
          (y (mod y 1))
          (z (mod z 1))
@@ -161,13 +158,14 @@
 
 ;;;# Precalculated Version
 
-;; XXX: this doesn't give correct results with PERLIN-NOISE-COMPARE
 (defun perlin-noise-closure (&optional (precision 128))
   "Returns a closure which can be called just like PERLIN-NOISE-SINGLE-FLOAT.
   PRECISION will be used to determine the size of the precalculated perlin
   cube.  The higher the precision to more elements will be in the cube and
   the more precise it will be (and the more memory it will consume).
-  The number of elements in the cube is determined as PRECISION^3."
+  The number of elements in the cube is determined as PRECISION^3.
+  NOTE: This does not give the same results for the same inputs as
+        PERLIN-NOISE!"
   (let ((cube (make-array (list precision precision precision)
                           :element-type 'single-float))
         (precision (coerce precision 'single-float)))
