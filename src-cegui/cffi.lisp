@@ -6,7 +6,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 
-(in-package :okra-bindings)
+(in-package :okra-bindings)  ; XXX: shouldn't this be :okra-cegui?
 
 
 ;;;# Variables
