@@ -9,6 +9,8 @@
 (in-package :okra-cegui)
 
 
+;;; Foreign Functions
+
 (defcfun ("cegui_create_font" create-font)
     :void
   (font :string))
@@ -130,3 +132,27 @@
     (let ((window (cegui-load-window-layout layout)))
       #+(and sbcl linux) (apply #'sb-int:set-floating-point-modes fpm)
       window)))
+
+
+;;; Functions
+
+;; An improvement over the mess it was before but not quite finished yet.
+(defun initialise-cegui (scheme scene &key actions default-font
+                         default-mouse-arrow events (layout "gui.layout"))
+  (create-system (create-renderer (okra::pointer-to (okra::window-of scene))
+                                  (okra::pointer-to (okra::manager-of scene))))
+  (load-scheme scheme)
+  (when default-font
+    (set-default-font default-font))
+  (when default-mouse-arrow
+    (set-default-mouse-cursor default-mouse-arrow "MouseArrow")
+    (mouse-cursor-set-image (get-default-mouse-cursor)))
+  (let ((vp (first (okra::viewports-of scene))))
+    (inject-mouse-position (/ (okra::get-actual-width vp) 2.0)
+                           (/ (okra::get-actual-height vp) 2.0)))
+  (set-gui-sheet (load-window-layout layout))
+  (when actions
+    (setf okra-bindings::*cegui-actions* actions))
+  ;; see: http://www.cegui.org.uk/wiki/index.php/EventLookup
+  (dolist (event events)
+    (subscribe-event (get-window (car event)) (cdr event))))

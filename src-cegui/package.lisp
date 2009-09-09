@@ -9,4 +9,5 @@
 (in-package :cl-user)
 
 (defpackage :okra-cegui
-  (:use :cl :cffi :okra :okra-common))
+  (:use :cl :cffi :okra :okra-common)
+  (:export :initialise-cegui))

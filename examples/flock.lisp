@@ -78,10 +78,6 @@
   '((("quitButton" . "Clicked") . cegui-stop-running)
     (:default . echo-self)))
 
-(defparameter *cegui-sheet* nil)
-(defparameter *cegui-system* nil)
-(defparameter *cegui-renderer* nil)
-
 ;; for clois-lane
 (defvar *actions*
   '((:kc-escape . stop-running)   (:kc-w . toggle-wireframe)
@@ -530,12 +526,18 @@
 
 ;;; Functions
 
+;(defun update-gui (&key (fps 0.0))
+;  (okra-cegui::set-text (okra-cegui::get-window "Birds")
+;                        (format nil "~D" (length (birds-of *scene*))))
+;  (okra-cegui::set-text (okra-cegui::get-window "FPS") (format nil "~,2F" fps))
+;  (okra-cegui::set-text (okra-cegui::get-window "Triangles")
+;                        (format nil "~D" (triangles-in *scene*))))
 (defun update-gui (&key (fps 0.0))
-  (okra-cegui::set-text (okra-cegui::get-window "Birds")
-                        (format nil "~D" (length (birds-of *scene*))))
-  (okra-cegui::set-text (okra-cegui::get-window "FPS") (format nil "~,2F" fps))
-  (okra-cegui::set-text (okra-cegui::get-window "Triangles")
-                        (format nil "~D" (triangles-in *scene*))))
+  (flet ((set-text (window text)
+           (okra-cegui::set-text (okra-cegui::get-window window) text)))
+    (set-text "Birds" (format nil "~D" (length (birds-of *scene*))))
+    (set-text "FPS" (format nil "~,2F" fps))
+    (set-text "Triangles" (format nil "~D" (triangles-in *scene*)))))
 
 
 (defun update-physics (&optional (step 1.0))
@@ -601,33 +603,16 @@
         (make-water :grid 15.0 :material "Ocean/Calm" :ripple-x-speed 0.0008
                     :ripple-z-speed 0.002))
 
-  ;;; CEGUI
+  ;; CEGUI
+  (okra-cegui:initialise-cegui "AquaLookSkin.scheme" *scene*
+                               :actions *cegui-actions*
+                               :default-font "DejaVuSansMono-6"
+                               :default-mouse-arrow "AquaLook"
+                               :events '(("flockSettings" . "CloseClicked")
+                                         ("quitButton" . "Clicked"))
+                               :layout "flock.layout")
 
-  (setf okra-bindings::*cegui-actions* *cegui-actions*)
-
-  (setf *cegui-renderer*
-        (okra-cegui::create-renderer (pointer-to (window-of *scene*))
-                                     (pointer-to (manager-of *scene*))))
-  (setf *cegui-system* (okra-cegui::create-system *cegui-renderer*))
-
-  (okra-cegui::load-scheme "AquaLookSkin.scheme")
-  (okra-cegui::set-default-mouse-cursor "AquaLook" "MouseArrow")
-  (okra-cegui::set-default-font "DejaVuSansMono-6")
-  (okra-cegui::mouse-cursor-set-image (okra-cegui::get-default-mouse-cursor))
-
-  (let ((vp (first (viewports-of *scene*))))
-    (okra-cegui::inject-mouse-position (/ (get-actual-width vp) 2.0)
-                                       (/ (get-actual-height vp) 2.0)))
-
-  (setf *cegui-sheet* (okra-cegui::load-window-layout "flock.layout"))
-  (okra-cegui::set-gui-sheet *cegui-sheet*)
-  ;; see: http://www.cegui.org.uk/wiki/index.php/EventLookup
-  (okra-cegui::subscribe-event (okra-cegui::get-window "quitButton") "Clicked")
-  (okra-cegui::subscribe-event (okra-cegui::get-window "flockSettings")
-                               "CloseClicked")
-
-  ;;; clois-lane
-
+  ;; clois-lane
   (let ((wh (get-window-handler (pointer-to (window-of *scene*)))))
     (setf (input-system-of *scene*)
           (clois-lane:create-input-system (mkstr wh) :hide-mouse t)))
