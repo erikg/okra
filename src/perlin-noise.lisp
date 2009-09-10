@@ -15,7 +15,6 @@
 ;;;;
 ;;;; Also check this out some time in the future: http://www.gamedev.net/community/forums/mod/journal/journal.asp?jn=263350&reply_id=2889484
 
-
 (in-package :okra)
 
 
@@ -188,10 +187,21 @@
 
 ;;;# Fractal Brownian Motion
 
-(defun fbm (x y z &key (fn #'perlin-noise) (octaves 8) (multiplier 2))
+(defun fbm2d (x y &key (fn #'simplex2d-reference) (octaves 8) (multiplier 2))
   (loop with result = 0.0
         with scale = (/ 1.0 multiplier)
-        with weight = 1.0
+        with weight = 0.5
+        repeat octaves
+        do (incf result (* (funcall fn (* x scale) (* y scale)) weight))
+           (setf scale (* scale multiplier))
+           (setf weight (/ weight multiplier))
+        finally (return result)))
+
+
+(defun fbm3d (x y z &key (fn #'perlin-noise) (octaves 8) (multiplier 2))
+  (loop with result = 0.0
+        with scale = (/ 1.0 multiplier)
+        with weight = 0.5
         repeat octaves
         do (incf result (* (funcall fn (* x scale) (* y scale) (* z scale))
                            weight))
