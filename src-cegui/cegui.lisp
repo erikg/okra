@@ -67,7 +67,7 @@
   (dy :float))
 
 
-(defcfun ("cegui_inject_mouse_position" inject-mouse-position)
+(defcfun ("cegui_inject_mouse_position" cegui-inject-mouse-position)
     :void
   (x :float)
   (y :float))
@@ -103,7 +103,7 @@
   (arrow :string))
 
 
-(defcfun ("cegui_set_gui_sheet" set-gui-sheet)
+(defcfun ("cegui_set_gui_sheet" cegui-set-gui-sheet)
     :void
   (sheet :pointer))
 
@@ -124,6 +124,15 @@
 ;;; Wrappers
 
 ;; Thanks to for pkhoung for solving this problem.
+(defun inject-mouse-position (x y)
+  (let* ((fpm #+(and sbcl linux) (sb-int:get-floating-point-modes)
+              #-(and sbcl linux) nil)
+         (traps (remove :divide-by-zero (remove :invalid (getf fpm :traps)))))
+    #+(and sbcl linux) (sb-int:set-floating-point-modes :traps traps)
+    (cegui-inject-mouse-position x y)
+    #+(and sbcl linux) (apply #'sb-int:set-floating-point-modes fpm)))
+
+
 (defun load-window-layout (layout)
   (let* ((fpm #+(and sbcl linux) (sb-int:get-floating-point-modes)
               #-(and sbcl linux) nil)
@@ -132,6 +141,15 @@
     (let ((window (cegui-load-window-layout layout)))
       #+(and sbcl linux) (apply #'sb-int:set-floating-point-modes fpm)
       window)))
+
+
+(defun set-gui-sheet (sheet)
+  (let* ((fpm #+(and sbcl linux) (sb-int:get-floating-point-modes)
+              #-(and sbcl linux) nil)
+         (traps (remove :divide-by-zero (remove :invalid (getf fpm :traps)))))
+    #+(and sbcl linux) (sb-int:set-floating-point-modes :traps traps)
+    (cegui-set-gui-sheet sheet)
+    #+(and sbcl linux) (apply #'sb-int:set-floating-point-modes fpm)))
 
 
 ;;; Functions
