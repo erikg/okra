@@ -15,8 +15,9 @@
 #+sbcl (unless (find-package :asdf)
          (require :asdf))
 
-#+sbcl (setf asdf::*central-registry*
-             (list "/usr/local/pub/ekwis/software/Lisp/00-Systems/"))
+#+(and sbcl unix)
+  (setf asdf::*central-registry*
+        (list "/usr/local/pub/ekwis/software/Lisp/00-Systems/"))
 
 
 ;;; ABL
@@ -31,16 +32,18 @@
 ;;; Packages
 
 (asdf:oos 'asdf:load-op :buclet)
-(asdf:oos 'asdf:load-op :clois-lane)
-(asdf:oos 'asdf:load-op :okra)
+(asdf:oos 'asdf:load-op :clois-lane-cegui)
+(asdf:oos 'asdf:load-op :okra-cegui)
 
 
-;;; The calls to save an executable
+;;; Saving Executables
 
-#+(and ccl windows) (save-application "bin/okra.exe"
-                                      :init-file "cfg/okra-init.lisp"
-                                      :prepend-kernel t)
+(defparameter name #+unix "bin/okra" #+windows "bin/okra.exe")
 
-;; see: http://www.sbcl.org/manual/Saving-a-Core-Image.html
+#+ccl (save-application name :init-file "cfg/okra-init.lisp" :prepend-kernel t)
+
+;; From http://sbcl.org/
+;;
+;;   see: http://www.sbcl.org/manual/Saving-a-Core-Image.html
 ;; notes: *default-pathname-defaults*, sb-ext:*core-pathname*
-#+sbcl (save-lisp-and-die "bin/okra" :executable t)
+#+sbcl (save-lisp-and-die name :executable t)
