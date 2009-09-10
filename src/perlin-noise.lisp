@@ -185,31 +185,6 @@
                  (the fixnum (truncate (* (mod z 1) precision)))))))
 
 
-;;;# Fractal Brownian Motion
-
-(defun fbm2d (x y &key (fn #'simplex2d-reference) (octaves 8) (multiplier 2))
-  (loop with result = 0.0
-        with scale = (/ 1.0 multiplier)
-        with weight = 0.5
-        repeat octaves
-        do (incf result (* (funcall fn (* x scale) (* y scale)) weight))
-           (setf scale (* scale multiplier))
-           (setf weight (/ weight multiplier))
-        finally (return result)))
-
-
-(defun fbm3d (x y z &key (fn #'perlin-noise) (octaves 8) (multiplier 2))
-  (loop with result = 0.0
-        with scale = (/ 1.0 multiplier)
-        with weight = 0.5
-        repeat octaves
-        do (incf result (* (funcall fn (* x scale) (* y scale) (* z scale))
-                           weight))
-           (setf scale (* scale multiplier))
-           (setf weight (/ weight multiplier))
-        finally (return result)))
-
-
 ;;;# Naive Benchmark
 
 (defun perlin-noise-benchmark (&key (fn #'perlin-noise) (iterations 2500000))

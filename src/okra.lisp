@@ -22,41 +22,6 @@
    (viewports :accessor viewports-of :initarg :viewports :initform nil)))
 
 
-;;;# Variables
-
-(defvar *pi* 3.14159265358979323846)
-(defvar *pi/180* (/ *pi* 180.0))
-
-(defparameter *render-window* nil)
-(defparameter *root-node* nil)
-(defparameter *scene-manager* nil)
-
-
-;;;# Macros
-
-(defmacro with-xy ((x-var x-max y-var y-max &key (x-min 0) (y-min 0))
-                   &body body)
-  `(loop for ,y-var from ,y-min below ,y-max
-         do (loop for ,x-var from ,x-min below ,x-max
-                  do ,@body)))
-
-
-(defmacro with-xyz ((x-var x-max y-var y-max z-var z-max &key (x-min 0)
-                     (y-min 0) (z-min 0)) &body body)
-  `(loop for ,z-var from ,z-min below ,z-max
-         do (loop for ,y-var from ,y-min below ,y-max
-                  do (loop for ,x-var from ,x-min below ,x-max
-                           do ,@body))))
-
-
-(defmacro with-xzy ((x-var x-max y-var y-max z-var z-max &key (x-min 0)
-                     (y-min 0) (z-min 0)) &body body)
-  `(loop for ,y-var from ,y-min below ,y-max
-         do (loop for ,z-var from ,z-min below ,z-max
-                  do (loop for ,x-var from ,x-min below ,x-max
-                           do ,@body))))
-
-
 ;;;# Functions
 ;;;
 ;;; I should do something with (scene-manager-create-entity ... ... "Prefab_*")
