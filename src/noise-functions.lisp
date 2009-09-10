@@ -9,6 +9,21 @@
 (in-package :okra)
 
 
+;;;# Bands
+
+(defun bands3d (x y z &key (fn #'perlin-noise) (octaves 8) (multiplier 2))
+  (loop with result = 0.0
+        with scale = (/ 1.0 multiplier)
+        with weight = 0.5
+        repeat octaves
+        do (incf result
+                 (abs (* (funcall fn (* x scale) (* y scale) (* z scale))
+                         weight)))
+           (setf scale (* scale multiplier))
+           (setf weight (/ weight multiplier))
+        finally (return (sin (+ x result)))))
+
+
 ;;;# Fractal Brownian Motion
 
 (defun fbm2d (x y &key (fn #'simplex2d-reference) (octaves 8) (multiplier 2))
