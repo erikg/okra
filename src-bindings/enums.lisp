@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-08-07 15:52:09.
+;;;; This file was generated on: 2009-09-15 10:46:19.
 
 (in-package :okra-bindings)
 
@@ -440,10 +440,10 @@
     (:pf-r8g8b8a8 28)
     (:pf-x8r8g8b8 26)
     (:pf-x8b8g8r8 27)
-    (:pf-byte-rgb 11)
-    (:pf-byte-bgr 10)
-    (:pf-byte-bgra 12)
-    (:pf-byte-rgba 13)
+    (:pf-byte-rgb 10)
+    (:pf-byte-bgr 11)
+    (:pf-byte-bgra 14)
+    (:pf-byte-rgba 28)
     (:pf-a2r10g10b10 15)
     (:pf-a2b10g10r10 16)
     (:pf-dxt1 17)
