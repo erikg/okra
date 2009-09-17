@@ -10,6 +10,6 @@
 
 (defpackage :okra-common
   (:use :cl)
-  (:export :append1 :asdf :current-date-time-string :error-message :last1
-           :mkfstr :mkstr :print-hash :quit :unique-id :verbose
+  (:export :append1 :asdf :current-date-time-string :defalias :error-message
+           :last1 :mkfstr :mkstr :print-hash :quit :unique-id :verbose 
            :write-to-file))

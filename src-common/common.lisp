@@ -26,6 +26,11 @@
             yea mon day hou min sec)))
 
 
+(defun defalias (function alias)
+  "Defines an alias for FUNCTION, meaning it can be called with ALIAS too."
+  (setf (symbol-function alias) function))
+
+
 (defun error-message (msg)
   (format *error-output* "~&E: ~A~%" msg))
 
