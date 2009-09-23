@@ -53,11 +53,13 @@
                                                      rotate))))
 
 
-(defun make-entity (&key (name nil) (scene-manager *scene-manager*)
+(defun make-entity (&key (file nil) (name nil) (scene-manager *scene-manager*)
                     (prefab-type nil))
-  (let ((name (if name name (mkstr "entity-" (unique-id)))))
-    (make-instance 'entity
-                   :pointer (create-entity scene-manager name prefab-type))))
+  (let* ((name (if name name (mkstr "entity-" (unique-id))))
+         (pointer (if file  ; file has priority since it's the common use
+                      (create-entity scene-manager name file)
+                      (create-entity scene-manager name prefab-type))))
+    (make-instance 'entity :pointer pointer)))
 
 
 (defun make-light (&key (diffuse-colour #(1.0 1.0 1.0 1.0))
