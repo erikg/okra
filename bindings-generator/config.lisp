@@ -24,7 +24,8 @@
 ;;; indefinite time in the future we'll be able to process all files.
 ;;; (I doubt it and I'm not even sure we'd want to do that.)
 (defparameter *doxygen-files*
-  '("xml/class_ogre_1_1_camera.xml"
+  '("xml/class_ogre_1_1_animation_state.xml"
+    "xml/class_ogre_1_1_camera.xml"
     "xml/class_ogre_1_1_entity.xml"
     "xml/class_ogre_1_1_frustum.xml"
     "xml/class_ogre_1_1_light.xml"

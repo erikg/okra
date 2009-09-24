@@ -112,7 +112,10 @@
                               ;; skip deconstructors
                               (equal (elt name 0) #\~)
                               ;; skip member names starting with an underscore
-                              (equal (elt name 0) #\_))
+                              (equal (elt name 0) #\_)
+                              ;; skip operators
+                              (and (>= (length name) 8)
+                                   (equal (subseq name 0 8) "operator")))
                       (next-iteration))
                     (as type = (memberdef-type memberdef))
                     (as args = (memberdef-args memberdef))

@@ -46,6 +46,7 @@
     ("Vector4" . c-vector4)  ; XXX: this will lead to memory faults in CL
     ("VertexDataBindChoice" . c-vertex-data-bind-choice)
     ("const AxisAlignedBox&" . c-axis-aligned-box)
+    ("const BoneBlendMask*" . c-bone-blend-mask)
     ("const ColourValue&" . c-colour-value)
     ("const DisplayString&" . c-const-char)
     ("const EntitySet*" . c-entity-set)

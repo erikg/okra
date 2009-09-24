@@ -12,12 +12,54 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-09-15 10:46:19.
+;;;; This file was generated on: 2009-09-24 13:29:03.
 
 (in-package :okra-bindings)
 
 
 ;;; Generic Functions
+
+(defgeneric get-animation-name (this))
+
+(defgeneric get-time-position (this))
+
+(defgeneric set-time-position (this arg0))
+
+(defgeneric get-length (this))
+
+(defgeneric set-length (this arg0))
+
+(defgeneric get-weight (this))
+
+(defgeneric set-weight (this arg0))
+
+(defgeneric add-time (this arg0))
+
+(defgeneric has-ended (this))
+
+(defgeneric get-enabled (this))
+
+(defgeneric set-enabled (this arg0))
+
+(defgeneric set-loop (this arg0))
+
+(defgeneric get-loop (this))
+
+(defgeneric copy-state-from (this arg0))
+
+(defgeneric get-parent (this))
+
+(defgeneric create-blend-mask (this arg0 arg1))
+
+(defgeneric destroy-blend-mask (this))
+
+(defgeneric get-blend-mask (this))
+
+(defgeneric has-blend-mask (this))
+
+(defgeneric set-blend-mask-entry (this arg0 arg1))
+
+(defgeneric get-blend-mask-entry (this arg0))
 
 (defgeneric get-scene-manager (this &optional arg0))
 
@@ -485,8 +527,6 @@
 
 (defgeneric is-debug-display-enabled (this))
 
-(defgeneric get-parent (this))
-
 (defgeneric reset-orientation (this))
 
 (defgeneric set-scale (this &optional arg0 arg1 arg2))
@@ -578,8 +618,6 @@
 (defgeneric initialise (this &optional arg0 arg1 arg2))
 
 (defgeneric is-enabled (this))
-
-(defgeneric set-enabled (this arg0))
 
 (defgeneric set-dimensions (this &optional arg0 arg1 arg2 arg3))
 

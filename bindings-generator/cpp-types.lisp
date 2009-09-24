@@ -83,6 +83,13 @@
     (otherwise nil)))
 
 
+(defun c-bone-blend-mask (type)
+  (case type
+    (:arg-type "const AnimationState::BoneBlendMask*")
+    (:return-type "const AnimationState::BoneBlendMask*")
+    (otherwise nil)))
+
+
 (defun c-camera-iterator (type)
   (case type
     (:arg-type "SceneManager::CameraIterator")

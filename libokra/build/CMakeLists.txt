@@ -9,12 +9,12 @@
 #
 # See the LICENSE file in the Okra root directory for more info.
 #
-# This file was generated on: 2009-09-15 10:46:19.
+# This file was generated on: 2009-09-24 13:29:03.
 
 set(LIBOKRA_SOURCE_FILES
     "../../3rd-party/moc/CollisionTools.cpp"
     "../src/handwritten/misc.cpp" "../src/handwritten/moc.cpp"
-    "../src/ogre-camera.cpp" "../src/ogre-entity.cpp" "../src/ogre-frustum.cpp" "../src/ogre-light.cpp" "../src/ogre-manual-object.cpp" "../src/ogre-movable-object.cpp" "../src/ogre-node.cpp" "../src/ogre-overlay.cpp" "../src/ogre-overlay-element.cpp" "../src/ogre-overlay-manager.cpp" "../src/ogre-render-target.cpp" "../src/ogre-render-window.cpp" "../src/ogre-resource-group-manager.cpp" "../src/ogre-root.cpp" "../src/ogre-scene-manager.cpp" "../src/ogre-scene-node.cpp" "../src/ogre-timer.cpp" "../src/ogre-viewport.cpp")
+    "../src/ogre-animation-state.cpp" "../src/ogre-camera.cpp" "../src/ogre-entity.cpp" "../src/ogre-frustum.cpp" "../src/ogre-light.cpp" "../src/ogre-manual-object.cpp" "../src/ogre-movable-object.cpp" "../src/ogre-node.cpp" "../src/ogre-overlay.cpp" "../src/ogre-overlay-element.cpp" "../src/ogre-overlay-manager.cpp" "../src/ogre-render-target.cpp" "../src/ogre-render-window.cpp" "../src/ogre-resource-group-manager.cpp" "../src/ogre-root.cpp" "../src/ogre-scene-manager.cpp" "../src/ogre-scene-node.cpp" "../src/ogre-timer.cpp" "../src/ogre-viewport.cpp")
 
 add_library(okra ${LIBOKRA_SOURCE_FILES})
 

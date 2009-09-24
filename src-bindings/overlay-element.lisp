@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-09-15 10:46:19.
+;;;; This file was generated on: 2009-09-24 13:29:03.
 
 (in-package :okra-bindings)
 
