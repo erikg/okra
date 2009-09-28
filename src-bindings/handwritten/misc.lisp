@@ -14,6 +14,16 @@
   (array-shuttle :pointer))
 
 
+(defcfun ("hw_create_ray" create-ray)
+    :pointer
+  (x-origin okra-real)
+  (y-origin okra-real)
+  (z-origin okra-real)
+  (x-dir okra-real)
+  (y-dir okra-real)
+  (z-dir okra-real))
+
+
 (defcfun "hw_free"
     :void
   (memory :pointer))
@@ -60,6 +70,10 @@
     :void
   (manual-object :pointer)
   (floats-array :pointer))
+
+
+(defcfun ("hw_ray_constructor" ray-constructor)
+    :pointer)
 
 
 (defcfun "hw_root_constructor"

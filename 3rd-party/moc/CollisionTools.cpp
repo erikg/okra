@@ -259,12 +259,29 @@ bool CollisionTools::raycast(const Ogre::Ray &ray, Ogre::Vector3 &result,Ogre::M
             break;
         }
 
-        // only check this result if its a hit against an entity
-        if ((query_result[qr_idx].movable != NULL)  &&
-            (query_result[qr_idx].movable->getMovableType().compare("Entity") == 0))
+        // Only check this result if its a hit against an Entity or
+        // ManualObject.
+        if ((query_result[qr_idx].movable != NULL) &&
+            (query_result[qr_idx].movable->isVisible()) &&
+            ((query_result[qr_idx].movable->getMovableType().compare("Entity") == 0) ||
+             (query_result[qr_idx].movable->getMovableType().compare("ManualObject") == 0)))
         {
             // get the entity to check
-			Ogre::MovableObject *pentity = static_cast<Ogre::MovableObject*>(query_result[qr_idx].movable);
+            Ogre::MovableObject *pmovable =
+               static_cast<Ogre::MovableObject*>(query_result[qr_idx].movable);
+
+            Ogre::MeshPtr mesh_ptr;
+
+            if (query_result[qr_idx].movable->getMovableType().compare("Entity") == 0)
+            {
+                mesh_ptr = ((Ogre::Entity*)pmovable)->getMesh();
+            }
+            else
+            {
+                // XXX: Does "Mesh" get replaced so we can get away with not
+                // XXX: deleting it for now?
+                mesh_ptr = ((Ogre::ManualObject*)pmovable)->convertToMesh("Mesh", "General");
+            }
 
             // mesh data to retrieve
             size_t vertex_count;
@@ -273,10 +290,7 @@ bool CollisionTools::raycast(const Ogre::Ray &ray, Ogre::Vector3 &result,Ogre::M
             Ogre::uint32 *indices;
 
             // get the mesh information
-			GetMeshInformation(((Ogre::Entity*)pentity)->getMesh(), vertex_count, vertices, index_count, indices,
-                              pentity->getParentNode()->_getDerivedPosition(),
-                              pentity->getParentNode()->_getDerivedOrientation(),
-                              pentity->getParentNode()->_getDerivedScale());
+            GetMeshInformation(mesh_ptr, vertex_count, vertices, index_count, indices, pmovable->getParentNode()->_getDerivedPosition(), pmovable->getParentNode()->_getDerivedOrientation(), pmovable->getParentNode()->_getDerivedScale());
 
             // test for hitting individual triangles on the mesh
             bool new_closest_found = false;
@@ -299,7 +313,7 @@ bool CollisionTools::raycast(const Ogre::Ray &ray, Ogre::Vector3 &result,Ogre::M
                 }
             }
 
-			// free the verticies and indicies memory
+            // free the verticies and indicies memory
             delete[] vertices;
             delete[] indices;
 
@@ -307,7 +321,7 @@ bool CollisionTools::raycast(const Ogre::Ray &ray, Ogre::Vector3 &result,Ogre::M
             // closest_result before moving on to the next object.
             if (new_closest_found)
             {
-				target = pentity;
+                target = pmovable;
                 closest_result = ray.getPoint(closest_distance);
             }
         }
@@ -317,7 +331,7 @@ bool CollisionTools::raycast(const Ogre::Ray &ray, Ogre::Vector3 &result,Ogre::M
     if (closest_distance >= 0.0f)
     {
         // raycast success
-		result = closest_result;
+        result = closest_result;
         return (true);
     }
     else

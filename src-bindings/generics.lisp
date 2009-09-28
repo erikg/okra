@@ -12,7 +12,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-09-24 13:29:03.
+;;;; This file was generated on: 2009-09-28 14:07:26.
 
 (in-package :okra-bindings)
 
@@ -718,6 +718,24 @@
 (defgeneric get-template-iterator (this))
 
 (defgeneric is-template (this arg0))
+
+(defgeneric set-ray (this arg0))
+
+(defgeneric get-ray (this))
+
+(defgeneric set-sort-by-distance (this arg0 arg1))
+
+(defgeneric get-sort-by-distance (this))
+
+(defgeneric get-max-results (this))
+
+(defgeneric execute (this &optional arg0))
+
+(defgeneric get-last-results (this))
+
+(defgeneric clear-results (this))
+
+(defgeneric query-result (this &optional arg0 arg1))
 
 (defgeneric get-metrics (this arg0 arg1 arg2))
 

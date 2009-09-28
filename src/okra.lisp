@@ -89,6 +89,14 @@
                  :pointer (get-overlay-manager-singleton-ptr)))
 
 
+;; This isn't used in any examples so I'm starting to use the 'better' default
+;; for scene-manager.
+(defun make-ray-scene-query (&key (mask #xffffffff) (ray (ray-constructor))
+                             (scene-manager (manager-of *scene*)))
+  (make-instance 'ray-scene-query
+                 :pointer (create-ray-query scene-manager ray mask)))
+
+
 (defun make-render-window (&key (name nil) (width 800) (height 600)
                            (fullscreen nil) (misc-params (cffi:null-pointer)))
   (let ((name (if name name (mkstr "render-window-" (unique-id)))))
@@ -144,6 +152,7 @@
 (defun okra-window (&key (name "Okra") (width 800) (height 600)
                     (plugins '("Plugin_CgProgramManager"
                                "Plugin_OctreeSceneManager"))
+                               ;"Plugin_ParticleFX"))
                     (render-system "OpenGL Rendering Subsystem")
                     (resources '(("resources" "FileSystem" "General"))))
   (setf *ogre-root* (make-instance 'root))

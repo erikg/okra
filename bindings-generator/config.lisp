@@ -35,6 +35,7 @@
     "xml/class_ogre_1_1_overlay.xml"
     "xml/class_ogre_1_1_overlay_element.xml"
     "xml/class_ogre_1_1_overlay_manager.xml"
+    "xml/class_ogre_1_1_ray_scene_query.xml"
     "xml/class_ogre_1_1_render_operation.xml"
     "xml/class_ogre_1_1_render_target.xml"
     "xml/class_ogre_1_1_render_window.xml"

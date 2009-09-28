@@ -16,4 +16,4 @@
 (defpackage :okra-bindings
   (:use :cl :cffi :okra-common)
   (:shadow :position)
-  (:export *ogre-root* :ogre-object :name-of :pointer-to :conan :root-constructor :get-overlay-manager-singleton-ptr :get-resource-group-manager-singleton-ptr :get-window-handler :hw-free :hw-malloc :hw-manual-object :hw-manual-object-triangle :message-pump :simple-add-viewport :get-available-renderers-test[TMPL_LOOP "symbols"] :[TMPL_VAR "symbol"][/TMPL_LOOP]))
+  (:export *ogre-root* :ogre-object :name-of :pointer-to :conan :create-ray :ray-constructor :root-constructor :get-overlay-manager-singleton-ptr :get-resource-group-manager-singleton-ptr :get-window-handler :hw-free :hw-malloc :hw-manual-object :hw-manual-object-triangle :message-pump :simple-add-viewport :get-available-renderers-test[TMPL_LOOP "symbols"] :[TMPL_VAR "symbol"][/TMPL_LOOP]))

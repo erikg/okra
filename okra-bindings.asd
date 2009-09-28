@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-09-24 13:29:03.
+;;;; This file was generated on: 2009-09-28 14:07:27.
 
 (in-package :cl-user)
 
@@ -40,6 +40,7 @@
      (:file "overlay" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
      (:file "overlay-element" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
      (:file "overlay-manager" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "ray-scene-query" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
      (:file "render-target" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
      (:file "render-window" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
      (:file "resource-group-manager" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))

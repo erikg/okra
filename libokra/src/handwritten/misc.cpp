@@ -12,6 +12,8 @@
 extern "C"
 {
     bool hw_conan (array_shuttle*);
+    Ray* hw_create_ray (okraReal, okraReal, okraReal,
+                        okraReal, okraReal, okraReal);
     void hw_free (void*);  // sigh...
     array_shuttle* hw_get_available_renderers (Root*);
     OverlayManager* hw_get_overlay_manager_singleton_ptr ();
@@ -21,6 +23,7 @@ extern "C"
     ManualObject* hw_manual_object (SceneManager*, const char*, const char*,
                                     okraReal[], int);
     void hw_manual_object_triangle (ManualObject*, okraReal[]);
+    Ray* hw_ray_constructor ();
     Root* hw_root_constructor (const char*, const char*, const char*);
     void hw_message_pump ();
     Viewport* hw_simple_add_viewport (RenderWindow*, Camera*);
@@ -64,6 +67,14 @@ bool hw_conan (array_shuttle* as)
         std::cout << "[hw_conan] deleting array_shuttle..." << std::endl;
     delete as;
     return true;
+}
+
+
+Ray* hw_create_ray (okraReal x_origin, okraReal y_origin, okraReal z_origin,
+                    okraReal x_dir, okraReal y_dir, okraReal z_dir)
+{
+  return new Ray(Vector3(x_origin, y_origin, z_origin),
+                 Vector3(x_dir, y_dir, z_dir));
 }
 
 
@@ -161,6 +172,12 @@ void hw_manual_object_triangle (ManualObject* mo, okraReal floats[])
     //mo->position(floats[16], floats[17], floats[18]);
     //mo->normal(floats[19], floats[20], floats[21]);
     //mo->textureCoord(floats[22], floats[23]);
+}
+
+
+Ray* hw_ray_constructor ()
+{
+  return new Ogre::Ray();
 }
 
 
