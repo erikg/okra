@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-09-24 13:29:03.
+;;;; This file was generated on: 2009-09-29 16:00:39.
 
 (in-package :okra-bindings)
 
@@ -497,6 +497,18 @@
 
 (defmethod get-cast-shadows ((this movable-object))
   (ogre-movable-object-get-cast-shadows (pointer-to this)))
+
+
+;; name: "getReceivesShadows"
+;; type: "bool"
+;; args: "void"
+;;
+(defcfun "ogre_movable_object_get_receives_shadows"
+    :boolean
+  (ogre-movable-object :pointer))
+
+(defmethod get-receives-shadows ((this movable-object))
+  (ogre-movable-object-get-receives-shadows (pointer-to this)))
 
 
 ;; name: "getPointExtrusionDistance"

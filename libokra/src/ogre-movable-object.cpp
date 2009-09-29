@@ -9,7 +9,7 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-09-24 13:29:03.
+// This file was generated on: 2009-09-29 16:00:39.
 
 #include "handwritten/okra.h"
 
@@ -56,6 +56,7 @@ extern "C"
     const AxisAlignedBox& ogre_movable_object_get_dark_cap_bounds (MovableObject*, const Light&, Real);
     void ogre_movable_object_set_cast_shadows (MovableObject*, bool);
     bool ogre_movable_object_get_cast_shadows (MovableObject*);
+    bool ogre_movable_object_get_receives_shadows (MovableObject*);
     Real ogre_movable_object_get_point_extrusion_distance (MovableObject*, const Light*);
     unsigned int ogre_movable_object_get_type_flags (MovableObject*);
     void ogre_movable_object_visit_renderables (MovableObject*, Renderable::Visitor*, bool);
@@ -406,6 +407,15 @@ void ogre_movable_object_set_cast_shadows (MovableObject* ogre_movable_object, b
 bool ogre_movable_object_get_cast_shadows (MovableObject* ogre_movable_object)
 {
     return ogre_movable_object->getCastShadows();
+}
+
+// name: "getReceivesShadows"
+// type: "bool"
+// args: "void"
+//
+bool ogre_movable_object_get_receives_shadows (MovableObject* ogre_movable_object)
+{
+    return ogre_movable_object->getReceivesShadows();
 }
 
 // name: "getPointExtrusionDistance"

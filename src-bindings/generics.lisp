@@ -12,7 +12,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-09-28 14:07:26.
+;;;; This file was generated on: 2009-09-29 16:00:39.
 
 (in-package :okra-bindings)
 
@@ -520,6 +520,8 @@
 (defgeneric set-cast-shadows (this arg0))
 
 (defgeneric get-cast-shadows (this))
+
+(defgeneric get-receives-shadows (this))
 
 (defgeneric get-point-extrusion-distance (this arg0))
 

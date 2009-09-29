@@ -12,7 +12,7 @@
 (in-package :okra-system)
 
 (asdf:defsystem :okra-cegui
-  :version "1.6.2.2"
+  :version "1.6.4.1"
   :components
     ((:module src-cegui
       :serial t

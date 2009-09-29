@@ -14,7 +14,7 @@
 (in-package :okra-system)
 
 (asdf:defsystem :okra-bindings-generator
-  :version "1.6.2.2"
+  :version "1.6.4.1"
   :components
     ((:module bindings-generator
       :serial t

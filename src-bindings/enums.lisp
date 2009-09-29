@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-09-24 13:29:03.
+;;;; This file was generated on: 2009-09-29 16:00:39.
 
 (in-package :okra-bindings)
 
@@ -574,7 +574,8 @@
     (:gpu-s3 4)
     (:gpu-matrox 5)
     (:gpu-3dlabs 6)
-    (:gpu-vendor-count 7))
+    (:gpu-sis 7)
+    (:gpu-vendor-count 8))
 
 (defcenum scene-type
     (:st-generic 1)
