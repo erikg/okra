@@ -109,10 +109,10 @@
           finally (return (coerce m 'vector)))))
 
 
-(defun vector-scale (v scalar)
-  "Scales every element of V by SCALAR."
+(defun vector-scale (v &rest scalars)
+  "Scales every element of V by SCALARS."
   (loop for n across v
-        collect (* n scalar) into m
+        collect (apply #'* n scalars) into m
         finally (return (coerce m 'vector))))
 
 
