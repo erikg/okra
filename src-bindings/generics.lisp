@@ -12,7 +12,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-09-29 16:00:39.
+;;;; This file was generated on: 2009-10-01 12:28:05.
 
 (in-package :okra-bindings)
 
@@ -1392,6 +1392,14 @@
 (defgeneric get-auto-track-local-direction (this))
 
 (defgeneric flip-visibility (this arg0))
+
+(defgeneric get-sub-mesh (this))
+
+(defgeneric get-technique (this))
+
+(defgeneric get-num-world-transforms (this))
+
+(defgeneric get-casts-shadows (this))
 
 (defgeneric reset (this))
 

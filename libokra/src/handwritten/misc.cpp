@@ -23,6 +23,12 @@ extern "C"
     ManualObject* hw_manual_object (SceneManager*, const char*, const char*,
                                     okraReal[], int);
     void hw_manual_object_triangle (ManualObject*, okraReal[]);
+    MaterialPtr hw_material_clone (Material*, const char*);
+    void hw_material_set_ambient (Material*, okraReal, okraReal, okraReal);
+    void hw_material_set_diffuse (Material*, okraReal, okraReal, okraReal,
+                                  okraReal);
+    void hw_material_set_self_illumination (Material*, okraReal, okraReal,
+                                            okraReal);
     Ray* hw_ray_constructor ();
     Root* hw_root_constructor (const char*, const char*, const char*);
     void hw_message_pump ();
@@ -172,6 +178,31 @@ void hw_manual_object_triangle (ManualObject* mo, okraReal floats[])
     //mo->position(floats[16], floats[17], floats[18]);
     //mo->normal(floats[19], floats[20], floats[21]);
     //mo->textureCoord(floats[22], floats[23]);
+}
+
+MaterialPtr hw_material_clone (Material* m, const char* new_name)
+{
+  return m->clone(new_name);
+}
+
+
+void hw_material_set_ambient (Material* m, okraReal r, okraReal g, okraReal b)
+{
+    m->setAmbient(r, g, b);
+}
+
+
+void hw_material_set_diffuse (Material* m, okraReal r, okraReal g, okraReal b,
+                              okraReal a)
+{
+    m->setDiffuse(r, g, b, a);
+}
+
+
+void hw_material_set_self_illumination (Material* m, okraReal r, okraReal g,
+                                        okraReal b)
+{
+    m->setSelfIllumination(r, g, b);
 }
 
 

@@ -182,6 +182,20 @@
     (otherwise nil)))
 
 
+(defun c-lod-distance-iterator (type)
+  (case type
+    (:arg-type "Material::LodDistanceIterator")
+    (:return-type "Material::LodDistanceIterator")
+    (otherwise nil)))
+
+
+(defun c-lod-distance-list (type)
+  (case type
+    (:arg-type "const Material::LodDistanceList&")
+    (:return-type "const Material::LodDistanceList&")
+    (otherwise nil)))
+
+
 (defun c-manual-object-section (type)
   (case type
     (:arg-type "ManualObject::ManualObjectSection*")
@@ -374,6 +388,13 @@
                       "ARG[2]), ARG[3]);"))
     (:arg-type "const okraArray4")
     (:return-type "const Sphere&")
+    (otherwise nil)))
+
+
+(defun c-technique-iterator (type)
+  (case type
+    (:arg-type "Material::TechniqueIterator")
+    (:return-type "Material::TechniqueIterator")
     (otherwise nil)))
 
 

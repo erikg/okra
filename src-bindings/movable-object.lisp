@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-09-29 16:00:39.
+;;;; This file was generated on: 2009-10-01 12:11:44.
 
 (in-package :okra-bindings)
 
@@ -158,16 +158,12 @@
 ;; args: (("bool" . "derive"))
 ;;
 (defcfun "ogre_movable_object_get_world_bounding_sphere"
-    :void
+    :pointer
   (ogre-movable-object :pointer)
-  (array4 :pointer)
   (derive :boolean))
 
 (defmethod get-world-bounding-sphere ((this movable-object) derive)
-  (with-foreign-object (array 'okra-real 4)
-    (ogre-movable-object-get-world-bounding-sphere (pointer-to this) array derive)
-    (vector (mem-aref array 'okra-real 0) (mem-aref array 'okra-real 1)
-            (mem-aref array 'okra-real 2) (mem-aref array 'okra-real 3))))
+  (ogre-movable-object-get-world-bounding-sphere (pointer-to this) derive))
 
 
 ;; name: "getVisible"

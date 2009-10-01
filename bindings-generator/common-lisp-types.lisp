@@ -224,6 +224,40 @@
     (otherwise nil)))
 
 
+;;; First try to return a CPP vector as a dynamically sized array.  Leaks
+;;; like a sieve in combination with c-render-system-list.
+;;; (foreign-free rs-list) possibly doesn't work and even if it does it'll
+;;; only free the rs-list memory and not that which all of its pointers are
+;;; pointing to.
+(defun cl-render-system-list (type name)
+  (declare (ignore name))
+  (case type
+    (:after
+      (mkfstr "for i from 1 to (parse-integer (mem-aref rs-list :string 0))~%"
+              "        collect (mem-aref rs-list :string i)~%"
+              "        finally (foreign-free rs-list)"))
+    (:before "(loop with rs-list =")  ; should be :before-call like in cpp
+    (:return-type ":pointer")
+    (otherwise nil)))
+
+
+;; XXX: probably wrong, I'm just defining it to make the generator shut up
+(defun cl-scene-blend-factor (type name)
+  (declare (ignore name))
+  (case type
+    (:arg-type "scene-blend-factor")
+    (:return-type "scene-blend-factor")
+    (otherwise nil)))
+
+
+(defun cl-scene-blend-type (type name)
+  (declare (ignore name))
+  (case type
+    (:arg-type "scene-blend-type")
+    (:return-type "scene-blend-type")
+    (otherwise nil)))
+
+
 (defparameter *simple-types* '("uint16" "unsigned short"))
 
 (defun cl-simple-type (type name)
@@ -251,23 +285,6 @@
     (:arg-type ":unsigned-int")
     (:overloaded-type "'integer")
     (:return-type ":unsigned-int")
-    (otherwise nil)))
-
-
-;;; First try to return a CPP vector as a dynamically sized array.  Leaks
-;;; like a sieve in combination with c-render-system-list.
-;;; (foreign-free rs-list) possibly doesn't work and even if it does it'll
-;;; only free the rs-list memory and not that which all of its pointers are
-;;; pointing to.
-(defun cl-render-system-list (type name)
-  (declare (ignore name))
-  (case type
-    (:after
-      (mkfstr "for i from 1 to (parse-integer (mem-aref rs-list :string 0))~%"
-              "        collect (mem-aref rs-list :string i)~%"
-              "        finally (foreign-free rs-list)"))
-    (:before "(loop with rs-list =")  ; should be :before-call like in cpp
-    (:return-type ":pointer")
     (otherwise nil)))
 
 

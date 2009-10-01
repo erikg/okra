@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-09-29 16:00:39.
+;;;; This file was generated on: 2009-10-01 12:28:05.
 
 (in-package :okra-bindings)
 
@@ -336,16 +336,12 @@
 ;; args: (("bool" . "derive"))
 ;;
 (defcfun "ogre_entity_get_world_bounding_sphere"
-    :void
+    :pointer
   (ogre-entity :pointer)
-  (array4 :pointer)
   (derive :boolean))
 
 (defmethod get-world-bounding-sphere ((this entity) derive)
-  (with-foreign-object (array 'okra-real 4)
-    (ogre-entity-get-world-bounding-sphere (pointer-to this) array derive)
-    (vector (mem-aref array 'okra-real 0) (mem-aref array 'okra-real 1)
-            (mem-aref array 'okra-real 2) (mem-aref array 'okra-real 3))))
+  (ogre-entity-get-world-bounding-sphere (pointer-to this) derive))
 
 
 ;; name: "getEdgeList"

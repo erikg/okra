@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-09-29 16:00:40.
+;;;; This file was generated on: 2009-10-01 12:28:05.
 
 (in-package :okra-bindings)
 
@@ -1201,7 +1201,7 @@
 (defcfun "ogre_scene_manager_create_sphere_query"
     :pointer
   (ogre-scene-manager :pointer)
-  (sphere okra-array4)
+  (sphere :pointer)
   (mask :unsigned-long))
 
 (defmethod create-sphere-query ((this scene-manager) sphere mask)

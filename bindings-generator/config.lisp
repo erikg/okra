@@ -30,6 +30,7 @@
     "xml/class_ogre_1_1_frustum.xml"
     "xml/class_ogre_1_1_light.xml"
     "xml/class_ogre_1_1_manual_object.xml"
+    ;"xml/class_ogre_1_1_material.xml"  ; troublesome
     "xml/class_ogre_1_1_movable_object.xml"
     "xml/class_ogre_1_1_node.xml"
     "xml/class_ogre_1_1_overlay.xml"
@@ -43,6 +44,7 @@
     "xml/class_ogre_1_1_root.xml"
     "xml/class_ogre_1_1_scene_manager.xml"
     "xml/class_ogre_1_1_scene_node.xml"
+    "xml/class_ogre_1_1_sub_entity.xml"
     "xml/class_ogre_1_1_timer.xml"
     "xml/class_ogre_1_1_viewport.xml"
     ;"xml/class_ogre_1_1_window_event_utilities.xml"

@@ -72,6 +72,37 @@
   (floats-array :pointer))
 
 
+(defcfun ("hw_material_clone" material-clone)
+    :pointer
+  (material :pointer)
+  (new-name :string))
+
+
+(defcfun ("hw_material_set_ambient" material-set-ambient)
+    :void
+  (material :pointer)
+  (r okra-real)
+  (g okra-real)
+  (b okra-real))
+
+
+(defcfun ("hw_material_set_diffuse" material-set-diffuse)
+    :void
+  (material :pointer)
+  (r okra-real)
+  (g okra-real)
+  (b okra-real)
+  (a okra-real))
+
+
+(defcfun ("hw_material_set_self_illumination" material-set-self-illumination)
+    :void
+  (material :pointer)
+  (r okra-real)
+  (g okra-real)
+  (b okra-real))
+
+
 (defcfun ("hw_ray_constructor" ray-constructor)
     :pointer)
 

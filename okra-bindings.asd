@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-09-29 16:00:40.
+;;;; This file was generated on: 2009-10-01 12:28:06.
 
 (in-package :cl-user)
 
@@ -19,7 +19,7 @@
 (in-package :okra-system)
 
 (asdf:defsystem :okra-bindings
-  :version "1.6.4.1"
+  :version "1.6.2.2"
   :components
   ((:module src-bindings
     :components
@@ -47,6 +47,7 @@
      (:file "root" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
      (:file "scene-manager" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
      (:file "scene-node" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "sub-entity" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
      (:file "timer" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
      (:file "viewport" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
      (:module handwritten :depends-on ("package" ogre-lib)
