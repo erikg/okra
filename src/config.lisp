@@ -14,6 +14,10 @@
 (defvar *pi* 3.14159265358979323846)
 (defvar *pi/180* (/ *pi* 180.0))
 
+(defvar +pi+ 3.14159265358979323846)
+(defvar +2pi+ (* 2 3.14159265358979323846))
+(defvar +pi/180+ (/ +pi+ 180.0))
+
 (defparameter *render-window* nil)
 (defparameter *root-node* nil)
 (defparameter *scene-manager* nil)
