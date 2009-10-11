@@ -14,6 +14,8 @@
 ;;;; it better.
 ;;;;
 ;;;; Also check this out some time in the future: http://www.gamedev.net/community/forums/mod/journal/journal.asp?jn=263350&reply_id=2889484
+;;;;
+;;;; Note to self: also implement value noise and check out voronoi.
 
 (in-package :okra)
 

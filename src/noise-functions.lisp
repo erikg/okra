@@ -26,7 +26,7 @@
 
 ;;;# Fractal Brownian Motion
 
-(defun fbm2d (x y &key (fn #'simplex2d-reference) (octaves 8) (multiplier 2))
+(defun fbm2d (x y &key (fn #'simplex-noise-2d) (octaves 8) (multiplier 2))
   (loop with result = 0.0
         with scale = (/ 1.0 multiplier)
         with weight = 0.5
@@ -96,7 +96,7 @@
 ;    (let* ((png (make-instance 'zpng:png :color-type :truecolor
 ;                               :width width :height height))
 ;           (image (zpng:data-array png)))
-;      (with-xy (x width y height)
+;      (with-2d (x width y height)
 ;        (let ((rgb (truncate (* (+ (ridge3d (/ x 32) (/ y 32) 0.0) 1) 127.0))))
 ;          (set-rgb image x y rgb rgb rgb)))
 ;      (zpng:write-png png "tmp.png"))))
