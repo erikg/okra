@@ -22,7 +22,8 @@
 
 ;;;# Variables
 
-(defparameter +perlin-noise-permutation+
+;; perlin noise permutation
+(defparameter +pnp+
   #(151 160 137 91 90 15 131 13 201 95 96 53 194 233 7 225 140 36 103 30 69 142
     8 99 37 240 21 10 23 190 6 148 247 120 234 75 0 26 197 62 94 252 219 203
     117 35 11 32 57 177 33 88 237 149 56 87 174 20 125 136 171 168 68 175 74
@@ -81,12 +82,12 @@
          (u (fade x))
          (v (fade y))
          (w (fade z))
-         (a  (+ (svref +perlin-noise-permutation+    xc   ) yc))
-         (aa (+ (svref +perlin-noise-permutation+    a    ) zc))
-         (ab (+ (svref +perlin-noise-permutation+ (+ a  1)) zc))
-         (b  (+ (svref +perlin-noise-permutation+ (+ xc 1)) yc))
-         (ba (+ (svref +perlin-noise-permutation+    b    ) zc))
-         (bb (+ (svref +perlin-noise-permutation+ (+ b  1)) zc)))
+         (a  (+ (svref +pnp+    xc   ) yc))
+         (aa (+ (svref +pnp+    a    ) zc))
+         (ab (+ (svref +pnp+ (+ a  1)) zc))
+         (b  (+ (svref +pnp+ (+ xc 1)) yc))
+         (ba (+ (svref +pnp+    b    ) zc))
+         (bb (+ (svref +pnp+ (+ b  1)) zc)))
     (lerp w (lerp v (lerp u (grad    aa       x       y       z  )
                             (grad    ba    (- x 1)    y       z  ))
                     (lerp u (grad    ab       x    (- y 1)    z  )
@@ -100,14 +101,16 @@
 ;;;# Single-Float Version
 
 (defun fade-sf (v)
-  (declare (optimize (compilation-speed 0) (debug 0) (safety 0) (space 0)
+  (declare (inline * + -)
+           (optimize (compilation-speed 0) (debug 0) (safety 0) (space 0)
                      (speed 3))
            (type single-float v))
   (* v v v (+ (* v (- (* v 6) 15)) 10)))
 
 
 (defun grad-sf (hash x y z)
-  (declare (optimize (compilation-speed 0) (debug 0) (safety 0) (space 0)
+  (declare (inline * + - < = logand)
+           (optimize (compilation-speed 0) (debug 0) (safety 0) (space 0)
                      (speed 3))
            (type fixnum hash)
            (type single-float x y z))
@@ -119,7 +122,8 @@
 
 
 (defun lerp-sf (v a b)
-  (declare (optimize (compilation-speed 0) (debug 0) (safety 0) (space 0)
+  (declare (inline * + -)
+           (optimize (compilation-speed 0) (debug 0) (safety 0) (space 0)
                      (speed 3))
            (type single-float v a b))
   (+ a (* v (- b a))))
@@ -127,7 +131,7 @@
 
 (defun perlin-noise-single-float (x y z)
   "X, Y and Z need to be SINGLE-FLOATS."
-  (declare (inline fade-sf grad-sf lerp-sf)
+  (declare (inline + - fade-sf floor grad-sf lerp-sf logand mod svref)
            (optimize (compilation-speed 0) (debug 0) (safety 0) (space 0)
                      (speed 3))
            (type single-float x y z))
@@ -140,12 +144,12 @@
          (u (fade-sf x))
          (v (fade-sf y))
          (w (fade-sf z))
-         (a  (+ (the fixnum (svref +perlin-noise-permutation+    xc   )) yc))
-         (aa (+ (the fixnum (svref +perlin-noise-permutation+    a    )) zc))
-         (ab (+ (the fixnum (svref +perlin-noise-permutation+ (+ a  1))) zc))
-         (b  (+ (the fixnum (svref +perlin-noise-permutation+ (+ xc 1))) yc))
-         (ba (+ (the fixnum (svref +perlin-noise-permutation+    b    )) zc))
-         (bb (+ (the fixnum (svref +perlin-noise-permutation+ (+ b  1))) zc)))
+         (a  (+ (the fixnum (svref +pnp+    xc   )) yc))
+         (aa (+ (the fixnum (svref +pnp+    a    )) zc))
+         (ab (+ (the fixnum (svref +pnp+ (+ a  1))) zc))
+         (b  (+ (the fixnum (svref +pnp+ (+ xc 1))) yc))
+         (ba (+ (the fixnum (svref +pnp+    b    )) zc))
+         (bb (+ (the fixnum (svref +pnp+ (+ b  1))) zc)))
     (lerp-sf w
       (lerp-sf v (lerp-sf u (grad-sf    aa       x       y       z  )
                             (grad-sf    ba    (- x 1)    y       z  ))
@@ -155,6 +159,8 @@
                             (grad-sf (+ ba 1) (- x 1)    y    (- z 1)))
                  (lerp-sf u (grad-sf (+ ab 1)    x    (- y 1) (- z 1))
                             (grad-sf (+ bb 1) (- x 1) (- y 1) (- z 1)))))))
+
+(defalias #'perlin-noise-single-float 'perlin-noise-sf)
 
 
 ;;;# Precalculated Version
