@@ -165,6 +165,7 @@
 
 ;;;# Precalculated Version
 
+;; Needs better documentation since its usage is a little peculiar.
 (defun perlin-noise-closure (&optional (precision 128))
   "Returns a closure which can be called just like PERLIN-NOISE-SINGLE-FLOAT.
   PRECISION will be used to determine the size of the precalculated perlin
@@ -184,7 +185,7 @@
                           (coerce (- (/ y (/ precision 2)) 1) 'single-float)
                           (coerce (- (/ z (/ precision 2)) 1) 'single-float))))
     (lambda (x y z)
-      (declare (inline aref mod truncate)
+      (declare (inline * aref mod truncate)
                (optimize (compilation-speed 0) (debug 0) (safety 0) (space 0)
                          (speed 3))
                (type single-float precision x y z))
