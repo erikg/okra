@@ -223,6 +223,16 @@
     (otherwise nil)))
 
 
+;; this has only been made for return types so far
+(defun c-mesh-ptr (type)
+  (case type
+    (:before-call "MeshPtr mesh_ptr = ")
+    (:no-return t)
+    (:post-code "return mesh_ptr.getPointer();")
+    (:return-type "Mesh*")
+    (otherwise nil)))
+
+
 (defun c-movable-object-factory-iterator (type)
   (case type
     (:arg-type "Root::MovableObjectFactoryIterator")

@@ -28,6 +28,7 @@
     ("Listener*" . c-listener)
     ("LodDistanceIterator" . c-lod-distance-iterator)
     ("ManualObjectSection*" . c-manual-object-section)
+    ("MeshPtr" . c-mesh-ptr)
     ("MovableObjectFactoryIterator" . c-movable-object-factory-iterator)
     ("MovableObjectIterator" . c-movable-object-iterator)
     ("ObjectIterator" . c-object-iterator)

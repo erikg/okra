@@ -164,6 +164,11 @@ wrapper libraries and after that I run one of the examples.
 (=./physics-and-input.sh= from the =examples= directory at the time of
 writing since I do not have regression tests yet.)
 
+** Troubleshooting SharedPtr
+
+Everything *Ptr should probably be handles like MeshPtr if they give
+problems.
+
 ** Unsupported C++ Features
 
  - default arguments

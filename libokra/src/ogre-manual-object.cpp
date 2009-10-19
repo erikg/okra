@@ -9,7 +9,7 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-09-29 16:00:39.
+// This file was generated on: 2009-10-19 17:50:09.
 
 #include "handwritten/okra.h"
 
@@ -43,7 +43,7 @@ extern "C"
     void ogre_manual_object_quad (ManualObject*, unsigned int, unsigned int, unsigned int, unsigned int);
     ManualObject::ManualObjectSection* ogre_manual_object_end (ManualObject*);
     void ogre_manual_object_set_material_name_size_t_string (ManualObject*, size_t, const char*);
-    MeshPtr ogre_manual_object_convert_to_mesh (ManualObject*, const char*, const char*);
+    Mesh* ogre_manual_object_convert_to_mesh (ManualObject*, const char*, const char*);
     void ogre_manual_object_set_use_identity_projection (ManualObject*, bool);
     bool ogre_manual_object_get_use_identity_projection (ManualObject*);
     void ogre_manual_object_set_use_identity_view (ManualObject*, bool);
@@ -298,9 +298,10 @@ void ogre_manual_object_set_material_name_size_t_string (ManualObject* ogre_manu
 // type: "MeshPtr"
 // args: (("const String&" . "meshName") ("const String&" . "groupName"))
 //
-MeshPtr ogre_manual_object_convert_to_mesh (ManualObject* ogre_manual_object, const char* meshName, const char* groupName)
+Mesh* ogre_manual_object_convert_to_mesh (ManualObject* ogre_manual_object, const char* meshName, const char* groupName)
 {
-    return ogre_manual_object->convertToMesh(meshName, groupName);
+    MeshPtr mesh_ptr = ogre_manual_object->convertToMesh(meshName, groupName);
+    return mesh_ptr.getPointer();
 }
 
 // name: "setUseIdentityProjection"
