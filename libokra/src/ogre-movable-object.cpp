@@ -415,7 +415,12 @@ bool ogre_movable_object_get_cast_shadows (MovableObject* ogre_movable_object)
 //
 bool ogre_movable_object_get_receives_shadows (MovableObject* ogre_movable_object)
 {
-    return ogre_movable_object->getReceivesShadows();
+    // Commented out for now since the Ogre SDK is still at 1.6.1.
+    //return ogre_movable_object->getReceivesShadows();
+    std::cout << "[ogre_movable_object_get_receives_shadows] "
+              << "This function is a stub and always returns 'true'!"
+              << std::endl;
+    return false;
 }
 
 // name: "getPointExtrusionDistance"
