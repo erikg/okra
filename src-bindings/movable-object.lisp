@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-10-01 12:11:44.
+;;;; This file was generated on: 2009-10-28 16:11:12.
 
 (in-package :okra-bindings)
 
@@ -392,18 +392,6 @@
   (ogre-movable-object-query-lights (pointer-to this)))
 
 
-;; name: "getEdgeList"
-;; type: "EdgeData*"
-;; args: "void"
-;;
-(defcfun "ogre_movable_object_get_edge_list"
-    :pointer
-  (ogre-movable-object :pointer))
-
-(defmethod get-edge-list ((this movable-object))
-  (ogre-movable-object-get-edge-list (pointer-to this)))
-
-
 ;; name: "hasEdgeList"
 ;; type: "bool"
 ;; args: "void"
@@ -579,6 +567,15 @@
   (ogre-movable-object :pointer))
 
 
+;; name: "getEdgeList"
+;; type: "EdgeData*"
+;; args: "void"
+;;
+(defcfun "ogre_movable_object_get_edge_list_void"
+    :pointer
+  (ogre-movable-object :pointer))
+
+
 ;; name: "setDebugDisplayEnabled"
 ;; type: "void"
 ;; args: (("bool" . "enabled"))
@@ -595,6 +592,13 @@
   (cond
     ((and (typep arg0 'null) (typep arg1 'null))
      (ogre-movable-object-is-visible-void (pointer-to this)))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod get-edge-list ((this movable-object) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'null))
+     (ogre-movable-object-get-edge-list-void (pointer-to this)))
     (t (error "Overloaded method not defined for this class."))))
 
 

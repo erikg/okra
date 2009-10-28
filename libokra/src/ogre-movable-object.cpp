@@ -9,7 +9,7 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-09-29 16:00:39.
+// This file was generated on: 2009-10-28 16:11:12.
 
 #include "handwritten/okra.h"
 
@@ -49,7 +49,7 @@ extern "C"
     void ogre_movable_object_remove_visibility_flags (MovableObject*, unsigned int);
     unsigned int ogre_movable_object_get_visibility_flags (MovableObject*);
     const LightList& ogre_movable_object_query_lights (MovableObject*);
-    EdgeData* ogre_movable_object_get_edge_list (MovableObject*);
+    EdgeData* ogre_movable_object_get_edge_list_void (MovableObject*);
     bool ogre_movable_object_has_edge_list (MovableObject*);
     Entity::ShadowRenderableListIterator ogre_movable_object_get_shadow_volume_renderable_iterator (MovableObject*, ShadowTechnique, const Light*, HardwareIndexBufferSharedPtr*, bool, Real, unsigned long);
     const AxisAlignedBox& ogre_movable_object_get_light_cap_bounds (MovableObject*);
@@ -350,7 +350,7 @@ const LightList& ogre_movable_object_query_lights (MovableObject* ogre_movable_o
 // type: "EdgeData*"
 // args: "void"
 //
-EdgeData* ogre_movable_object_get_edge_list (MovableObject* ogre_movable_object)
+EdgeData* ogre_movable_object_get_edge_list_void (MovableObject* ogre_movable_object)
 {
     return ogre_movable_object->getEdgeList();
 }
@@ -415,12 +415,7 @@ bool ogre_movable_object_get_cast_shadows (MovableObject* ogre_movable_object)
 //
 bool ogre_movable_object_get_receives_shadows (MovableObject* ogre_movable_object)
 {
-    // Commented out for now since the Ogre SDK is still at 1.6.1.
-    //return ogre_movable_object->getReceivesShadows();
-    std::cout << "[ogre_movable_object_get_receives_shadows] "
-              << "This function is a stub and always returns 'true'!"
-              << std::endl;
-    return false;
+    return ogre_movable_object->getReceivesShadows();
 }
 
 // name: "getPointExtrusionDistance"

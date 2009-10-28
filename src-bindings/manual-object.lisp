@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-09-29 16:00:39.
+;;;; This file was generated on: 2009-10-28 16:11:12.
 
 (in-package :okra-bindings)
 
@@ -336,18 +336,6 @@
   (ogre-manual-object-get-bounding-radius (pointer-to this)))
 
 
-;; name: "getEdgeList"
-;; type: "EdgeData*"
-;; args: "void"
-;;
-(defcfun "ogre_manual_object_get_edge_list"
-    :pointer
-  (ogre-manual-object :pointer))
-
-(defmethod get-edge-list ((this manual-object))
-  (ogre-manual-object-get-edge-list (pointer-to this)))
-
-
 ;; name: "hasEdgeList"
 ;; type: "bool"
 ;; args: "void"
@@ -548,12 +536,28 @@
   (name :string))
 
 
+;; name: "getEdgeList"
+;; type: "EdgeData*"
+;; args: "void"
+;;
+(defcfun "ogre_manual_object_get_edge_list_void"
+    :pointer
+  (ogre-manual-object :pointer))
+
+
 ;;; Methods for Overloaded Foreign Functions
 
 (defmethod set-material-name ((this manual-object) &optional (arg0 nil) (arg1 nil))
   (cond
     ((and (typep arg0 'integer) (typep arg1 'string))
      (ogre-manual-object-set-material-name-size-t-string (pointer-to this) arg0 arg1))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod get-edge-list ((this manual-object) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'null))
+     (ogre-manual-object-get-edge-list-void (pointer-to this)))
     (t (error "Overloaded method not defined for this class."))))
 
 

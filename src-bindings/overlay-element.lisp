@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-10-01 12:28:05.
+;;;; This file was generated on: 2009-10-28 16:11:12.
 
 (in-package :okra-bindings)
 
@@ -502,19 +502,6 @@
   (ogre-overlay-element-copy-from-template (pointer-to this) template-overlay))
 
 
-;; name: "clone"
-;; type: "OverlayElement*"
-;; args: (("const String&" . "instanceName"))
-;;
-(defcfun "ogre_overlay_element_clone"
-    :pointer
-  (ogre-overlay-element :pointer)
-  (instance-name :string))
-
-(defmethod clone ((this overlay-element) instance-name)
-  (ogre-overlay-element-clone (pointer-to this) instance-name))
-
-
 ;; name: "getSourceTemplate"
 ;; type: "const OverlayElement*"
 ;; args: "void"
@@ -579,6 +566,16 @@
   (mat-name :string))
 
 
+;; name: "clone"
+;; type: "OverlayElement*"
+;; args: (("const String&" . "instanceName"))
+;;
+(defcfun "ogre_overlay_element_clone_string"
+    :pointer
+  (ogre-overlay-element :pointer)
+  (instance-name :string))
+
+
 ;;; Methods for Overloaded Foreign Functions
 
 (defmethod set-position ((this overlay-element) &optional (arg0 nil) (arg1 nil) (arg2 nil))
@@ -593,6 +590,14 @@
   (cond
     ((and (typep arg0 'null) (typep arg1 'null))
      (ogre-overlay-element-is-visible-void (pointer-to this)))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod clone ((this overlay-element) &optional (arg0 nil) (arg1 nil))
+  (declare (ignore arg1))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-overlay-element-clone-string (pointer-to this) arg0))
     (t (error "Overloaded method not defined for this class."))))
 
 

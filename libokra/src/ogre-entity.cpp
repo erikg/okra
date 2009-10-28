@@ -9,7 +9,7 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-10-01 12:28:05.
+// This file was generated on: 2009-10-28 16:11:12.
 
 #include "handwritten/okra.h"
 
@@ -22,7 +22,7 @@ extern "C"
     SubEntity* ogre_entity_get_sub_entity_unsignedint (Entity*, unsigned int);
     SubEntity* ogre_entity_get_sub_entity_string (Entity*, const char*);
     unsigned int ogre_entity_get_num_sub_entities (Entity*);
-    Entity* ogre_entity_clone (Entity*, const char*);
+    Entity* ogre_entity_clone_string (Entity*, const char*);
     void ogre_entity_set_material_name_string (Entity*, const char*);
     void ogre_entity_set_material (Entity*, const MaterialPtr&);
     void ogre_entity_set_render_queue_group (Entity*, unsigned char);
@@ -47,7 +47,7 @@ extern "C"
     Real ogre_entity_get_bounding_radius (Entity*);
     const AxisAlignedBox& ogre_entity_get_world_bounding_box (Entity*, bool);
     const Sphere& ogre_entity_get_world_bounding_sphere (Entity*, bool);
-    EdgeData* ogre_entity_get_edge_list (Entity*);
+    EdgeData* ogre_entity_get_edge_list_void (Entity*);
     bool ogre_entity_has_edge_list (Entity*);
     Entity::ShadowRenderableListIterator ogre_entity_get_shadow_volume_renderable_iterator (Entity*, ShadowTechnique, const Light*, HardwareIndexBufferSharedPtr*, bool, Real, unsigned long);
     bool ogre_entity_has_skeleton (Entity*);
@@ -114,7 +114,7 @@ unsigned int ogre_entity_get_num_sub_entities (Entity* ogre_entity)
 // type: "Entity*"
 // args: (("const String&" . "newName"))
 //
-Entity* ogre_entity_clone (Entity* ogre_entity, const char* newName)
+Entity* ogre_entity_clone_string (Entity* ogre_entity, const char* newName)
 {
     return ogre_entity->clone(newName);
 }
@@ -340,7 +340,7 @@ const Sphere& ogre_entity_get_world_bounding_sphere (Entity* ogre_entity, bool d
 // type: "EdgeData*"
 // args: "void"
 //
-EdgeData* ogre_entity_get_edge_list (Entity* ogre_entity)
+EdgeData* ogre_entity_get_edge_list_void (Entity* ogre_entity)
 {
     return ogre_entity->getEdgeList();
 }

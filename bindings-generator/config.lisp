@@ -31,6 +31,7 @@
     "xml/class_ogre_1_1_light.xml"
     "xml/class_ogre_1_1_manual_object.xml"
     ;"xml/class_ogre_1_1_material.xml"  ; troublesome
+    "xml/class_ogre_1_1_mesh.xml"
     "xml/class_ogre_1_1_movable_object.xml"
     "xml/class_ogre_1_1_node.xml"
     "xml/class_ogre_1_1_overlay.xml"
@@ -99,9 +100,11 @@
     (:name "getCaption" :type "const DisplayString&" :args "void")
     ;; arbitrary choice
     (:name "getChildIterator" :type "ConstChildNodeIterator" :args "void")
+    (:name "getEdgeList" :type "EdgeData*" :args (("unsigned int" . "lodIndex")))
     (:name "getListener" :type "Listener*" :args "void")
     ;; arbitrary choice for RenderTarget version
     (:name "getMetrics" :type "void" :args (("unsigned int&" . "width") ("unsigned int&" . "height") ("unsigned int&" . "colourDepth") ("int&" . "left") ("int&" . "top")))
+    (:name "getPoseIterator" :type "ConstPoseIterator" :args "void")
     (:name "getQueuedRenderableVisitor" :type "SceneMgrQueuedRenderableVisitor*" :args "void")
     (:name "getSpecialCaseRenderQueueMode" :type "SpecialCaseRenderQueueMode" :args "void")
     (:name "getWindowPlanes" :type "const std::vector< Plane >&" :args "void")

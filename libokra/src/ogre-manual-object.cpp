@@ -9,7 +9,7 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-10-19 17:50:09.
+// This file was generated on: 2009-10-28 16:11:12.
 
 #include "handwritten/okra.h"
 
@@ -56,7 +56,7 @@ extern "C"
     const char* ogre_manual_object_get_movable_type (ManualObject*);
     const AxisAlignedBox& ogre_manual_object_get_bounding_box (ManualObject*);
     Real ogre_manual_object_get_bounding_radius (ManualObject*);
-    EdgeData* ogre_manual_object_get_edge_list (ManualObject*);
+    EdgeData* ogre_manual_object_get_edge_list_void (ManualObject*);
     bool ogre_manual_object_has_edge_list (ManualObject*);
     Entity::ShadowRenderableListIterator ogre_manual_object_get_shadow_volume_renderable_iterator (ManualObject*, ShadowTechnique, const Light*, HardwareIndexBufferSharedPtr*, bool, Real, unsigned long);
     void ogre_manual_object_visit_renderables (ManualObject*, Renderable::Visitor*, bool);
@@ -417,7 +417,7 @@ Real ogre_manual_object_get_bounding_radius (ManualObject* ogre_manual_object)
 // type: "EdgeData*"
 // args: "void"
 //
-EdgeData* ogre_manual_object_get_edge_list (ManualObject* ogre_manual_object)
+EdgeData* ogre_manual_object_get_edge_list_void (ManualObject* ogre_manual_object)
 {
     return ogre_manual_object->getEdgeList();
 }

@@ -83,6 +83,13 @@
     (otherwise nil)))
 
 
+(defun c-bone-assignment-iterator (type)
+  (case type
+    (:arg-type "Mesh::BoneAssignmentIterator")
+    (:return-type "Mesh::BoneAssignmentIterator")
+    (otherwise nil)))
+
+
 (defun c-bone-blend-mask (type)
   (case type
     (:arg-type "const AnimationState::BoneBlendMask*")
@@ -121,6 +128,18 @@
     (otherwise nil)))
 
 
+(defun c-colour-value (type)
+  (case type
+    (:arg-type "const okraArray4")
+    (:arg-code (mkstr "ColourValue ogre_ARG = ColourValue(ARG[0], ARG[1], "
+                      "ARG[2], ARG[3]);"))
+    (:before-call "ColourValue ogre_cv = ")
+    (:post-code (mkfstr "cv[0] = ogre_cv.r;~%    cv[1] = ogre_cv.g;~%"
+                    "    cv[2] = ogre_cv.b;~%    cv[3] = ogre_cv.a;"))
+    (:return-type '("void" . ("okraArray4" . "cv")))
+    (otherwise nil)))
+
+
 (defun c-const-child-node-iterator (type)
   (case type
     (:arg-type "Node::ConstChildNodeIterator")
@@ -135,15 +154,10 @@
     (otherwise nil)))
 
 
-(defun c-colour-value (type)
+(defun c-const-pose-iterator (type)
   (case type
-    (:arg-type "const okraArray4")
-    (:arg-code (mkstr "ColourValue ogre_ARG = ColourValue(ARG[0], ARG[1], "
-                      "ARG[2], ARG[3]);"))
-    (:before-call "ColourValue ogre_cv = ")
-    (:post-code (mkfstr "cv[0] = ogre_cv.r;~%    cv[1] = ogre_cv.g;~%"
-                    "    cv[2] = ogre_cv.b;~%    cv[3] = ogre_cv.a;"))
-    (:return-type '("void" . ("okraArray4" . "cv")))
+    (:arg-type "Mesh::ConstPoseIterator")
+    (:return-type "Mesh::ConstPoseIterator")
     (otherwise nil)))
 
 
@@ -290,6 +304,13 @@
     (otherwise nil)))
 
 
+(defun c-pose-iterator (type)
+  (case type
+    (:arg-type "Mesh::PoseIterator")
+    (:return-type "Mesh::PoseIterator")
+    (otherwise nil)))
+
+
 (defun c-quaternion (type)
   (case type
     (:arg-code (mkstr "Quaternion ogre_ARG = Quaternion(ARG[0], ARG[1], "
@@ -401,6 +422,20 @@
     (otherwise nil)))
 
 
+(defun c-sub-mesh-iterator (type)
+  (case type
+    (:arg-type "Mesh::SubMeshIterator")
+    (:return-type "Mesh::SubMeshIterator")
+    (otherwise nil)))
+
+
+(defun c-sub-mesh-name-map (type)
+  (case type
+    (:arg-type "const Mesh::SubMeshNameMap&")
+    (:return-type "const Mesh::SubMeshNameMap&")
+    (otherwise nil)))
+
+
 (defun c-technique-iterator (type)
   (case type
     (:arg-type "Material::TechniqueIterator")
@@ -444,6 +479,13 @@
   (case type
     (:arg-type "Vector4")
     (:return-type "Vector4")
+    (otherwise nil)))
+
+
+(defun c-vertex-bone-assignment-list (type)
+  (case type
+    (:arg-type "const SubMesh::VertexBoneAssignmentList&")
+    (:return-type "const SubMesh::VertexBoneAssignmentList&")
     (otherwise nil)))
 
 

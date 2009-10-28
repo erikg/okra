@@ -9,7 +9,7 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-10-01 12:28:05.
+// This file was generated on: 2009-10-28 16:11:12.
 
 #include "handwritten/okra.h"
 
@@ -115,7 +115,7 @@ extern "C"
     void ogre_scene_manager_set_display_scene_nodes (SceneManager*, bool);
     bool ogre_scene_manager_get_display_scene_nodes (SceneManager*);
     Animation* ogre_scene_manager_create_animation (SceneManager*, const char*, Real);
-    Animation* ogre_scene_manager_get_animation (SceneManager*, const char*);
+    Animation* ogre_scene_manager_get_animation_string (SceneManager*, const char*);
     bool ogre_scene_manager_has_animation (SceneManager*, const char*);
     void ogre_scene_manager_destroy_animation (SceneManager*, const char*);
     void ogre_scene_manager_destroy_all_animations (SceneManager*);
@@ -1123,7 +1123,7 @@ Animation* ogre_scene_manager_create_animation (SceneManager* ogre_scene_manager
 // type: "Animation*"
 // args: (("const String&" . "name"))
 //
-Animation* ogre_scene_manager_get_animation (SceneManager* ogre_scene_manager, const char* name)
+Animation* ogre_scene_manager_get_animation_string (SceneManager* ogre_scene_manager, const char* name)
 {
     return ogre_scene_manager->getAnimation(name);
 }

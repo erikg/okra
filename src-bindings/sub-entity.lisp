@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-10-01 12:28:06.
+;;;; This file was generated on: 2009-10-28 16:11:12.
 
 (in-package :okra-bindings)
 
@@ -45,18 +45,6 @@
 
 (defmethod set-material ((this sub-entity) material)
   (ogre-sub-entity-set-material (pointer-to this) material))
-
-
-;; name: "getSubMesh"
-;; type: "SubMesh*"
-;; args: "void"
-;;
-(defcfun "ogre_sub_entity_get_sub_mesh"
-    :pointer
-  (ogre-sub-entity :pointer))
-
-(defmethod get-sub-mesh ((this sub-entity))
-  (ogre-sub-entity-get-sub-mesh (pointer-to this)))
 
 
 ;; name: "getParent"
@@ -213,6 +201,15 @@
   (ogre-sub-entity :pointer))
 
 
+;; name: "getSubMesh"
+;; type: "SubMesh*"
+;; args: "void"
+;;
+(defcfun "ogre_sub_entity_get_sub_mesh_void"
+    :pointer
+  (ogre-sub-entity :pointer))
+
+
 ;;; Methods for Overloaded Foreign Functions
 
 (defmethod is-visible ((this sub-entity) &optional (arg0 nil) (arg1 nil))
@@ -235,6 +232,13 @@
   (cond
     ((and (typep arg0 'boolean))
      (ogre-sub-entity-set-visible-bool (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod get-sub-mesh ((this sub-entity) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'null))
+     (ogre-sub-entity-get-sub-mesh-void (pointer-to this)))
     (t (error "Overloaded method not defined for this class."))))
 
 

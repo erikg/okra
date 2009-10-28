@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-10-01 12:28:05.
+;;;; This file was generated on: 2009-10-28 16:11:12.
 
 (in-package :okra-bindings)
 
@@ -892,19 +892,6 @@
 
 (defmethod create-animation ((this scene-manager) name length)
   (ogre-scene-manager-create-animation (pointer-to this) name length))
-
-
-;; name: "getAnimation"
-;; type: "Animation*"
-;; args: (("const String&" . "name"))
-;;
-(defcfun "ogre_scene_manager_get_animation"
-    :pointer
-  (ogre-scene-manager :pointer)
-  (name :string))
-
-(defmethod get-animation ((this scene-manager) name)
-  (ogre-scene-manager-get-animation (pointer-to this) name))
 
 
 ;; name: "hasAnimation"
@@ -2535,6 +2522,16 @@
   (name :string))
 
 
+;; name: "getAnimation"
+;; type: "Animation*"
+;; args: (("const String&" . "name"))
+;;
+(defcfun "ogre_scene_manager_get_animation_string"
+    :pointer
+  (ogre-scene-manager :pointer)
+  (name :string))
+
+
 ;; name: "setShadowTextureConfig"
 ;; type: "void"
 ;; args: (("size_t" . "shadowIndex") ("unsigned short" . "width") ("unsigned short" . "height") ("PixelFormat" . "format"))
@@ -2642,6 +2639,13 @@
 
 
 ;;; Methods for Overloaded Foreign Functions
+
+(defmethod get-animation ((this scene-manager) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-scene-manager-get-animation-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
 
 (defmethod get-camera ((this scene-manager) &optional (arg0 nil))
   (cond

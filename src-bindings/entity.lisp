@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-10-01 12:28:05.
+;;;; This file was generated on: 2009-10-28 16:11:12.
 
 (in-package :okra-bindings)
 
@@ -44,19 +44,6 @@
 
 (defmethod get-num-sub-entities ((this entity))
   (ogre-entity-get-num-sub-entities (pointer-to this)))
-
-
-;; name: "clone"
-;; type: "Entity*"
-;; args: (("const String&" . "newName"))
-;;
-(defcfun "ogre_entity_clone"
-    :pointer
-  (ogre-entity :pointer)
-  (new-name :string))
-
-(defmethod clone ((this entity) new-name)
-  (ogre-entity-clone (pointer-to this) new-name))
 
 
 ;; name: "setMaterial"
@@ -342,18 +329,6 @@
 
 (defmethod get-world-bounding-sphere ((this entity) derive)
   (ogre-entity-get-world-bounding-sphere (pointer-to this) derive))
-
-
-;; name: "getEdgeList"
-;; type: "EdgeData*"
-;; args: "void"
-;;
-(defcfun "ogre_entity_get_edge_list"
-    :pointer
-  (ogre-entity :pointer))
-
-(defmethod get-edge-list ((this entity))
-  (ogre-entity-get-edge-list (pointer-to this)))
 
 
 ;; name: "hasEdgeList"
@@ -643,6 +618,16 @@
   (name :string))
 
 
+;; name: "clone"
+;; type: "Entity*"
+;; args: (("const String&" . "newName"))
+;;
+(defcfun "ogre_entity_clone_string"
+    :pointer
+  (ogre-entity :pointer)
+  (new-name :string))
+
+
 ;; name: "setMaterialName"
 ;; type: "void"
 ;; args: (("const String&" . "name"))
@@ -673,6 +658,15 @@
   (obj :pointer))
 
 
+;; name: "getEdgeList"
+;; type: "EdgeData*"
+;; args: "void"
+;;
+(defcfun "ogre_entity_get_edge_list_void"
+    :pointer
+  (ogre-entity :pointer))
+
+
 ;;; Methods for Overloaded Foreign Functions
 
 (defmethod get-sub-entity ((this entity) &optional (arg0 nil))
@@ -681,6 +675,14 @@
      (ogre-entity-get-sub-entity-string (pointer-to this) arg0))
     ((and (typep arg0 'integer))
      (ogre-entity-get-sub-entity-unsignedint (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod clone ((this entity) &optional (arg0 nil) (arg1 nil))
+  (declare (ignore arg1))
+  (cond
+    ((and (typep arg0 'string))
+     (ogre-entity-clone-string (pointer-to this) arg0))
     (t (error "Overloaded method not defined for this class."))))
 
 
@@ -698,6 +700,13 @@
      (ogre-entity-detach-object-from-bone-movableobject (pointer-to this) arg0))
     ((and (typep arg0 'string))
      (ogre-entity-detach-object-from-bone-string (pointer-to this) arg0))
+    (t (error "Overloaded method not defined for this class."))))
+
+
+(defmethod get-edge-list ((this entity) &optional (arg0 nil))
+  (cond
+    ((and (typep arg0 'null))
+     (ogre-entity-get-edge-list-void (pointer-to this)))
     (t (error "Overloaded method not defined for this class."))))
 
 

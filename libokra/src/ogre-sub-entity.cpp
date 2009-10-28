@@ -9,7 +9,7 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-10-01 12:28:05.
+// This file was generated on: 2009-10-28 16:11:12.
 
 #include "handwritten/okra.h"
 
@@ -23,7 +23,7 @@ extern "C"
     void ogre_sub_entity_set_material (SubEntity*, const MaterialPtr&);
     void ogre_sub_entity_set_visible_bool (SubEntity*, bool);
     bool ogre_sub_entity_is_visible_void (SubEntity*);
-    SubMesh* ogre_sub_entity_get_sub_mesh (SubEntity*);
+    SubMesh* ogre_sub_entity_get_sub_mesh_void (SubEntity*);
     Entity* ogre_sub_entity_get_parent (SubEntity*);
     const MaterialPtr& ogre_sub_entity_get_material (SubEntity*);
     Technique* ogre_sub_entity_get_technique (SubEntity*);
@@ -88,7 +88,7 @@ bool ogre_sub_entity_is_visible_void (SubEntity* ogre_sub_entity)
 // type: "SubMesh*"
 // args: "void"
 //
-SubMesh* ogre_sub_entity_get_sub_mesh (SubEntity* ogre_sub_entity)
+SubMesh* ogre_sub_entity_get_sub_mesh_void (SubEntity* ogre_sub_entity)
 {
     return ogre_sub_entity->getSubMesh();
 }

@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-10-01 12:28:06.
+;;;; This file was generated on: 2009-10-28 16:11:12.
 
 (in-package :cl-user)
 
@@ -35,6 +35,7 @@
      (:file "frustum" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
      (:file "light" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
      (:file "manual-object" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
+     (:file "mesh" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
      (:file "movable-object" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
      (:file "node" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))
      (:file "overlay" :depends-on ("package" ogre-lib "generics" "enums" "typedefs"))

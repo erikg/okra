@@ -9,7 +9,7 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 //
-// This file was generated on: 2009-10-01 12:28:05.
+// This file was generated on: 2009-10-28 16:11:12.
 
 #include "handwritten/okra.h"
 
@@ -61,7 +61,7 @@ extern "C"
     Real ogre_overlay_element_get_squared_view_depth (OverlayElement*, const Camera*);
     const LightList& ogre_overlay_element_get_lights (OverlayElement*);
     void ogre_overlay_element_copy_from_template (OverlayElement*, OverlayElement*);
-    OverlayElement* ogre_overlay_element_clone (OverlayElement*, const char*);
+    OverlayElement* ogre_overlay_element_clone_string (OverlayElement*, const char*);
     const OverlayElement* ogre_overlay_element_get_source_template (OverlayElement*);
 }
 
@@ -464,7 +464,7 @@ void ogre_overlay_element_copy_from_template (OverlayElement* ogre_overlay_eleme
 // type: "OverlayElement*"
 // args: (("const String&" . "instanceName"))
 //
-OverlayElement* ogre_overlay_element_clone (OverlayElement* ogre_overlay_element, const char* instanceName)
+OverlayElement* ogre_overlay_element_clone_string (OverlayElement* ogre_overlay_element, const char* instanceName)
 {
     return ogre_overlay_element->clone(instanceName);
 }

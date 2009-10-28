@@ -270,6 +270,15 @@
     (otherwise nil)))
 
 
+(defun cl-size-t (type name)
+  (declare (ignore name))
+  (case type
+    (:arg-type ":unsigned-int")
+    (:overloaded-type "'integer")
+    (:return-type ":unsigned-int")
+    (otherwise nil)))
+
+
 (defun cl-string (type name)
   (declare (ignore name))
   (case type
@@ -279,11 +288,10 @@
     (otherwise nil)))
 
 
-(defun cl-size-t (type name)
+(defun cl-stub (type name)
   (declare (ignore name))
   (case type
     (:arg-type ":unsigned-int")
-    (:overloaded-type "'integer")
     (:return-type ":unsigned-int")
     (otherwise nil)))
 

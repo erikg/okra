@@ -12,7 +12,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-10-01 12:28:05.
+;;;; This file was generated on: 2009-10-28 16:11:12.
 
 (in-package :okra-bindings)
 
@@ -187,7 +187,7 @@
 
 (defgeneric get-num-sub-entities (this))
 
-(defgeneric clone (this arg0))
+(defgeneric clone (this &optional arg0 arg1))
 
 (defgeneric set-material-name (this &optional arg0 arg1))
 
@@ -231,7 +231,7 @@
 
 (defgeneric get-world-bounding-sphere (this arg0))
 
-(defgeneric get-edge-list (this))
+(defgeneric get-edge-list (this &optional arg0))
 
 (defgeneric has-edge-list (this))
 
@@ -468,6 +468,114 @@
 (defgeneric set-keep-declaration-order (this arg0))
 
 (defgeneric get-keep-declaration-order (this))
+
+(defgeneric create-sub-mesh (this &optional arg0))
+
+(defgeneric name-sub-mesh (this arg0 arg1))
+
+(defgeneric get-num-sub-meshes (this))
+
+(defgeneric get-sub-mesh (this &optional arg0))
+
+(defgeneric get-sub-mesh-iterator (this))
+
+(defgeneric get-bounds (this))
+
+(defgeneric get-bounding-sphere-radius (this))
+
+(defgeneric set-skeleton-name (this arg0))
+
+(defgeneric get-skeleton-name (this))
+
+(defgeneric add-bone-assignment (this arg0))
+
+(defgeneric clear-bone-assignments (this))
+
+(defgeneric get-bone-assignment-iterator (this))
+
+(defgeneric get-bone-assignments (this))
+
+(defgeneric generate-lod-levels (this arg0 arg1 arg2))
+
+(defgeneric get-num-lod-levels (this))
+
+(defgeneric get-lod-level (this arg0))
+
+(defgeneric create-manual-lod-level (this arg0 arg1))
+
+(defgeneric update-manual-lod-level (this arg0 arg1))
+
+(defgeneric get-lod-index (this arg0))
+
+(defgeneric get-lod-index-squared-depth (this arg0))
+
+(defgeneric is-lod-manual (this))
+
+(defgeneric remove-lod-levels (this))
+
+(defgeneric set-vertex-buffer-policy (this arg0 arg1))
+
+(defgeneric set-index-buffer-policy (this arg0 arg1))
+
+(defgeneric get-vertex-buffer-usage (this))
+
+(defgeneric get-index-buffer-usage (this))
+
+(defgeneric is-vertex-buffer-shadowed (this))
+
+(defgeneric is-index-buffer-shadowed (this))
+
+(defgeneric build-tangent-vectors (this arg0 arg1 arg2 arg3 arg4 arg5))
+
+(defgeneric suggest-tangent-vector-build-params (this arg0 arg1 arg2))
+
+(defgeneric build-edge-list (this))
+
+(defgeneric free-edge-list (this))
+
+(defgeneric prepare-for-shadow-volume (this))
+
+(defgeneric is-prepared-for-shadow-volumes (this))
+
+(defgeneric is-edge-list-built (this))
+
+(defgeneric get-sub-mesh-name-map (this))
+
+(defgeneric set-auto-build-edge-lists (this arg0))
+
+(defgeneric get-auto-build-edge-lists (this))
+
+(defgeneric get-shared-vertex-data-animation-type (this))
+
+(defgeneric create-animation (this arg0 arg1))
+
+(defgeneric get-animation (this &optional arg0))
+
+(defgeneric has-animation (this arg0))
+
+(defgeneric remove-animation (this arg0))
+
+(defgeneric get-num-animations (this))
+
+(defgeneric remove-all-animations (this))
+
+(defgeneric get-vertex-data-by-track-handle (this arg0))
+
+(defgeneric update-material-for-all-sub-meshes (this))
+
+(defgeneric create-pose (this arg0 arg1))
+
+(defgeneric get-pose-count (this))
+
+(defgeneric get-pose (this &optional arg0))
+
+(defgeneric remove-pose (this &optional arg0))
+
+(defgeneric remove-all-poses (this))
+
+(defgeneric get-pose-iterator (this))
+
+(defgeneric get-pose-list (this))
 
 (defgeneric get-parent-node (this))
 
@@ -1153,12 +1261,6 @@
 
 (defgeneric get-display-scene-nodes (this))
 
-(defgeneric create-animation (this arg0 arg1))
-
-(defgeneric get-animation (this arg0))
-
-(defgeneric has-animation (this arg0))
-
 (defgeneric destroy-animation (this arg0))
 
 (defgeneric destroy-all-animations (this))
@@ -1392,8 +1494,6 @@
 (defgeneric get-auto-track-local-direction (this))
 
 (defgeneric flip-visibility (this arg0))
-
-(defgeneric get-sub-mesh (this))
 
 (defgeneric get-technique (this))
 
