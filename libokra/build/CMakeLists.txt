@@ -9,12 +9,21 @@
 #
 # See the LICENSE file in the Okra root directory for more info.
 #
-# This file was generated on: 2009-10-28 16:11:12.
+# This file was generated on: 2009-10-29 10:22:18.
 
 set(LIBOKRA_SOURCE_FILES
     "../../3rd-party/moc/CollisionTools.cpp"
     "../src/handwritten/misc.cpp" "../src/handwritten/moc.cpp"
     "../src/ogre-animation-state.cpp" "../src/ogre-camera.cpp" "../src/ogre-entity.cpp" "../src/ogre-frustum.cpp" "../src/ogre-light.cpp" "../src/ogre-manual-object.cpp" "../src/ogre-mesh.cpp" "../src/ogre-movable-object.cpp" "../src/ogre-node.cpp" "../src/ogre-overlay.cpp" "../src/ogre-overlay-element.cpp" "../src/ogre-overlay-manager.cpp" "../src/ogre-ray-scene-query.cpp" "../src/ogre-render-target.cpp" "../src/ogre-render-window.cpp" "../src/ogre-resource-group-manager.cpp" "../src/ogre-root.cpp" "../src/ogre-scene-manager.cpp" "../src/ogre-scene-node.cpp" "../src/ogre-sub-entity.cpp" "../src/ogre-timer.cpp" "../src/ogre-viewport.cpp")
+
+if (APPLE)
+  #set(CMAKE_OSX_ARCHITECTURES i386) Appears to fail on 10.6
+  set(BUILD_SHARED_LIBS ON)
+  set(CMAKE_CXX_FLAGS "-arch i386 -m32 -include Carbon/Carbon.h
+      ${CMAKE_CXX_FLAGS}")
+  find_library(OGRE_LIBRARY Ogre "/Users/Si/Library/SDKs/OgreSDK/Dependencies")
+  include_directories("${OGRE_LIBRARY}/Headers")
+endif (APPLE)
 
 add_library(okra ${LIBOKRA_SOURCE_FILES})
 

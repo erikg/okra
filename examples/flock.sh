@@ -15,6 +15,7 @@ if [ "$OS" = "Windows_NT" ]; then
     PATH=$PATH:../lib;
     $CL --load flock.lisp --eval "(in-package :okra)";
 else
+    DYLD_LIBRARY_PATH=../lib:${DYLD_LIBRARY_PATH};  # for OS X
     LD_LIBRARY_PATH=/usr/local/lib/OGRE:../lib;
     $CL --load flock.lisp --eval "(in-package :okra)";
     xset r on;

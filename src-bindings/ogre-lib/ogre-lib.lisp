@@ -12,6 +12,7 @@
 ;;;# Ogre C++ Library
 
 (define-foreign-library libokra
+  (:darwin "libokra.dylib")
   (:windows "libokra.dll")
   (:unix "libokra.so")
   (t "libokra"))

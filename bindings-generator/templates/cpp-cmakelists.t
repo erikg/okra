@@ -16,6 +16,15 @@ set(LIBOKRA_SOURCE_FILES
     "../src/handwritten/misc.cpp" "../src/handwritten/moc.cpp"
    [TMPL_LOOP "files"] "../src/[TMPL_VAR "file"]"[/TMPL_LOOP])
 
+if (APPLE)
+  #set(CMAKE_OSX_ARCHITECTURES i386) Appears to fail on 10.6
+  set(BUILD_SHARED_LIBS ON)
+  set(CMAKE_CXX_FLAGS "-arch i386 -m32 -include Carbon/Carbon.h
+      ${CMAKE_CXX_FLAGS}")
+  find_library(OGRE_LIBRARY Ogre "/Users/Si/Library/SDKs/OgreSDK/Dependencies")
+  include_directories("${OGRE_LIBRARY}/Headers")
+endif (APPLE)
+
 add_library(okra ${LIBOKRA_SOURCE_FILES})
 
 target_link_libraries(okra ${OGRE_LIBRARY})
