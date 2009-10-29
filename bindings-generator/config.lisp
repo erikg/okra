@@ -48,7 +48,7 @@
     "xml/class_ogre_1_1_sub_entity.xml"
     "xml/class_ogre_1_1_timer.xml"
     "xml/class_ogre_1_1_viewport.xml"
-    ;"xml/class_ogre_1_1_window_event_utilities.xml"
+    ;"xml/class_ogre_1_1_window_event_utilities.xml"  ; in handwritten.*
     ))
 
 ;; Hmpf..
@@ -106,6 +106,8 @@
     (:name "getMetrics" :type "void" :args (("unsigned int&" . "width") ("unsigned int&" . "height") ("unsigned int&" . "colourDepth") ("int&" . "left") ("int&" . "top")))
     (:name "getPoseIterator" :type "ConstPoseIterator" :args "void")
     (:name "getQueuedRenderableVisitor" :type "SceneMgrQueuedRenderableVisitor*" :args "void")
+    ;; this method isn't in v1.6.1 (which is the last published MingW Ogre SDK)
+    (:name "getReceivesShadows" :type "bool" :args "void")
     (:name "getSpecialCaseRenderQueueMode" :type "SpecialCaseRenderQueueMode" :args "void")
     (:name "getWindowPlanes" :type "const std::vector< Plane >&" :args "void")
     ;; no idea how to handle this one
