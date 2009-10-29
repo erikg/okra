@@ -9,7 +9,7 @@
 #
 # See the LICENSE file in the Okra root directory for more info.
 #
-# This file was generated on: 2009-10-29 10:22:18.
+# This file was generated on: 2009-10-29 12:52:05.
 
 set(LIBOKRA_SOURCE_FILES
     "../../3rd-party/moc/CollisionTools.cpp"
@@ -19,8 +19,8 @@ set(LIBOKRA_SOURCE_FILES
 if (APPLE)
   #set(CMAKE_OSX_ARCHITECTURES i386) Appears to fail on 10.6
   set(BUILD_SHARED_LIBS ON)
-  set(CMAKE_CXX_FLAGS "-arch i386 -m32 -include Carbon/Carbon.h
-      ${CMAKE_CXX_FLAGS}")
+  set(CMAKE_CXX_FLAGS "-arch i386 -m32 -include Carbon/Carbon.h"
+      ${CMAKE_CXX_FLAGS})
   find_library(OGRE_LIBRARY Ogre "/Users/Si/Library/SDKs/OgreSDK/Dependencies")
   include_directories("${OGRE_LIBRARY}/Headers")
 endif (APPLE)
