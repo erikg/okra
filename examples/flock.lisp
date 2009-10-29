@@ -22,8 +22,11 @@
 
 ;;; Packages
 
-(asdf :okra-cegui)
-(asdf :clois-lane-cegui)  ; after okra-cegui to surpress warnings
+(unless (find-package :asdf)
+  (require :asdf))
+
+(asdf:load-system :okra-cegui)
+(asdf:load-system :clois-lane-cegui)  ; after okra-cegui to surpress warnings
 
 (in-package :okra)
 

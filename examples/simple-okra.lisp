@@ -11,7 +11,11 @@
 
 ;;; Packages
 
-(asdf :okra)
+(unless (find-package :asdf)
+  (require :asdf))
+
+(asdf:load-system :okra)
+
 (in-package :okra)
 
 
