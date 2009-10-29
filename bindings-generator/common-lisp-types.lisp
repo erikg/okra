@@ -258,7 +258,7 @@
     (otherwise nil)))
 
 
-(defparameter *simple-types* '("uint16" "unsigned short"))
+(defparameter *simple-types* '("uint16" "unsigned short" "ushort"))
 
 (defun cl-simple-type (type name)
   (case type

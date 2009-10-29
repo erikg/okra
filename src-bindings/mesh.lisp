@@ -9,7 +9,7 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 ;;;;
-;;;; This file was generated on: 2009-10-28 16:35:09.
+;;;; This file was generated on: 2009-10-29 10:28:01.
 
 (in-package :okra-bindings)
 
@@ -855,7 +855,7 @@
   (cond
     ((and (typep arg0 'string))
      (ogre-mesh-get-pose-string (pointer-to this) arg0))
-    ((and (typep arg0 ))
+    ((and (typep arg0 'integer))
      (ogre-mesh-get-pose-ushort (pointer-to this) arg0))
     (t (error "Overloaded method not defined for this class."))))
 
@@ -864,7 +864,7 @@
   (cond
     ((and (typep arg0 'string))
      (ogre-mesh-remove-pose-string (pointer-to this) arg0))
-    ((and (typep arg0 ))
+    ((and (typep arg0 'integer))
      (ogre-mesh-remove-pose-ushort (pointer-to this) arg0))
     (t (error "Overloaded method not defined for this class."))))
 
