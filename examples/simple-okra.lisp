@@ -14,7 +14,7 @@
 (unless (find-package :asdf)
   (require :asdf))
 
-(asdf:load-system :okra)
+(asdf:oos 'asdf:load-op :okra)
 
 (in-package :okra)
 

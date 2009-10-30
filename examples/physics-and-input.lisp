@@ -14,9 +14,9 @@
 (unless (find-package :asdf)
   (require :asdf))
 
-(asdf:load-system :buclet)
-(asdf:load-system :clois-lane)
-(asdf:load-system :okra)
+(asdf:oos 'asdf:load-op :buclet)
+(asdf:oos 'asdf:load-op :clois-lane)
+(asdf:oos 'asdf:load-op :okra)
 
 (in-package :okra)
 
