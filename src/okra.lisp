@@ -100,9 +100,9 @@
 (defun make-render-window (&key (name nil) (width 800) (height 600)
                            (fullscreen nil) (misc-params (cffi:null-pointer)))
   (let ((name (if name name (mkstr "render-window-" (unique-id)))))
-    (make-instance 'render-window :pointer
-                   (create-render-window *ogre-root* name width height
-                                         fullscreen misc-params))))
+    (make-instance 'render-window
+                   :pointer (create-render-window *ogre-root* name width height
+                                                  fullscreen misc-params))))
 
 
 (defun make-resource-group-manager ()

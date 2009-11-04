@@ -24,6 +24,16 @@
   (z-dir okra-real))
 
 
+(defcfun "hw_create_render_window"
+    :pointer
+  (ogre-root :pointer)
+  (name :string)
+  (width :unsigned-int)
+  (height :unsigned-int)
+  (full-screen :boolean)
+  (parent-window-handle :string))
+
+
 (defcfun "hw_free"
     :void
   (memory :pointer))

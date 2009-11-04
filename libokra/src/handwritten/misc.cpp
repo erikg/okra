@@ -14,6 +14,8 @@ extern "C"
     bool hw_conan (array_shuttle*);
     Ray* hw_create_ray (okraReal, okraReal, okraReal,
                         okraReal, okraReal, okraReal);
+    RenderWindow* hw_create_render_window (Root*, const char*, unsigned int,
+                                           unsigned int, bool, const char*);
     void hw_free (void*);  // sigh...
     array_shuttle* hw_get_available_renderers (Root*);
     OverlayManager* hw_get_overlay_manager_singleton_ptr ();
@@ -79,8 +81,21 @@ bool hw_conan (array_shuttle* as)
 Ray* hw_create_ray (okraReal x_origin, okraReal y_origin, okraReal z_origin,
                     okraReal x_dir, okraReal y_dir, okraReal z_dir)
 {
-  return new Ray(Vector3(x_origin, y_origin, z_origin),
-                 Vector3(x_dir, y_dir, z_dir));
+    return new Ray(Vector3(x_origin, y_origin, z_origin),
+                   Vector3(x_dir, y_dir, z_dir));
+}
+
+
+RenderWindow* hw_create_render_window (Root* ogre_root, const char* name,
+                                       unsigned int width, unsigned int height,
+                                       bool fullScreen, const char* hWnd)
+{
+     Ogre::NameValuePairList params;
+     //params["externalWindowHandle"] = String(hWnd);  // parentWindowHandle?
+     params["parentWindowHandle"] = String(hWnd);
+
+     return ogre_root->createRenderWindow(name, width, height, fullScreen,
+                                          &params);
 }
 
 
