@@ -4,7 +4,7 @@
 //
 // See the LICENSE file in the Okra root directory for more info.
 
-#include "Ogre.h"
+#include <Ogre.h>
 
 using namespace Ogre;
 
