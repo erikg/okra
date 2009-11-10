@@ -9,21 +9,19 @@
 
 ;;; Foreign Functions & Methods
 
+(defcfun "hw_add_viewport"
+    :pointer
+  (render-window :pointer)
+  (camera :pointer))
+
+
+;; Not used but kept around for reference & later experiments.
 (defcfun ("hw_conan" conan)
     :boolean
   (array-shuttle :pointer))
 
 
-(defcfun ("hw_create_ray" create-ray)
-    :pointer
-  (x-origin okra-real)
-  (y-origin okra-real)
-  (z-origin okra-real)
-  (x-dir okra-real)
-  (y-dir okra-real)
-  (z-dir okra-real))
-
-
+;; Used for GTK experiments.
 (defcfun "hw_create_render_window"
     :pointer
   (ogre-root :pointer)
@@ -32,21 +30,6 @@
   (height :unsigned-int)
   (full-screen :boolean)
   (parent-window-handle :string))
-
-
-(defcfun "hw_free"
-    :void
-  (memory :pointer))
-
-
-(defcfun "hw_get_available_renderers"
-    okra-array
-  (ogre-root :pointer))
-
-
-(defcfun ("hw_get_window_handler" get-window-handler)
-    :unsigned-long
-  (render-window :pointer))
 
 
 (defcfun ("hw_get_overlay_manager_singleton_ptr"
@@ -59,62 +42,13 @@
     :pointer)
 
 
-;; Allocates SIZE bytes on the C heap which have to be freed with HW-FREE.
-;;
-;; sigh.. idiot, you could just defcfun malloc straight away (also hw_free)
-(defcfun "hw_malloc"
-    :pointer
-  (size :unsigned-int))
+(defcfun ("hw_get_window_handler" get-window-handler)
+    :unsigned-long
+  (render-window :pointer))
 
 
-(defcfun "hw_manual_object"
-    :pointer
-  (scene-manager :pointer)
-  (name :string)
-  (material :string)
-  (floats-array :pointer)
-  (elements :int))
-
-
-(defcfun "hw_manual_object_triangle"
-    :void
-  (manual-object :pointer)
-  (floats-array :pointer))
-
-
-(defcfun ("hw_material_clone" material-clone)
-    :pointer
-  (material :pointer)
-  (new-name :string))
-
-
-(defcfun ("hw_material_set_ambient" material-set-ambient)
-    :void
-  (material :pointer)
-  (r okra-real)
-  (g okra-real)
-  (b okra-real))
-
-
-(defcfun ("hw_material_set_diffuse" material-set-diffuse)
-    :void
-  (material :pointer)
-  (r okra-real)
-  (g okra-real)
-  (b okra-real)
-  (a okra-real))
-
-
-(defcfun ("hw_material_set_self_illumination" material-set-self-illumination)
-    :void
-  (material :pointer)
-  (r okra-real)
-  (g okra-real)
-  (b okra-real))
-
-
-(defcfun ("hw_ray_constructor" ray-constructor)
-    :pointer)
+(defcfun ("hw_message_pump" message-pump)
+    :void)
 
 
 (defcfun "hw_root_constructor"
@@ -130,24 +64,3 @@
       (pointer-to this)
       (setf (slot-value this 'pointer)
             (hw-root-constructor plugin config log))))
-
-
-(defcfun ("hw_simple_add_viewport" simple-add-viewport)
-    :pointer
-  (render-window :pointer)
-  (camera :pointer))
-
-
-(defcfun ("hw_message_pump" message-pump)
-    :void)
-
-
-(defcfun "free"
-    :void
-  (memory :pointer))
-
-
-;; Allocates SIZE bytes on the C heap which have to be freed with HW-FREE.
-(defcfun "malloc"
-    :pointer
-  (size :unsigned-int))

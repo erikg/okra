@@ -136,8 +136,8 @@
 (defun make-viewport (camera &key (background-colour '(0.0 0.0 0.0 1.0))
                       (render-window *render-window*))
   (let ((vp (make-instance 'viewport :pointer
-                           (simple-add-viewport (pointer-to render-window)
-                                                (pointer-to camera)))))
+                           (hw-add-viewport (pointer-to render-window)
+                                            (pointer-to camera)))))
     (set-aspect-ratio camera (* 1.0 (/ (get-actual-width vp)
                                        (get-actual-height vp))))
     (set-background-colour vp background-colour)
