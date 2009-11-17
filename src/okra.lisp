@@ -91,18 +91,26 @@
 
 ;; This isn't used in any examples so I'm starting to use the 'better' default
 ;; for scene-manager.
-(defun make-ray-scene-query (&key (mask #xffffffff) (ray (ray-constructor))
-                             (scene-manager (manager-of *scene*)))
-  (make-instance 'ray-scene-query
-                 :pointer (create-ray-query scene-manager ray mask)))
+;(defun make-ray-scene-query (&key (mask #xffffffff) (ray (ray-constructor))
+;                             (scene-manager (manager-of *scene*)))
+;  (make-instance 'ray-scene-query
+;                 :pointer (create-ray-query scene-manager ray mask)))
 
 
 (defun make-render-window (&key (name nil) (width 800) (height 600)
-                           (fullscreen nil) (misc-params (cffi:null-pointer)))
-  (let ((name (if name name (mkstr "render-window-" (unique-id)))))
-    (make-instance 'render-window
-                   :pointer (create-render-window *ogre-root* name width height
-                                                  fullscreen misc-params))))
+                           (fullscreen nil) (misc-params (cffi:null-pointer))
+                           (parent-window-handle nil))
+  (let* ((name (if name name (mkstr "render-window-" (unique-id))))
+         ;; Eventually we ought to support misc-params properly.
+         (rw (if parent-window-handle
+                 (okra-bindings::hw-create-render-window
+                   (pointer-to *ogre-root*) name width height nil
+                   (if (stringp parent-window-handle)
+                       parent-window-handle
+                       (mkstr parent-window-handle)))
+                 (create-render-window *ogre-root* name width height
+                                       fullscreen misc-params))))
+    (make-instance 'render-window :pointer rw)))
 
 
 (defun make-resource-group-manager ()
@@ -145,11 +153,13 @@
 
 
 (defun new-frame ()
+  ;; note-to-self: should these two forms be reversed?  see gtk experiments
   (message-pump)
   (render-one-frame *ogre-root*))
 
 
 (defun okra-window (&key (name "Okra") (width 800) (height 600)
+                    (parent-window-handle nil)
                     (plugins '("Plugin_CgProgramManager"
                                "Plugin_OctreeSceneManager"))
                                ;"Plugin_ParticleFX"))
@@ -171,7 +181,8 @@
       (load-plugin *ogre-root* plugin))
     ;; the render-window needs to be created before scripts are loaded
     (let ((rgm (make-resource-group-manager))
-          (rw (make-render-window :name name :width width :height height)))
+          (rw (make-render-window :name name :width width :height height
+                                  :parent-window-handle parent-window-handle)))
       (dolist (resource resources)
         (add-resource-location rgm (first resource) (second resource)
                                (third resource) nil))
