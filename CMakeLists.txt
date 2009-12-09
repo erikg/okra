@@ -10,6 +10,7 @@ project(libokra)
 
 option(BUILD_SHARED_LIBS "build shared libraries" ON)
 option(BUILD_CEGUI "build libcegui" ON)
+option(BUILD_MYGUI "build libmygui" ON)
 
 add_definitions(-g -O0 -Wall)
 
@@ -24,6 +25,13 @@ if (BUILD_CEGUI)
     include_directories(${CEGUI_INCLUDE_DIR} ${OGRE_CEGUIRenderer_INCLUDE_DIR})
 endif ()
 
+if (BUILD_MYGUI)
+    find_package(MYGUI REQUIRED)
+    if (MYGUI_FOUND)
+      include_directories(${MYGUI_INCLUDE_DIR})
+    endif ()
+endif ()
+
 # Set some directories / variables.
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
@@ -31,4 +39,7 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 add_subdirectory(${CMAKE_SOURCE_DIR}/libokra/build)
 if (BUILD_CEGUI)
    add_subdirectory(${CMAKE_SOURCE_DIR}/libcegui/build)
+endif ()
+if (BUILD_MYGUI AND MYGUI_FOUND)
+   add_subdirectory(${CMAKE_SOURCE_DIR}/libmygui_okra/build)
 endif ()
