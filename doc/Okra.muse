@@ -44,6 +44,29 @@ the =examples= directory.
 
 *** Linux
 
+**** Debian
+
+At the time of this writing (20091225) in the Debian testing
+distribution there are Ogre packages.  Don't forget to turn of
+=BUILD_CEGUI= in =CMakeLists.txt= if you won't be installing the
+packages for it.
+
+To use Ogre you'll need to install the following packages: =cmake=,
+=g++=, =libogre-dev=, =libogremain-1.6.4= and
+=ogre-plugins-cgprogrammanager=.
+
+To use OIS you'll need these packages: =libois-1.2.0= and
+=libois-dev=.
+
+For CEGUI you will need to install: =libcegui-mk2-1=,
+=libcegui-mk2-dev=, =libceguiogre-dev= and
+=libceguiogrerenderer-1.6.4=.
+
+Check [[#compiling-libokra][Compiling libokra yourself]] to for the
+rest of the instructions.
+
+**** Compiling Ogre and its dependencies yourself
+
 All examples expect Ogre to be installed so download the source from:
 http://www.ogre3d.org/download/source (you'll need "OGRE 1.6.x Source
 for Linux / OSX").
@@ -52,7 +75,6 @@ Configure, compile and install in =/usr/local=.  Ogre has some
 dependencies which need to be installed first.  Also, see here for
 more information on the whole process:
 http://www.ogre3d.org/wiki/index.php/Building_From_Source#Linux
-
 
 The Linux start-up scripts are written and tested using SBCL
 (1.0.25.debian at the time of writing) and expect to find =sbcl= in the
@@ -83,6 +105,7 @@ Okra distribution.
 
 All these settings are in the =*.bat= files and can be changed there.
 
+#compiling-libokra
 *** Compiling libokra yourself
 
 If the libokra library that comes with the Okra distribution doesn't
