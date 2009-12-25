@@ -16,6 +16,6 @@ if [ "$OS" = "Windows_NT" ]; then
     $CL --load physics-and-input.lisp --eval "(in-package :okra)";
 else
     DYLD_LIBRARY_PATH=../lib:${DYLD_LIBRARY_PATH};  # for OS X
-    LD_LIBRARY_PATH=/usr/local/lib/OGRE:../lib;
+    export LD_LIBRARY_PATH=/usr/lib/OGRE:/usr/local/lib/OGRE:../lib;
     $CL --load physics-and-input.lisp --eval "(in-package :okra)";
 fi
