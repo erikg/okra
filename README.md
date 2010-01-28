@@ -4,9 +4,11 @@
 
 <table align="center" width="100%">
   <tr>
+    <td>&nbsp;</td>
     <td align="center">
       <img src="http://www.aerique.net/software/okra/okra.png">
     </td>
+    <td>&nbsp;</td>
   </tr>
 </table>
 
@@ -22,6 +24,9 @@
 
 Okra provides CFFI bindings to the [Ogre](http://www.ogre3d.org/) 3D
 graphics engine.
+
+There's a [video](http://www.youtube.com/watch?v=INeUifM2Bhg) of the
+flock demo on YouTube.
 
 
 ### License
