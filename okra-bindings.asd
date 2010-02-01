@@ -19,7 +19,7 @@
 (in-package :okra-system)
 
 (asdf:defsystem :okra-bindings
-  :version "1.6.2.2"
+  :version "1.6.4.2"
   :components
   ((:module src-bindings
     :components

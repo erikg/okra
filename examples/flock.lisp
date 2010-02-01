@@ -29,6 +29,8 @@
 ;; after okra-cegui to surpress warnings
 (asdf:oos 'asdf:load-op :clois-lane-cegui)
 
+(asdf:oos 'asdf:load-op :black-tie)
+
 (in-package :okra)
 
 
@@ -416,7 +418,8 @@
 (defun dy (x y z width)
   (* 20.0 (+ y (* (sin (+ (/ x 16.0) (wave-position-of (water-of *scene*))))
                   (sin (+ (/ z 400.0)
-                          (perlin-noise (/ x width) 0.0 (/ z width))))))))
+                          (black-tie:perlin-noise (/ x width) 0.0
+                                                  (/ z width))))))))
 
 
 (defun water-surface-loop (water)
@@ -604,7 +607,7 @@
 
   ;; water
   (setf (water-of *scene*)
-        (make-water :grid 15.0 :material "Ocean/Calm" :ripple-x-speed 0.0008
+        (make-water :grid 15.0 :material "Ocean/Calm/NoShader" :ripple-x-speed 0.0008
                     :ripple-z-speed 0.002))
 
   ;; CEGUI

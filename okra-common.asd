@@ -14,7 +14,7 @@
 (in-package :okra-system)
 
 (asdf:defsystem :okra-common
-  :version "1.6.4.1"
+  :version "1.6.4.2"
   :components
     ((:module src-common
       :components

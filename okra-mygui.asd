@@ -12,7 +12,7 @@
 (in-package :okra-system)
 
 (asdf:defsystem :okra-mygui
-  :version "1.6.4.1"
+  :version "1.6.4.2"
   :components ((:module src-mygui
                 :serial t
                 :components ((:file "package")
