@@ -32,8 +32,8 @@
 ;;; Packages
 
 (asdf:oos 'asdf:load-op :buclet)
-(asdf:oos 'asdf:load-op :clois-lane-cegui)
-(asdf:oos 'asdf:load-op :okra-cegui)
+(asdf:oos 'asdf:load-op :clois-lane-mygui)
+(asdf:oos 'asdf:load-op :okra-mygui)
 
 
 ;;; Saving Executables

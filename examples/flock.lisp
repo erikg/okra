@@ -5,30 +5,15 @@
 ;;;; author: Erik Winkels (aerique@xs4all.nl)
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
-;;;;
-;;;; note-to-self:
-;;;;     - http://www.ogre3d.org/wiki/index.php/CodeSnippets#Shaders
-;;;;     - http://artis.imag.fr/~Xavier.Decoret/resources/ogre/tutorial4.html
-;;;;
-;;;; For your own project you would split up this file into seperate files
-;;;; containing f.e. classes, actions, package definition, methods, etc.
-;;;; but I want to keep the examples in one self-contained file.
-;;;;
-;;;; There's more wrong with this example that will probably never be fixed:
-;;;; 1) There's no LOD, the waves consist of the same amount of triangles
-;;;;    whether they're close-by or distant.
-;;;; 2) The wave y-displacement (which is costly) is also calculated for
-;;;;    waves that are not on the screen.
 
 ;;; Packages
 
 (unless (find-package :asdf)
   (require :asdf))
 
-(asdf:oos 'asdf:load-op :okra-cegui)
-;; after okra-cegui to surpress warnings
-(asdf:oos 'asdf:load-op :clois-lane-cegui)
-
+(asdf:oos 'asdf:load-op :okra-mygui)
+;; after okra-mygui to surpress warnings
+(asdf:oos 'asdf:load-op :clois-lane-mygui)
 (asdf:oos 'asdf:load-op :black-tie)
 
 (in-package :okra)
@@ -79,9 +64,9 @@
 
 (defparameter *scene* nil)  ; this should be the only global parameter
 
-;; for CEGUI
-(defvar *cegui-actions*
-  '((("quitButton" . "Clicked") . cegui-stop-running)
+;; for MYGUI
+(defvar *mygui-actions*
+  '((("quit" . :mouse-button-click) . mygui-stop-running)
     (:default . echo-self)))
 
 ;; for clois-lane
@@ -106,10 +91,10 @@
 (defparameter *running* nil)
 
 
-;;; CEGUI Actions
+;;; MYGUI Actions
 
-(defun cegui-stop-running (window-name event-name)
-  (declare (ignore window-name event-name))
+(defun mygui-stop-running (widget)
+  (declare (ignore widget))
   (setf *running* nil))
 
 
@@ -533,18 +518,13 @@
 
 ;;; Functions
 
-;(defun update-gui (&key (fps 0.0))
-;  (okra-cegui::set-text (okra-cegui::get-window "Birds")
-;                        (format nil "~D" (length (birds-of *scene*))))
-;  (okra-cegui::set-text (okra-cegui::get-window "FPS") (format nil "~,2F" fps))
-;  (okra-cegui::set-text (okra-cegui::get-window "Triangles")
-;                        (format nil "~D" (triangles-in *scene*))))
 (defun update-gui (&key (fps 0.0))
-  (flet ((set-text (window text)
-           (okra-cegui::set-text (okra-cegui::get-window window) text)))
-    (set-text "Birds" (format nil "~D" (length (birds-of *scene*))))
-    (set-text "FPS" (format nil "~,2F" fps))
-    (set-text "Triangles" (format nil "~D" (triangles-in *scene*)))))
+  (flet ((set-text (widget text)
+           (okra-mygui::set-caption (okra-mygui::find-widget widget) text)))
+    (set-text "birds" (format nil "~D" (length (birds-of *scene*))))
+    (set-text "fps" (format nil "~,2F" fps))
+    (set-text "triangles" (format nil "~D" (triangles-in *scene*)))))
+
 
 
 (defun update-physics (&optional (step 1.0))
@@ -569,7 +549,7 @@
                  :render-system #+windows "Direct3D9 Rendering Subsystem"
                                 #-windows "OpenGL Rendering Subsystem"
                  :resources '(("resources" "FileSystem" "General")
-                              ("resources/gui" "FileSystem" "General")))))
+                              ("resources/mygui" "FileSystem" "General")))))
     (setf *scene* (make-scene :class 'flock-scene
                               :manager "OctreeSceneManager"
                               :window window)))
@@ -610,14 +590,17 @@
         (make-water :grid 15.0 :material "Ocean/Calm" :ripple-x-speed 0.0008
                     :ripple-z-speed 0.002))
 
-  ;; CEGUI
-  (okra-cegui:initialise-cegui "AquaLookSkin.scheme" *scene*
-                               :actions *cegui-actions*
-                               :default-font "DejaVuSansMono-6"
-                               :default-mouse-arrow "AquaLook"
-                               :events '(("flockSettings" . "CloseClicked")
-                                         ("quitButton" . "Clicked"))
-                               :layout "flock.layout")
+  ;; MyGUI
+  (defparameter mygui
+    #+sbcl (sb-int:with-float-traps-masked (:divide-by-zero :invalid)
+             (okra-mygui::mygui-initialise (pointer-to (window-of *scene*))
+                                           (pointer-to (manager-of *scene*))))
+    #-sbcl (okra-mygui::mygui-initialise (pointer-to (window-of *scene*))
+                                         (pointer-to (manager-of *scene*))))
+
+  (okra-mygui::mygui-load-layout "flock.layout")
+  (okra-mygui::set-event-mouse-button-click (okra-mygui::find-widget "quit"))
+  (setf okra-mygui::*mygui-actions* *mygui-actions*)
 
   ;; clois-lane
   (let ((wh (get-window-handler (pointer-to (window-of *scene*)))))
@@ -663,7 +646,7 @@
 
 (defun run-flock ()
   ;; if we don't reinit the callbacks the executable will crash when using them
-  (okra-bindings::initialise-cegui-callbacks)
+  (okra-mygui::initialise-mygui-callbacks)
   (clois-lane::initialise-callbacks)
   (initialise-application)
   (main-loop)

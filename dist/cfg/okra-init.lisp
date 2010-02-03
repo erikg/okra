@@ -1,6 +1,6 @@
 ;;;; -*- Mode: LISP; Syntax: COMMON-LISP -*-
 ;;;;
-;;;; okra-cegui-init.lisp
+;;;; okra-init.lisp
 ;;;;
 ;;;; author: Erik Winkels (aerique@xs4all.nl)
 ;;;;
@@ -11,5 +11,5 @@
 
 #+ccl (progn (buclet::load-foreign-libraries)
              (okra-bindings::load-foreign-libraries)
-             (okra-bindings::load-libcegui)
+             (okra-mygui::load-libmygui)
              (clois-lane::load-foreign-libraries))

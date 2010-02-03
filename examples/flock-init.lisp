@@ -9,6 +9,6 @@
 ;;;; Init file used by some CL implementation's executables.
 
 #+ccl (progn (okra-bindings::load-foreign-libraries)
-             (okra-bindings::load-libcegui)
+             (okra-mygui::load-libmygui)
              (clois-lane::load-foreign-libraries)
              (okra::run-flock))

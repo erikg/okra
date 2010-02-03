@@ -33,23 +33,25 @@ complete bindings to the Ogre API.
 Okra.  I do use Okra in my private projects and through that it will
 slowly grow.*
 
+
 ** Running the examples
 
 What you need and should know to get the examples running.
+
 
 *** General
 
 The start-up scripts (the =*.sh= and =*.bat= files) expect to be run from
 the =examples= directory.
 
+
 *** Linux
 
 **** Debian
 
 At the time of this writing (20091225) in the Debian testing
-distribution there are Ogre packages.  Don't forget to turn of
-=BUILD_CEGUI= in =CMakeLists.txt= if you won't be installing the
-packages for it.
+distribution there are Ogre packages.  Don't forget to turn off
+=BUILD_MYGUI= in =CMakeLists.txt= if you won't be using it.
 
 To use Ogre you'll need to install the following packages: =cmake=,
 =g++=, =libogre-dev=, =libogremain-1.6.4= and
@@ -58,12 +60,12 @@ To use Ogre you'll need to install the following packages: =cmake=,
 To use OIS you'll need these packages: =libois-1.2.0= and
 =libois-dev=.
 
-For CEGUI you will need to install: =libcegui-mk2-1=,
-=libcegui-mk2-dev=, =libceguiogre-dev= and
-=libceguiogrerenderer-1.6.4=.
+For MyGUI check out: http://mygui.info/ or
+http://ogre3d.org/addonforums/viewforum.php?f=17
 
 Check [[#compiling-libokra][Compiling libokra yourself]] to for the
 rest of the instructions.
+
 
 **** Compiling Ogre and its dependencies yourself
 
@@ -86,6 +88,7 @@ distribution.
 
 All these options are set in the =*.sh= files and can be changed there.
 
+
 *** Windows
 
 All examples depend on the Ogre SDK to be installed so download it
@@ -105,6 +108,7 @@ Okra distribution.
 
 All these settings are in the =*.bat= files and can be changed there.
 
+
 #compiling-libokra
 *** Compiling libokra yourself
 
@@ -116,6 +120,7 @@ If you have installed CMake on Linux you should issue: =cmake -G "Unix
 Makefiles"=
 
 If you're on Windows you should read the [[#windows-mingw][Windows (MinGW)]] chapter.
+
 
 *** Examples
 
@@ -142,13 +147,14 @@ example start-up scripts for example.)
 
 ** CEGUI
 
-CEGUI is supported for now but will probably be phased out in favour
-of MyGUI.
+CEGUI support has been deprecated in favour of MyGUI.  The code has
+been moved to the =1.6.x-cegui= branch in Git.
 
 
 ** MyGUI
 
-MyGUI v3.0.0+ is supported.
+MyGUI v3.0.0+ is supported.  This should actually be move to its own
+project but it is in Okra for now.
 
 
 * Executables
@@ -201,10 +207,12 @@ wrapper libraries and after that I run one of the examples.
 (=./physics-and-input.sh= from the =examples= directory at the time of
 writing since I do not have regression tests yet.)
 
+
 ** Troubleshooting SharedPtr
 
-Everything *Ptr should probably be handles like MeshPtr if they give
+Everything ...Ptr should probably be handled like MeshPtr if they give
 problems.
+
 
 ** Unsupported C++ Features
 
@@ -218,6 +226,7 @@ problems.
 
 Passing a vector (#(a b ...)) is *much* slower than passing the values
 as seperate arguments.  (At least on SBCL 1.0.25.debian.)
+
 
 ** Implementations
 

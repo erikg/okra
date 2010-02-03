@@ -63,9 +63,11 @@ Okra.  I do use Okra in my private projects and through that it will
 slowly grow.</em></p>
 
 
+
 <h3>Running the examples</h3>
 
 <p class="first">What you need and should know to get the examples running.</p>
+
 
 <h4>General</h4>
 
@@ -73,9 +75,33 @@ slowly grow.</em></p>
 the <code>examples</code> directory.</p>
 
 
+
 <h4>Linux</h4>
 
-<p class="first">All examples expect Ogre to be installed so download the source from:
+<h5>Debian</h5>
+
+<p>At the time of this writing (20091225) in the Debian testing
+distribution there are Ogre packages.  Don't forget to turn off
+<code>BUILD_MYGUI</code> in <code>CMakeLists.txt</code> if you won't be using it.</p>
+
+<p>To use Ogre you'll need to install the following packages: <code>cmake</code>,
+<code>g++</code>, <code>libogre-dev</code>, <code>libogremain-1.6.4</code> and
+<code>ogre-plugins-cgprogrammanager</code>.</p>
+
+<p>To use OIS you'll need these packages: <code>libois-1.2.0</code> and
+<code>libois-dev</code>.</p>
+
+<p>For MyGUI check out: <a href="http://mygui.info/">http://mygui.info/</a> or
+<a href="http://ogre3d.org/addonforums/viewforum.php?f=17">http://ogre3d.org/addonforums/viewforum.php?f=17</a></p>
+
+<p>Check <a href="#compiling-libokra">Compiling libokra yourself</a> to for the
+rest of the instructions.</p>
+
+
+
+<h5>Compiling Ogre and its dependencies yourself</h5>
+
+<p>All examples expect Ogre to be installed so download the source from:
 <a href="http://www.ogre3d.org/download/source">http://www.ogre3d.org/download/source</a> (you'll need &quot;OGRE 1.6.x Source
 for Linux / OSX&quot;).</p>
 
@@ -83,7 +109,6 @@ for Linux / OSX&quot;).</p>
 dependencies which need to be installed first.  Also, see here for
 more information on the whole process:
 <a href="http://www.ogre3d.org/wiki/index.php/Building_From_Source#Linux">http://www.ogre3d.org/wiki/index.php/Building_From_Source#Linux</a></p>
-
 
 <p>The Linux start-up scripts are written and tested using SBCL
 (1.0.25.debian at the time of writing) and expect to find <code>sbcl</code> in the
@@ -94,6 +119,8 @@ path.</p>
 distribution.</p>
 
 <p>All these options are set in the <code>*.sh</code> files and can be changed there.</p>
+
+
 
 
 <h4>Windows</h4>
@@ -116,7 +143,7 @@ Okra distribution.</p>
 <p>All these settings are in the <code>*.bat</code> files and can be changed there.</p>
 
 
-<h4>Compiling libokra yourself</h4>
+<h4><a name="compiling-libokra" id="compiling-libokra"></a>Compiling libokra yourself</h4>
 
 <p class="first">If the libokra library that comes with the Okra distribution doesn't
 work you'll need to compile it yourself.  You'll need CMake for that:
@@ -126,6 +153,7 @@ work you'll need to compile it yourself.  You'll need CMake for that:
 Makefiles&quot;</code></p>
 
 <p>If you're on Windows you should read the <a href="#windows-mingw">Windows (MinGW)</a> chapter.</p>
+
 
 
 <h4>Examples</h4>
@@ -154,10 +182,28 @@ example start-up scripts for example.)</p>
 
 
 
+<h2>GUIs</h2>
+
+<h3>CEGUI</h3>
+
+<p class="first">CEGUI support has been deprecated in favour of MyGUI.  The code has
+been moved to the <code>1.6.x-cegui</code> branch in Git.</p>
+
+
+
+<h3>MyGUI</h3>
+
+<p class="first">MyGUI v3.0.0+ is supported.  This should actually be move to its own
+project but it is in Okra for now.</p>
+
+
+
+
 <h2>Executables</h2>
 
 <p class="first">There are a couple of things to keep in mind when generating an
 executable using Okra from your CL implementation.</p>
+
 
 <h3>Foreign Callbacks</h3>
 
@@ -208,6 +254,22 @@ writing since I do not have regression tests yet.)</p>
 
 
 
+<h3>Troubleshooting SharedPtr</h3>
+
+<p class="first">Everything ...Ptr should probably be handled like MeshPtr if they give
+problems.</p>
+
+
+
+<h3>Unsupported C++ Features</h3>
+
+<ul>
+<li>default arguments</li>
+<li>STL</li>
+</ul>
+
+
+
 
 <h2>Optimisations</h2>
 
@@ -215,6 +277,7 @@ writing since I do not have regression tests yet.)</p>
 
 <p class="first">Passing a vector (#(a b ...)) is <em>much</em> slower than passing the values
 as seperate arguments.  (At least on SBCL 1.0.25.debian.)</p>
+
 
 
 <h3>Implementations</h3>
