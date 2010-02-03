@@ -6,15 +6,20 @@
 ;;;;
 ;;;; See the LICENSE file in the Okra root directory for more info.
 
-(in-package :okra-bindings)  ; XXX: shouldn't this be :okra-mygui?
+(in-package :okra-mygui)
 
 
-;;;# Variables
+;;; Variables
 
+(defparameter *gui* nil)
 (defparameter *mygui-actions* nil)
 
+;; XXX: hack!
+(defparameter *current-x* 0)
+(defparameter *current-y* 0)
 
-;;;# MYGUI C++ Library
+
+;;; MYGUI C++ Library
 
 (define-foreign-library libmygui
   (:windows "libmygui_okra.dll")
@@ -30,24 +35,25 @@
 (load-libmygui)
 
 
-;;;;# MYGUI Callbacks
-;
-;(defcallback on-event
-;    :void
-;  ((window-name :string)
-;   (event-name :string))
-;  (cond ((assoc (cons window-name event-name) *cegui-actions* :test #'equal)
-;         (funcall (cdr (assoc (cons window-name event-name) *cegui-actions*
-;                              :test #'equal))
-;                  window-name event-name))
-;        ((assoc :default *cegui-actions*)
-;         (funcall (cdr (assoc :default *cegui-actions*))
-;                  window-name event-name))))
-;
-;(defcvar "clfun_cegui_on_event" :pointer)
-;
-;
-;(defun initialise-cegui-callbacks ()
-;  (setf *clfun-cegui-on-event* (get-callback 'on-event)))
-;
-;(initialise-cegui-callbacks)
+;;; MYGUI Callbacks
+
+(defcallback event-mouse-button-click
+    :void
+  ((widget :pointer))
+  (cond ((assoc (cons (get-name widget) :mouse-button-click)
+                *mygui-actions* :test #'equal)
+         (funcall (cdr (assoc (cons (get-name widget) :mouse-button-click)
+                              *mygui-actions* :test #'equal))
+                  widget))
+        ((assoc :default *mygui-actions*)
+         (funcall (cdr (assoc :default *mygui-actions*))
+                  widget))))
+
+(defcvar "clfun_mygui_event_mouse_button_click" :pointer)
+
+
+(defun initialise-mygui-callbacks ()
+  (setf *clfun-mygui-event-mouse-button-click*
+        (get-callback 'event-mouse-button-click)))
+
+(initialise-mygui-callbacks)

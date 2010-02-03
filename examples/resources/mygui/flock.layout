@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <MyGUI type="Layout">
-    <Widget type="Window" skin="WindowC" position="432 410 296 366" layer="Back">
+    <Widget type="Window" skin="WindowC" position="8 10 296 366" layer="Back">
         <Property key="Widget_Caption" value="Flock"/>
         <Widget type="StaticText" skin="StaticText" position="0 8 72 32" layer="Back">
             <Property key="Widget_Caption" value="fps:"/>
@@ -38,6 +38,7 @@
         </Widget>
         <Widget type="Edit" skin="WordWrapSimple" position="8 223 264 65" layer="Back">
             <Property key="Widget_Caption" value="If you keep the right mouse button pressed while moving the mouse you can look around."/>
+            <Property key="Edit_ReadOnly" value="true"/>
         </Widget>
     </Widget>
 </MyGUI>

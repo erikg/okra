@@ -12,9 +12,9 @@
   (require :asdf))
 
 (asdf:oos 'asdf:load-op :okra-mygui)
-;; after okra-cegui to surpress warnings
-;(asdf:oos 'asdf:load-op :clois-lane-cegui)
-(asdf:oos 'asdf:load-op :clois-lane)
+;; after okra-mygui to surpress warnings
+(asdf:oos 'asdf:load-op :clois-lane-mygui)
+(asdf:oos 'asdf:load-op :black-tie)
 
 (in-package :okra)
 
@@ -66,7 +66,7 @@
 
 ;; for MYGUI
 (defvar *mygui-actions*
-  '((("quitButton" . "Clicked") . mygui-stop-running)
+  '((("quit" . :mouse-button-click) . mygui-stop-running)
     (:default . echo-self)))
 
 ;; for clois-lane
@@ -93,8 +93,8 @@
 
 ;;; MYGUI Actions
 
-(defun mygui-stop-running (window-name event-name)
-  (declare (ignore window-name event-name))
+(defun mygui-stop-running (widget)
+  (declare (ignore widget))
   (setf *running* nil))
 
 
@@ -403,7 +403,8 @@
 (defun dy (x y z width)
   (* 20.0 (+ y (* (sin (+ (/ x 16.0) (wave-position-of (water-of *scene*))))
                   (sin (+ (/ z 400.0)
-                          (perlin-noise (/ x width) 0.0 (/ z width))))))))
+                          (black-tie:perlin-noise (/ x width) 0.0
+                                                  (/ z width))))))))
 
 
 (defun water-surface-loop (water)
@@ -497,7 +498,7 @@
     mo))
 
 
-(defun make-water (&key (grid 10.0) (material "Ocean/Calm/NoShader")
+(defun make-water (&key (grid 10.0) (material "Ocean/Calm")
                    (position #(0.0 0.0 0.0)) (ripple-x-speed 0.0008)
                    (ripple-z-speed 0.002) (size 300.0) (wave-speed 0.025))
   (let ((mo (create-water-surface position size :grid grid :material material))
@@ -517,14 +518,13 @@
 
 ;;; Functions
 
-;(defun update-gui (&key (fps 0.0))
-;  (flet ((set-text (window text)
-;           (okra-cegui::set-text (okra-cegui::get-window window) text)))
-;    (set-text "Birds" (format nil "~D" (length (birds-of *scene*))))
-;    (set-text "FPS" (format nil "~,2F" fps))
-;    (set-text "Triangles" (format nil "~D" (triangles-in *scene*)))))
 (defun update-gui (&key (fps 0.0))
-  (declare (ignore fps)))
+  (flet ((set-text (widget text)
+           (okra-mygui::set-caption (okra-mygui::find-widget widget) text)))
+    (set-text "birds" (format nil "~D" (length (birds-of *scene*))))
+    (set-text "fps" (format nil "~,2F" fps))
+    (set-text "triangles" (format nil "~D" (triangles-in *scene*)))))
+
 
 
 (defun update-physics (&optional (step 1.0))
@@ -587,7 +587,7 @@
 
   ;; water
   (setf (water-of *scene*)
-        (make-water :grid 15.0 :material "Ocean/Calm/NoShader" :ripple-x-speed 0.0008
+        (make-water :grid 15.0 :material "Ocean/Calm" :ripple-x-speed 0.0008
                     :ripple-z-speed 0.002))
 
   ;; CEGUI
@@ -598,6 +598,18 @@
   ;                             :events '(("flockSettings" . "CloseClicked")
   ;                                       ("quitButton" . "Clicked"))
   ;                             :layout "flock.layout")
+
+  ;; MyGUI
+  (defparameter mygui
+    #+sbcl (sb-int:with-float-traps-masked (:divide-by-zero :invalid)
+             (okra-mygui::mygui-initialise (pointer-to (window-of *scene*))
+                                           (pointer-to (manager-of *scene*))))
+    #-sbcl (okra-mygui::mygui-initialise (pointer-to (window-of *scene*))
+                                         (pointer-to (manager-of *scene*))))
+
+  (okra-mygui::mygui-load-layout "flock.layout")
+  (okra-mygui::set-event-mouse-button-click (okra-mygui::find-widget "quit"))
+  (setf okra-mygui::*mygui-actions* *mygui-actions*)
 
   ;; clois-lane
   (let ((wh (get-window-handler (pointer-to (window-of *scene*)))))
@@ -643,7 +655,7 @@
 
 (defun run-flock ()
   ;; if we don't reinit the callbacks the executable will crash when using them
-  ;(okra-bindings::initialise-cegui-callbacks)
+  (okra-mygui::initialise-mygui-callbacks)
   (clois-lane::initialise-callbacks)
   (initialise-application)
   (main-loop))
@@ -652,12 +664,5 @@
 
 ;;; for development so i have to type less :)
 
-;(run-flock)
-(sb-thread:make-thread #'run-flock)
-
-(sleep 2)
-
-(defparameter mygui (okra-mygui::mygui-constructor))
-
-(sb-int:with-float-traps-masked (:divide-by-zero :invalid)
-  (okra-mygui::mygui-initialise mygui (pointer-to (window-of *scene*))))
+#+sbcl (sb-thread:make-thread #'run-flock)
+#-sbcl (run-flock)

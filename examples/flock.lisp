@@ -607,7 +607,7 @@
 
   ;; water
   (setf (water-of *scene*)
-        (make-water :grid 15.0 :material "Ocean/Calm/NoShader" :ripple-x-speed 0.0008
+        (make-water :grid 15.0 :material "Ocean/Calm" :ripple-x-speed 0.0008
                     :ripple-z-speed 0.002))
 
   ;; CEGUI

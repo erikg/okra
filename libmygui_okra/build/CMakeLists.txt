@@ -8,4 +8,5 @@ set(LIBMYGUI_SOURCE_FILES "../src/mygui.cpp")
 
 add_library(mygui_okra ${LIBMYGUI_SOURCE_FILES})
 
-target_link_libraries(mygui_okra ${MYGUI_LIBRARIES})
+# We'll have to add MyGUI.OgrePlatform to FindMYGUI.cmake.
+target_link_libraries(mygui_okra ${MYGUI_LIBRARIES} MyGUI.OgrePlatform)

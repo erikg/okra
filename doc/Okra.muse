@@ -138,10 +138,24 @@ you'll need to make sure the OS can find them.  (By adapting the
 example start-up scripts for example.)
 
 
+* GUIs
+
+** CEGUI
+
+CEGUI is supported for now but will probably be phased out in favour
+of MyGUI.
+
+
+** MyGUI
+
+MyGUI v3.0.0+ is supported.
+
+
 * Executables
 
 There are a couple of things to keep in mind when generating an
 executable using Okra from your CL implementation.
+
 
 ** Foreign Callbacks
 

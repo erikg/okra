@@ -10,7 +10,7 @@ project(libokra)
 
 option(BUILD_SHARED_LIBS "build shared libraries" ON)
 option(BUILD_CEGUI "build libcegui" ON)
-option(BUILD_MYGUI "build libmygui" OFF)
+option(BUILD_MYGUI "build libmygui" ON)
 
 add_definitions(-g -O0 -Wall)
 
