@@ -8,7 +8,7 @@ fi
 
 if [ "$OSTYPE" = "Linux" -o "$OSTYPE" = "linux-gnu" ]; then
     # I have to do an 'export' apparently...
-    export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib/OGRE:../lib;
+    export LD_LIBRARY_PATH=/usr/lib/OGRE:/usr/local/lib/OGRE:../lib;
     if command -v sbcl 1>&2 > /dev/null; then  # Preferring SBCL on Linux.
         CL="sbcl";
     elif command -v lx86cl 1>&2 > /dev/null; then
