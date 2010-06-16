@@ -1,5 +1,11 @@
 # Okra
 
+**status:** maintained
+
+I'm not actively working on Okra but I'm using it in projects of my
+own and I'm also exploring using Ogre from ECL.
+
+
 ## CFFI bindings to Ogre
 
 <table align="center" width="100%">
