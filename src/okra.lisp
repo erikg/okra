@@ -153,7 +153,6 @@
 
 
 (defun new-frame ()
-  ;; note-to-self: should these two forms be reversed?  see gtk experiments
   (message-pump)
   (render-one-frame *ogre-root*))
 
