@@ -15,7 +15,7 @@ extern "C"
     MOC::CollisionTools* moc_initialise (SceneManager*);
     bool moc_raycast_from_camera (MOC::CollisionTools*, RenderWindow*, Camera*,
                                   const okraArray2, okraArray3, MovableObject*&,
-                                  float&, const uint32);
+                                  float&, const uint32_t);
 }
 
 
@@ -30,7 +30,7 @@ MOC::CollisionTools* moc_initialise (SceneManager* sm)
 bool moc_raycast_from_camera (MOC::CollisionTools* ct, RenderWindow* rw,
                               Camera* cam, const okraArray2 mousecoords,
                               okraArray3 result, MovableObject*& target,
-                              float& closest_distance, const uint32 query_mask)
+                              float& closest_distance, const uint32_t query_mask)
 {
     Vector3 resultVector3;
 

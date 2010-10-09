@@ -34,7 +34,7 @@ extern "C"
     const SceneManagerMetaData* ogre_root_get_scene_manager_meta_data (Root*, const char*);
     SceneManagerEnumerator::MetaDataIterator ogre_root_get_scene_manager_meta_data_iterator (Root*);
     SceneManager* ogre_root_create_scene_manager_string_string (Root*, const char*, const char*);
-    SceneManager* ogre_root_create_scene_manager_scenetypemask_string (Root*, uint16, const char*);
+    SceneManager* ogre_root_create_scene_manager_scenetypemask_string (Root*, uint16_t, const char*);
     void ogre_root_destroy_scene_manager (Root*, SceneManager*);
     SceneManager* ogre_root_get_scene_manager_string (Root*, const char*);
     SceneManagerEnumerator::SceneManagerIterator ogre_root_get_scene_manager_iterator (Root*);
@@ -49,7 +49,7 @@ extern "C"
     void ogre_root_shutdown (Root*);
     void ogre_root_add_resource_location (Root*, const char*, const char*, const char*, bool);
     void ogre_root_remove_resource_location (Root*, const char*, const char*);
-    void ogre_root_convert_colour_value (Root*, const okraArray4, uint32*);
+    void ogre_root_convert_colour_value (Root*, const okraArray4, uint32_t*);
     RenderWindow* ogre_root_get_auto_created_window (Root*);
     RenderWindow* ogre_root_create_render_window (Root*, const char*, unsigned int, unsigned int, bool, const NameValuePairList*);
     void ogre_root_detach_render_target_rendertarget (Root*, RenderTarget*);
@@ -242,7 +242,7 @@ SceneManager* ogre_root_create_scene_manager_string_string (Root* ogre_root, con
 // type: "SceneManager*"
 // args: (("SceneTypeMask" . "typeMask") ("const String&" . "instanceName"))
 //
-SceneManager* ogre_root_create_scene_manager_scenetypemask_string (Root* ogre_root, uint16 typeMask, const char* instanceName)
+SceneManager* ogre_root_create_scene_manager_scenetypemask_string (Root* ogre_root, uint16_t typeMask, const char* instanceName)
 {
     return ogre_root->createSceneManager(typeMask, instanceName);
 }
@@ -375,9 +375,9 @@ void ogre_root_remove_resource_location (Root* ogre_root, const char* name, cons
 
 // name: "convertColourValue"
 // type: "void"
-// args: (("const ColourValue&" . "colour") ("uint32*" . "pDest"))
+// args: (("const ColourValue&" . "colour") ("uint32_t*" . "pDest"))
 //
-void ogre_root_convert_colour_value (Root* ogre_root, const okraArray4 colour, uint32* pDest)
+void ogre_root_convert_colour_value (Root* ogre_root, const okraArray4 colour, uint32_t* pDest)
 {
     ColourValue ogre_colour = ColourValue(colour[0], colour[1], colour[2], colour[3]);
     ogre_root->convertColourValue(ogre_colour, pDest);
