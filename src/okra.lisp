@@ -159,6 +159,7 @@
 
 
 (defun okra-window (&key (name "Okra") (width 800) (height 600)
+		    (logfile "Okra.log")
                     (parent-window-handle nil)
                     (plugins '("Plugin_CgProgramManager"
                                "Plugin_OctreeSceneManager"))
@@ -166,7 +167,7 @@
                     (render-system "OpenGL Rendering Subsystem")
                     (resources '(("resources" "FileSystem" "General"))))
   (setf *ogre-root* (make-instance 'root))
-  (root-constructor *ogre-root* :log "Okra.log")
+  (root-constructor *ogre-root* :log logfile)
   #+windows (load-plugin *ogre-root* "RenderSystem_Direct3D9")
   (load-plugin *ogre-root* "RenderSystem_GL")
   (if render-system
